@@ -157,11 +157,243 @@
     <div class="scrollcue">scroll ↓</div>
   </section>
 
+  <!-- ===== 2 · DEMO ===== -->
+  <section class="section">
+    <div class="demo-wrap reveal">
+      <video class="demo-video" autoplay loop muted playsinline controls>
+        <source src="static/videos/demo.mp4" type="video/mp4">
+      </video>
+    </div>
+  </section>
+
+  <!--SECTIONS-START
+  <!-- ===== 3 · ABSTRACT ===== -->
+  <section class="section abstract">
+    <div class="wrap reveal">
+      <p class="sec-title">Abstract</p>
+      <p>Vision-Language-Action (VLA) models advance by scaling data, but because robot demonstrations are costly, human egocentric video is increasingly used as a supervision source—typically incorporated without task-level selection, which injects noise from data irrelevant to the task at hand. We present SiMDex, a similarity-based data mining framework that casts human data selection for VLA post-training as a <b>recommendation problem</b>. For each robot demonstration, SiMDex employs a three-layer hierarchical retrieval pipeline to distill task-relevant subsets from a pool of <b>~32M egocentric human samples</b> (derived from EgoDex), operating in a morphology-agnostic action space (wrist 6D pose and five fingertip positions) that requires no changes to VLA architecture or training. Against a strong baseline trained with an equal amount of randomly sampled human data, SiMDex uses only <b>~1.49M mined samples</b> (under 5% of the pool) yet improves the overall success rate from <b>47.7% to 61.1%</b>—showing that selective curation outperforms indiscriminate data mixing.</p>
+    </div>
+  </section>
+
+  <!-- ===== 4 · METHOD ===== -->
+  <section class="section">
+    <div class="wrap reveal">
+      <p class="sec-title">Method</p>
+      <img src="static/images/method.png" alt="Method Overview" style="width:100%;display:block;">
+      <p style="font-size:0.85rem;color:#888;line-height:1.7;margin-top:14px;">Overview of the SiMDex pipeline. Given robot demonstrations (anchors, top) and a large-scale pool of egocentric human candidates (target, bottom), SiMDex retrieves similar human samples through a three-stage cascade of increasing computational cost (denoted by deepening shades). Stage I (Recall) broadly retrieves candidates via language and hand-pose similarity. Stage II (Ranking) scores candidates by fine-grained motion similarity—wrist trajectory (wrist position along the orange path), wrist rotation (purple arc), and finger trajectory (colored fingertip dots); its deduplicated output forms the mined subset used for VLA training. Stage III (Re-ranking) provides an embodiment-agnostic verification via optical flow. Red arrows denote candidate comparison.</p>
+    </div>
+  </section>
+
+  <!-- ===== 5 · MINING RESULTS ===== -->
+  <section class="section" style="background:#f9f9f9; border-top:1px solid #e8e8e8; border-bottom:1px solid #e8e8e8;">
+    <div class="wrap">
+      <p class="sec-title reveal">SiMDex's mining human demonstrations</p>
+      <div class="eval-viewer reveal">
+        <div class="ctrl-row">
+          <span class="ctrl-label">Task</span>
+          <div class="ctrl-chips" id="mining-task-tabs">
+            <button class="tab-btn active" data-task="drill">Drill</button>
+            <button class="tab-btn" data-task="flick_wheel">Flick Wheel</button>
+            <button class="tab-btn" data-task="pick_place">Pick &amp; Place</button>
+          </div>
+        </div>
+        <div class="ctrl-row">
+          <span class="ctrl-label">Sub-task</span>
+          <div class="ctrl-chips" id="mining-subtask-chips"></div>
+        </div>
+        <hr class="eval-divider">
+        <!-- Robot anchor -->
+        <div class="mining-anchor-wrap">
+          <div class="mining-anchor-item" id="mining-anchor"></div>
+        </div>
+        <!-- Arrow -->
+        <div class="mining-arrow">↓</div>
+        <!-- Human samples -->
+
+        <div class="mining-samples-wrap" id="mining-samples"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6 · EVALUATION ===== -->
+  <section class="section">
+    <div class="wrap">
+      <p class="sec-title reveal">Evaluation</p>
+
+      <!-- Two overview images -->
+      <div class="eval-images reveal">
+        <div class="eval-img-card">
+          <img src="static/images/eval_tasks.png" alt="Task Overview" style="width:100%;display:block;">
+          <p class="eval-img-caption">Task Overview</p>
+        </div>
+        <div class="eval-img-card">
+          <img src="static/images/eval_tools.png" alt="Tools &amp; Equipment">
+          <p class="eval-img-caption">Tools &amp; Equipment</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== TELEOPERATION ===== -->
+  <section class="section" style="background:#f9f9f9; border-top:1px solid #e8e8e8;">
+    <div class="wrap">
+      <p class="sec-title reveal">Teleoperation</p>
+
+      <!-- Interactive video viewer -->
+      <div class="eval-viewer reveal">
+        <!-- Task -->
+        <div class="ctrl-row">
+          <span class="ctrl-label">Task</span>
+          <div class="ctrl-chips" id="teleop-task-tabs">
+            <button class="tab-btn active" data-task="drill">Drill</button>
+            <button class="tab-btn" data-task="flick_wheel">Flick Wheel</button>
+            <button class="tab-btn" data-task="pick_place">Pick &amp; Place</button>
+          </div>
+        </div>
+        <hr class="eval-divider">
+        <!-- View -->
+        <div class="ctrl-row">
+          <span class="ctrl-label">View</span>
+          <div class="ctrl-chips" id="teleop-view-chips">
+            <button class="chip-btn view-btn active" data-view="ego">Ego</button>
+            <button class="chip-btn view-btn active" data-view="exo1">Exo 1</button>
+            <button class="chip-btn view-btn active" data-view="exo2">Exo 2</button>
+            <button class="chip-btn view-btn active" data-view="exo3">Exo 3</button>
+            <button class="chip-btn view-btn active" data-view="exo4">Exo 4</button>
+          </div>
+        </div>
+        <!-- Video grid -->
+        <div class="eval-video-grid" id="teleop-video-grid"></div>
+      </div>
+    </div>
+  </section>
+
+  SECTIONS-END-->
+
   <script>
     const io = new IntersectionObserver((entries)=>{
       entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
     }, { threshold:0.15 });
     document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+    const VIEWS = ['ego','exo1','exo2','exo3','exo4'];
+    const VIEW_LABELS = { ego:'Ego View', exo1:'Exo 1', exo2:'Exo 2', exo3:'Exo 3', exo4:'Exo 4' };
+
+    function subtaskSlug(s){ return s.toLowerCase().replace(/\./g,'').replace(/ /g,'_'); }
+    function gridCols(n){ return n<=1?1 : n<=3?n : n===4?2 : 3; }
+
+    /* ===== Teleoperation viewer ===== */
+    const teleopState = { task:'drill', views: new Set(VIEWS) };
+
+    function renderTeleopVideos(){
+      const active = VIEWS.filter(v=>teleopState.views.has(v));
+      const grid = document.getElementById('teleop-video-grid');
+      grid.style.gridTemplateColumns = `repeat(${gridCols(active.length)},1fr)`;
+      if(!active.length){
+        grid.innerHTML = '<div class="eval-empty">Please select at least one view.</div>';
+        return;
+      }
+      grid.innerHTML = active.map(v=>`
+        <div class="eval-video-item">
+          <video autoplay loop muted playsinline controls>
+            <source src="static/videos/teleop/${teleopState.task}/${v}.mp4" type="video/mp4">
+          </video>
+          <div class="eval-video-label">${VIEW_LABELS[v]}</div>
+        </div>`).join('');
+    }
+
+    document.getElementById('teleop-task-tabs').querySelectorAll('[data-task]').forEach(b=>
+      b.addEventListener('click',()=>{
+        teleopState.task = b.dataset.task;
+        document.querySelectorAll('#teleop-task-tabs [data-task]').forEach(x=>x.classList.remove('active'));
+        b.classList.add('active');
+        renderTeleopVideos();
+      })
+    );
+
+    document.getElementById('teleop-view-chips').querySelectorAll('[data-view]').forEach(b=>
+      b.addEventListener('click',()=>{
+        const v = b.dataset.view;
+        if(teleopState.views.has(v)){
+          if(teleopState.views.size > 1){ teleopState.views.delete(v); b.classList.remove('active'); }
+        } else {
+          teleopState.views.add(v); b.classList.add('active');
+        }
+        renderTeleopVideos();
+      })
+    );
+
+    renderTeleopVideos();
+
+    /* ===== Mining Results viewer ===== */
+    const MINING_DATA = {
+      drill: {
+        subtasks: ['Grasp','Assembly','Drill'],
+        Grasp:    { dir:'static/videos/mining/drill/grasp',    samples:['sample1.mp4','sample2.mp4','sample3.mp4'] },
+        Assembly: { dir:'static/videos/mining/drill/assembly', samples:['sample1.mp4','sample2.mp4','sample3.mp4'] },
+        Drill:    { dir:'static/videos/mining/drill/drill',    samples:['sample1.mp4','sample2.mp4','sample3.mp4'] },
+      },
+      flick_wheel: {
+        subtasks: ['Grasp','Twist','Flick'],
+        Grasp: { dir:'static/videos/mining/flick_wheel/grasp', samples:['sample1.mp4','sample2.mp4','sample3.mp4'] },
+        Twist: { dir:'static/videos/mining/flick_wheel/twist', samples:['sample1.mp4','sample2.mp4','sample3.mp4'] },
+        Flick: { dir:'static/videos/mining/flick_wheel/flick', samples:['sample1.mp4','sample2.mp4','sample3.mp4'] },
+      },
+      pick_place: {
+        subtasks: ['Obj.1','Obj.2','Obj.3','Obj.4'],
+        'Obj.1': { dir:'static/videos/mining/pick_place/obj1', samples:['sample1.mp4','sample2.mp4','sample3.mp4'] },
+        'Obj.2': { dir:'static/videos/mining/pick_place/obj2', samples:['sample1.mp4','sample2.mp4','sample3.mp4'] },
+        'Obj.3': { dir:'static/videos/mining/pick_place/obj3', samples:['sample1.mp4','sample2.mp4','sample3.mp4'] },
+        'Obj.4': { dir:'static/videos/mining/pick_place/obj4', samples:['sample1.mp4','sample2.mp4','sample3.mp4'] },
+      },
+    };
+
+    const miningState = { task:'drill', subtask:'Grasp' };
+
+    function renderMiningSubtasks(){
+      const subs = MINING_DATA[miningState.task].subtasks;
+      if(!subs.includes(miningState.subtask)) miningState.subtask = subs[0];
+      const c = document.getElementById('mining-subtask-chips');
+      c.innerHTML = subs.map(s=>
+        `<button class="chip-btn${s===miningState.subtask?' active':''}" data-subtask="${s}">${s}</button>`
+      ).join('');
+      c.querySelectorAll('[data-subtask]').forEach(b=>b.addEventListener('click',()=>{
+        miningState.subtask = b.dataset.subtask;
+        renderMiningSubtasks(); renderMiningVideos();
+      }));
+    }
+
+    function renderMiningVideos(){
+      const { task, subtask } = miningState;
+      const d = MINING_DATA[task][subtask];
+
+      document.getElementById('mining-anchor').innerHTML = `
+        <video autoplay loop muted playsinline>
+          <source src="${d.dir}/anchor.mp4" type="video/mp4">
+        </video>
+        <div class="mining-anchor-label">Robot Anchor</div>`;
+
+      document.getElementById('mining-samples').innerHTML = d.samples.map((f,i)=>`
+        <div class="mining-sample-item">
+          <video autoplay loop muted playsinline>
+            <source src="${d.dir}/${f}" type="video/mp4">
+          </video>
+          <div class="mining-sample-label">Sample ${i+1}</div>
+        </div>`).join('');
+    }
+
+    document.getElementById('mining-task-tabs').querySelectorAll('[data-task]').forEach(b=>
+      b.addEventListener('click',()=>{
+        miningState.task = b.dataset.task;
+        document.querySelectorAll('#mining-task-tabs [data-task]').forEach(x=>x.classList.remove('active'));
+        b.classList.add('active');
+        renderMiningSubtasks(); renderMiningVideos();
+      })
+    );
+
+    renderMiningSubtasks();
+    renderMiningVideos();
   </script>
 
 </body>
