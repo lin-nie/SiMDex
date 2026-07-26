@@ -24,20 +24,19 @@
   .hero .overlay { position:absolute; inset:0; z-index:1; background:linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.45) 100%); }
   .hero .content { position:relative; z-index:2; text-align:center; color:#fff; padding:64px 24px; max-width:1000px; }
 
-  .hero h1 { font-weight:800; font-size:clamp(4rem, 12vw, 8rem); letter-spacing:-0.03em; line-height:1; color:#f9be00; -webkit-text-stroke:15px #000; paint-order:stroke fill; }
-  .hero .subtitle { font-size:clamp(1.4rem, 3.5vw, 2.2rem); font-weight:700; color:#187fc2; -webkit-text-stroke:10px #000; paint-order:stroke fill; margin-top:14px; line-height:1.4; }
+  .hero h1 { font-weight:800; font-size:clamp(5rem, 15vw, 10rem); letter-spacing:-0.03em; line-height:1; color:#f9be00; -webkit-text-stroke:15px #000; paint-order:stroke fill; }
+  .hero .subtitle { font-size:clamp(1.4rem, 3.2vw, 2.6rem); font-weight:700; color:#187fc2; -webkit-text-stroke:10px #000; paint-order:stroke fill; margin-top:14px; line-height:1.4; }
 
-  .authors { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:28px auto 8px; max-width:900px; }
-  .author-pill { display:inline-flex; align-items:baseline; background:rgba(255,255,255,0.35); border-radius:999px; padding:6px 18px; font-size:1rem; color:#fff; font-weight:600; backdrop-filter:blur(8px); transition:background .15s; -webkit-text-stroke:2px #000; paint-order:stroke fill; }
-  .author-pill:hover { background:rgba(255,255,255,0.5); }
-  .author-pill a { color:#fff; text-decoration:none; }
-  .author-pill sup { font-size:0.65em; margin-left:2px; font-weight:700; -webkit-text-stroke:0; }
+  .authors { display:flex; flex-wrap:wrap; justify-content:center; gap:6px 2.2em; margin:28px auto 8px; max-width:960px; }
+  .author-pill { display:inline-flex; align-items:baseline; font-size:1.56rem; color:#fff; font-weight:600; -webkit-text-stroke:7px #000; paint-order:stroke fill; }
+  .author-pill a { color:inherit; text-decoration:none; }
+  .author-pill a:hover { text-decoration:underline; }
+  .author-pill sup { font-size:0.58em; margin-left:1px; color:rgba(165,195,230,0.6); }
 
-  .affil { display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:0; margin:16px auto 0; max-width:800px; }
-  .affil-item { font-size:1rem; color:#fff; font-weight:700; white-space:nowrap; padding:2px 14px; -webkit-text-stroke:3px #000; paint-order:stroke fill; }
-  .affil-item sup { font-size:0.68em; color:inherit; font-weight:700; margin-right:3px; -webkit-text-stroke:0; }
-  .affil-sep { color:#f9be00; opacity:0.7; font-weight:300; font-size:1rem; }
-  .footnote { font-size:1rem; color:rgba(255,255,255,0.55); margin-top:10px; font-style:italic; }
+  .affil { text-align:center; margin:10px auto 0; max-width:960px; line-height:2; }
+  .affil-item { display:inline; font-size:1.56rem; color:#fff; opacity:0.65; font-weight:400; white-space:nowrap; padding:0 10px; -webkit-text-stroke:0; text-shadow:0 1px 8px rgba(0,0,0,.6); }
+  .affil-item sup { font-size:0.65em; margin-right:2px; }
+  .footnote { font-size:0.85rem; color:rgba(255,255,255,0.4); margin-top:10px; font-style:italic; text-shadow:0 1px 6px rgba(0,0,0,.5); }
 
   /* institution logos */
   .logos { display:flex; flex-wrap:wrap; gap:20px; align-items:center; justify-content:center; margin-top:28px; }
@@ -46,13 +45,17 @@
   .logos img { height:100%; width:auto; object-fit:contain; display:block; }
   .logos .logo-chip.wide img { max-width:180px; }
 
-  .links { margin-top:28px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
-  .links a { display:inline-flex; align-items:center; gap:7px; padding:9px 22px; border-radius:6px; font-size:1rem; font-weight:600; text-decoration:none; transition:all .15s; border:1.5px solid rgba(255,255,255,0.7); color:#fff; background:transparent; }
-  .links a:hover { background:#fff; color:#111; }
+  .links { margin-top:28px; display:flex; gap:20px; justify-content:center; flex-wrap:wrap; }
+  .links a { display:inline-flex; align-items:center; gap:6px; padding:clamp(5px,0.6vw,14px) clamp(10px,1.2vw,26px); border-radius:999px; font-size:1.56rem; font-weight:500; text-decoration:none; transition:all .2s; border:2.5px solid rgba(255,255,255,.45); color:#fff; background:rgba(255,255,255,.12); backdrop-filter:blur(6px); }
+  .links a:hover { background:rgba(255,255,255,.26); border-color:rgba(255,255,255,.8); }
   .links a.disabled { opacity:0.55; cursor:default; pointer-events:none; }
-  .links a .soon { font-size:0.72em; font-weight:400; opacity:0.8; }
+  .links a .soon { font-size:0.72em; font-weight:400; opacity:0.7; }
 
-  .scrollcue { position:absolute; bottom:22px; left:50%; transform:translateX(-50%); z-index:2; color:rgba(255,255,255,0.5); font-size:1rem; letter-spacing:0.12em; }
+  .scrollcue { position:absolute; bottom:2.5vh; left:50%; transform:translateX(-50%); z-index:2; color:rgba(255,255,255,.65); font-size:clamp(0.9rem,1.2vw,1.6rem); display:flex; flex-direction:column; align-items:center; cursor:pointer; user-select:none; animation:hero-bounce 2.2s ease-in-out infinite; }
+  @keyframes hero-bounce {
+    0%,100% { transform:translateX(-50%) translateY(0); }
+    50%      { transform:translateX(-50%) translateY(0.6vh); }
+  }
 
   /* ===== section heading ===== */
   .sec-label { font-size:0.75rem; letter-spacing:0.16em; text-transform:uppercase; color:#888; font-weight:600; margin-bottom:12px; }
@@ -122,47 +125,41 @@
     <p class="subtitle">Mining Similar Egocentric Videos for<br>Cross-Embodiment Dexterous Manipulation</p>
 
     <div class="authors">
-      <span class="author-pill"><a href="https://lin-nie.github.io/">Nie Lin</a><sup><span style="color:#f9be00">1</span>,<span style="color:#79e5dc">*</span></sup></span>
-      <span class="author-pill"><a href="https://tkhkaeio.github.io/">Takehiko Ohkawa</a><sup style="color:#f9be00">1</sup></span>
-      <span class="author-pill"><a href="https://ch3cook-fdu.github.io/">Sijin Chen</a><sup><span style="color:#ff6b52">3</span>,<span style="color:#79e5dc">*</span></sup></span>
-      <span class="author-pill"><a href="https://github.com/ruoshiwen">Ruoshi Wen</a><sup style="color:#79e5dc">2</sup></span>
-      <span class="author-pill">Zhuohang Li<sup><span style="color:#4d9fff">4</span>,<span style="color:#79e5dc">*</span></sup></span>
-      <span class="author-pill">Liqun Huang<sup style="color:#79e5dc">2</sup></span>
-      <span class="author-pill"><a href="https://github.com/zhuzhengming">Zhengming Zhu</a><sup style="color:#79e5dc">2</sup></span>
-      <span class="author-pill"><a href="https://chillinfree.github.io/">Yiming Bao</a><sup><span style="color:#cc66e0">5</span>,<span style="color:#79e5dc">*</span></sup></span>
-      <span class="author-pill"><a href="https://irisli17.github.io/">Yunfei Li</a><sup style="color:#79e5dc">2</sup></span>
-      <span class="author-pill"><a href="https://cai-mj.github.io/">Minjie Cai</a><sup style="color:#f9be00">1</sup></span>
+      <span class="author-pill"><a href="https://lin-nie.github.io/">Nie Lin</a><sup>1</sup></span>
+      <span class="author-pill"><a href="https://tkhkaeio.github.io/">Takehiko Ohkawa</a><sup>1</sup></span>
+      <span class="author-pill"><a href="https://ch3cook-fdu.github.io/">Sijin Chen</a><sup>3</sup></span>
+      <span class="author-pill"><a href="https://github.com/ruoshiwen">Ruoshi Wen</a><sup>2</sup></span>
+      <span class="author-pill">Zhuohang Li<sup>4</sup></span>
       <div style="width:100%;height:0;"></div>
-      <span class="author-pill"><a href="https://yusufma03.github.io/">Xiao Ma</a><sup style="color:#79e5dc">2</sup></span>
-      <span class="author-pill">Wei Xu<sup><span style="color:#79e5dc">2</span>,✉</sup></span>
-      <span class="author-pill"><a href="https://sites.google.com/ut-vision.org/ysato/">Yoichi Sato</a><sup><span style="color:#f9be00">1</span>,✉</sup></span>
+      <span class="author-pill">Liqun Huang<sup>2</sup></span>
+      <span class="author-pill"><a href="https://github.com/zhuzhengming">Zhengming Zhu</a><sup>2</sup></span>
+      <span class="author-pill"><a href="https://chillinfree.github.io/">Yiming Bao</a><sup>5</sup></span>
+      <span class="author-pill"><a href="https://irisli17.github.io/">Yunfei Li</a><sup>2</sup></span>
+      <span class="author-pill"><a href="https://cai-mj.github.io/">Minjie Cai</a><sup>1</sup></span>
+      <div style="width:100%;height:0;"></div>
+      <span class="author-pill"><a href="https://yusufma03.github.io/">Xiao Ma</a><sup>2</sup></span>
+      <span class="author-pill">Wei Xu<sup>2</sup></span>
+      <span class="author-pill"><a href="https://sites.google.com/ut-vision.org/ysato/">Yoichi Sato</a><sup>1</sup></span>
     </div>
 
     <div class="affil">
-      <span class="affil-item" style="color:#f9be00"><sup>1</sup>The University of Tokyo</span>
-      <span class="affil-item" style="color:#79e5dc"><sup>2</sup>ByteDance <em style="font-style:normal; text-shadow:0 0 10px #79e5dc, 0 0 22px #79e5dc; color:#79e5dc;">Seed</em></span>
-      <span class="affil-item" style="color:#ff6b52"><sup>3</sup>The University of Hong Kong</span>
-      <span class="affil-item" style="color:#4d9fff"><sup>4</sup>Shanghai Jiao Tong University</span>
-      <span class="affil-item" style="color:#cc66e0"><sup>5</sup>Tsinghua University</span>
+      <span class="affil-item"><sup>1</sup>The University of Tokyo</span>
+      <span class="affil-item"><sup>2</sup>ByteDance Seed</span>
+      <span class="affil-item"><sup>3</sup>The University of Hong Kong</span>
+      <span class="affil-item"><sup>4</sup>Shanghai Jiao Tong University</span>
+      <span class="affil-item"><sup>5</sup>Tsinghua University</span>
     </div>
-    <p class="footnote"><span style="color:#79e5dc">*</span> Work done at ByteDance Seed&nbsp;&nbsp;&nbsp;<sup style="font-size:0.85em;">✉</sup> Corresponding authors</p>
 
 <div class="links">
       <a href="#"><i class="fas fa-file-lines"></i> Paper</a>
       <a href="#"><i class="fas fa-circle-play"></i> Demo</a>
-      <a href="#" class="disabled"><i class="fab fa-github"></i> Code <span class="soon">(coming soon)</span></a>
-      <a href="#" class="disabled"><span style="font-size:1.1em;">🤗</span> Hugging Face <span class="soon">(coming soon)</span></a>
+      <a href="#" class="disabled"><i class="fab fa-github"></i> Code</a>
+      <a href="#" class="disabled"><span style="font-size:1.1em;">🤗</span> Hugging Face</a>
     </div>
     </div>
-    <div class="scrollcue">scroll ↓</div>
+    <div class="scrollcue">▼</div>
   </section>
 
-  <script>
-    const io = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
-    }, { threshold:0.15 });
-    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-  </script>
 
 </body>
 </html>
