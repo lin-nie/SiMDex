@@ -2,7 +2,7 @@
 .DS_Store
 
 # Exclude large videos — add back once ready
-static/videos/demo.mp4
-static/videos/teleop/
-static/videos/mining/
-static/videos/eval/
+docs/static/videos/demo.mp4
+docs/static/videos/teleop/
+docs/static/videos/mining/
+docs/static/videos/eval/
