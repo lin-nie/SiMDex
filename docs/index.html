@@ -11,17 +11,17 @@
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   sup { display:inline; font-size:0.65em; position:relative; top:-0.45em; line-height:0; }
-  body { font-family:'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color:#111; background:#fff; line-height:1.6; }
+  body { font-family:'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color:#111; background:#fff; line-height:1.65; }
 
   .reveal { opacity:0; transform:translateY(24px); transition:opacity .6s ease, transform .6s ease; }
   .reveal.in { opacity:1; transform:translateY(0); }
-  .wrap { max-width:860px; margin:0 auto; padding:0 24px; }
+  .wrap { max-width:1280px; margin:0 auto; padding:0 24px; }
   .section { padding:96px 0; }
 
   /* ===== 1 · HERO ===== */
   .hero { position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden; background:#000; }
   .hero video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; }
-  .hero .overlay { position:absolute; inset:0; z-index:1; background:linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.45) 100%); }
+  .hero .overlay { position:absolute; inset:0; z-index:1; background:linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.45) 100%); pointer-events:none; }
   .hero .content { position:relative; z-index:2; text-align:center; color:#fff; padding:64px 24px; max-width:1000px; }
 
   .hero h1 { font-weight:800; font-size:clamp(5rem, 15vw, 10rem); letter-spacing:-0.03em; line-height:1; color:#f9be00; -webkit-text-stroke:15px #000; paint-order:stroke fill; }
@@ -59,16 +59,24 @@
 
   /* ===== section heading ===== */
   .sec-label { font-size:0.75rem; letter-spacing:0.16em; text-transform:uppercase; color:#888; font-weight:600; margin-bottom:12px; }
-  .sec-title { font-size:clamp(1.4rem, 2vw, 1.8rem); font-weight:400; letter-spacing:0; margin-bottom:32px; color:#111; display:block; text-align:center; }
-  .sec-title::after { content:''; display:block; width:48px; height:4px; background:#187fc2; border-radius:2px; margin:12px auto 0; }
+  .sec-title { font-size:clamp(1.7rem, 2.2vw, 2.4rem); font-weight:700; letter-spacing:0; margin-bottom:clamp(10px, 0.9vw, 18px); color:#111; display:block; text-align:left; }
+  .sec-title::after { content:''; display:block; width:48px; height:4px; background:#187fc2; border-radius:2px; margin:12px 0 0; }
+  .sub-title { font-size:clamp(1.1rem, 1.3vw, 1.4rem); font-weight:600; color:#111; margin:48px 0 16px; display:inline-block; border:2px solid #187fc2; border-radius:8px; padding:4px 14px; }
+
+  /* ===== TL;DR ===== */
+  .tldr { display:flex; align-items:center; justify-content:center; text-align:center; gap:14px; background:#f5f5f5; border:1px solid #e5e5e5; border-radius:12px; padding:16px 24px; margin:0 0 32px; font-size:clamp(1.05rem, 1.1vw, 1.45rem); line-height:1.5; color:#111; }
+  .tldr-icon { font-size:1.5em; line-height:1; flex-shrink:0; }
+  .tldr-label { font-weight:700; margin-right:0.35em; }
+  .tldr strong { font-weight:600; }
 
   /* ===== 2 · DEMO ===== */
-  .demo-wrap { max-width:960px; margin:0 auto; padding:0 24px; }
+  .demo-wrap { max-width:1280px; margin:0 auto; padding:0 24px; }
   .demo-video { width:100%; border-radius:12px; background:#000; display:block; aspect-ratio:16/9; object-fit:cover; box-shadow:0 8px 40px rgba(0,0,0,0.18); }
 
   /* ===== 3 · ABSTRACT ===== */
   .abstract { background:#f9f9f9; border-top:1px solid #e8e8e8; border-bottom:1px solid #e8e8e8; }
-  .abstract p:not(.sec-title) { font-size:1.02rem; line-height:1.85; color:#222; }
+  .hl-yellow { background:linear-gradient(120deg, #ffe066 0%, #ffe066 100%); background-repeat:no-repeat; background-size:100% 1.1em; background-position:0 60%; padding:0 2px; }
+  .abstract p:not(.sec-title) { font-size:clamp(0.92rem, 0.95vw, 1.15rem); line-height:1.65; color:#374151; text-align:justify; }
 
   /* ===== 4 · EVALUATION ===== */
   .eval-images { display:flex; flex-direction:column; gap:32px; margin-bottom:48px; }
@@ -78,16 +86,16 @@
 
   .eval-viewer { background:#f5f5f5; border-radius:14px; padding:28px 28px 24px; }
   .ctrl-row { display:flex; align-items:center; gap:14px; margin-bottom:14px; flex-wrap:wrap; }
-  .ctrl-label { font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; color:#999; min-width:68px; }
+  .ctrl-label { font-size:clamp(0.92rem, 0.95vw, 1.15rem); font-weight:700; letter-spacing:0; color:#999; min-width:68px; }
   .ctrl-chips { display:flex; flex-wrap:wrap; gap:8px; }
 
-  .tab-btn { padding:7px 20px; border-radius:8px; border:1.5px solid #ddd; background:#fff; font-size:0.88rem; font-weight:600; cursor:pointer; color:#555; transition:all .15s; }
+  .tab-btn { padding:7px 20px; border-radius:8px; border:1.5px solid #ddd; background:#fff; font-size:clamp(0.92rem, 0.95vw, 1.15rem); font-weight:600; cursor:pointer; color:#555; transition:all .15s; }
   .tab-btn:hover { border-color:#111; color:#111; }
-  .tab-btn.active { background:#111; color:#fff; border-color:#111; }
+  .tab-btn.active { background:#187fc2; color:#fff; border-color:#187fc2; }
 
-  .chip-btn { padding:5px 16px; border-radius:999px; border:1.5px solid #ddd; background:#fff; font-size:0.83rem; font-weight:500; cursor:pointer; color:#555; transition:all .15s; }
+  .chip-btn { padding:7px 20px; border-radius:999px; border:1.5px solid #ddd; background:#fff; font-size:clamp(0.92rem, 0.95vw, 1.15rem); font-weight:600; cursor:pointer; color:#555; transition:all .15s; }
   .chip-btn:hover { border-color:#111; color:#111; }
-  .chip-btn.active { background:#111; color:#fff; border-color:#111; }
+  .chip-btn.active { background:#187fc2; color:#fff; border-color:#187fc2; }
   .chip-btn.view-btn.active { background:#187fc2; border-color:#187fc2; color:#fff; }
 
   .eval-divider { border:none; border-top:1px solid #e0e0e0; margin:18px 0; }
@@ -98,18 +106,78 @@
   .eval-empty { grid-column:1/-1; text-align:center; padding:48px; color:#bbb; font-size:0.95rem; }
 
   /* ===== Mining viewer ===== */
-  .mining-anchor-wrap { display:flex; justify-content:center; margin-bottom:4px; }
-  .mining-anchor-item { width:52%; }
-  .mining-anchor-item video { width:100%; border-radius:8px; display:block; aspect-ratio:16/9; background:#111; }
-  .mining-anchor-label { font-size:0.78rem; font-weight:600; color:#666; text-align:center; margin-top:6px; letter-spacing:0.05em; }
+  .mining-viewer { margin-top:0; }
+  .mining-controls { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:20px; }
+  .mining-mode-toggle { display:flex; gap:3px; background:#f0f0f0; border-radius:8px; padding:3px; margin-left:auto; }
+  .mode-btn { padding:5px 16px; border-radius:6px; border:none; background:transparent; font-size:clamp(0.92rem, 0.95vw, 1.15rem); font-weight:600; cursor:pointer; color:#666; transition:all .2s; }
+  .mode-btn.active { background:#187fc2; color:#fff; box-shadow:0 1px 4px rgba(0,0,0,.12); }
 
-  .mining-arrow { text-align:center; font-size:1.5rem; color:#bbb; line-height:1; padding:10px 0; }
+  .mining-vid-label { font-size:clamp(0.92rem, 0.95vw, 1.15rem); font-weight:700; letter-spacing:0; margin-bottom:8px; }
+  .mining-vid-label.lbl-anchor { color:#999; }
+  .mining-vid-label.lbl-human { color:#187fc2; }
 
-  .mining-samples-wrap { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
-  .mining-sample-item video { width:100%; border-radius:8px; display:block; aspect-ratio:16/9; background:#111; }
-  .mining-sample-label { font-size:0.78rem; font-weight:600; color:#666; text-align:center; margin-top:6px; letter-spacing:0.05em; }
+  /* 1:1 */
+  .mining-1v1 { display:grid; grid-template-columns:1fr 44px 1fr; align-items:stretch; }
+  .mining-1v1 > div > video { width:100%; border-radius:10px; display:block; aspect-ratio:16/9; background:#111; }
+  .mining-sep { display:flex; flex-direction:column; align-items:center; padding:52px 0 50px; }
+  .mining-sep-line { width:0; flex:1; border-left:5px dashed #bbb; }
 
-  .mining-row-label { font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; color:#999; text-align:center; margin-bottom:8px; }
+  .mining-carousel-wrap { overflow:hidden; border-radius:10px; }
+  .mining-carousel-track { display:flex; will-change:transform; transition:transform .55s cubic-bezier(.34,1.56,.64,1); }
+  .mining-carousel-slide { flex-shrink:0; width:100%; }
+  .mining-carousel-slide video { width:100%; border-radius:10px; display:block; aspect-ratio:16/9; background:#111; }
+
+  .mining-nav { display:flex; align-items:center; justify-content:center; gap:10px; margin-top:10px; }
+  .mining-nav-btn { width:30px; height:30px; border-radius:50%; border:1.5px solid #ddd; background:#fff; font-size:1.2rem; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center; color:#555; transition:all .15s; }
+  .mining-nav-btn:hover { border-color:#187fc2; color:#187fc2; }
+  .mining-dots { display:flex; gap:6px; align-items:center; }
+  .mining-dot { width:7px; height:7px; border-radius:50%; background:#ddd; border:none; cursor:pointer; padding:0; transition:all .35s cubic-bezier(.34,1.56,.64,1); }
+  .mining-dot.active { background:#187fc2; transform:scale(1.45); }
+
+  /* 1:N gallery layout */
+  .mining-1vn-wrap { display:grid; grid-template-columns:1fr 48% 1fr; column-gap:20px; align-items:start; }
+  .mining-1vn-center { display:flex; flex-direction:column; }
+  .mining-1vn-anchor { width:100%; }
+  .mining-1vn-anchor video { width:100%; border-radius:10px; display:block; aspect-ratio:16/9; background:#111; }
+  .mining-float-arrow { font-size:1.5rem; color:#187fc2; animation:mining-float 2.2s ease-in-out infinite; display:inline-block; }
+  @keyframes mining-float {
+    0%,100% { transform:translateY(0); }
+    50%      { transform:translateY(5px); }
+  }
+  /* Gallery peek sides */
+  .mining-gallery-side { display:flex; flex-direction:column; align-items:center; }
+  .mining-peek-area { width:100%; overflow:hidden; padding-top:30px; }
+  .mining-gallery-left  .mining-peek-area { -webkit-mask-image:linear-gradient(to right, transparent 0%, rgba(0,0,0,.55) 38%, black 72%); mask-image:linear-gradient(to right, transparent 0%, rgba(0,0,0,.55) 38%, black 72%); }
+  .mining-gallery-right .mining-peek-area { -webkit-mask-image:linear-gradient(to left,  transparent 0%, rgba(0,0,0,.55) 38%, black 72%); mask-image:linear-gradient(to left,  transparent 0%, rgba(0,0,0,.55) 38%, black 72%); }
+  .mining-peek-stack { position:relative; width:100%; }
+  .mining-peek-card { border-radius:10px; overflow:hidden; background:#e8e8e8; }
+  .mining-peek-card video { width:100%; aspect-ratio:16/9; display:block; }
+  /* Left peek cards */
+  .mining-gallery-left .mining-peek-card-a { position:relative; width:92%; margin-left:auto; transform:rotate(-3deg); transform-origin:bottom right; opacity:.48; box-shadow:0 6px 22px rgba(0,0,0,.18); z-index:2; }
+  .mining-gallery-left .mining-peek-card-b { position:absolute; width:84%; right:0; top:-16px; transform:rotate(-7deg); transform-origin:bottom right; opacity:.2; z-index:1; }
+  /* Right peek cards */
+  .mining-gallery-right .mining-peek-card-a { position:relative; width:92%; transform:rotate(3deg); transform-origin:bottom left; opacity:.48; box-shadow:0 6px 22px rgba(0,0,0,.18); z-index:2; }
+  .mining-gallery-right .mining-peek-card-b { position:absolute; width:84%; left:0; top:-16px; transform:rotate(7deg); transform-origin:bottom left; opacity:.2; z-index:1; }
+  /* Gallery navigation buttons */
+  .mining-gallery-nav { margin-top:20px; }
+  .mining-gallery-nav-btn { width:44px; height:44px; border-radius:50%; border:2px solid #ddd; background:#fff; font-size:1.5rem; cursor:pointer; display:flex; align-items:center; justify-content:center; color:#555; transition:all .2s; box-shadow:0 2px 8px rgba(0,0,0,.1); line-height:1; }
+  .mining-gallery-nav-btn:hover { border-color:#187fc2; color:#187fc2; box-shadow:0 4px 14px rgba(24,127,194,.25); }
+
+  .mining-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; width:100%; }
+  .mining-grid video { width:100%; border-radius:10px; display:block; aspect-ratio:16/9; background:#111; }
+  .mining-sample-lbl { font-size:clamp(0.92rem, 0.95vw, 1.15rem); color:#999; font-weight:700; text-align:center; margin-top:8px; letter-spacing:0; }
+
+  @keyframes mining-pop-in {
+    from { opacity:0; transform:scale(0.96) translateY(10px); }
+    to   { opacity:1; transform:scale(1) translateY(0); }
+  }
+  @keyframes mining-pop-out {
+    from { opacity:1; transform:scale(1); }
+    to   { opacity:0; transform:scale(0.96); }
+  }
+  .mining-anim-in  { animation:mining-pop-in  .45s cubic-bezier(.34,1.56,.64,1) both; }
+  .mining-anim-out { animation:mining-pop-out .2s ease both; }
+  .mining-hidden { display:none !important; }
 </style>
 </head>
 <body>
@@ -119,6 +187,7 @@
     <video autoplay loop muted playsinline>
       <source src="static/videos/hero-grid.mp4" type="video/mp4">
     </video>
+    <a href="https://www.youtube.com/watch?v=SsqdK0xTtzY" target="_blank" rel="noopener" style="position:absolute; inset:0; z-index:1; cursor:pointer;" aria-label="Watch demo on YouTube"></a>
     <div class="overlay"></div>
     <div class="content">
     <h1>SiMDex</h1>
@@ -160,6 +229,384 @@
     <div class="scrollcue">▼</div>
   </section>
 
+  <!-- ===== 2 · DEMO ===== -->
+  <section class="section">
+    <div class="demo-wrap">
+      <div class="tldr reveal">
+        <span class="tldr-icon">&#9889;</span>
+        <span><span class="tldr-label">TL;DR</span>Like a <strong>recommender system</strong>, we recommend the human demos <strong>most relevant to the robot's task</strong>.</span>
+      </div>
+      <p class="sec-title reveal">Demo</p>
+      <div class="reveal" style="position:relative; width:100%; aspect-ratio:16/9; border-radius:12px; overflow:hidden; box-shadow:0 8px 40px rgba(0,0,0,0.18);">
+        <iframe src="https://www.youtube.com/embed/SsqdK0xTtzY?autoplay=0&rel=0" style="position:absolute; inset:0; width:100%; height:100%; border:none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!--SECTIONS-START
+  <!-- ===== 3 · ABSTRACT ===== -->
+  <section class="section abstract">
+    <div class="wrap reveal">
+      <p class="sec-title">Abstract</p>
+      <p>Recent years have witnessed an explosive scaling of egocentric human videos for robot manipulation, yet it remains unclear which data actually benefits dexterous manipulation. We present <b><span class="hl-yellow">SiMDex</span></b>, a <b><u><span class="hl-yellow">Si</span></u></b>milarity-based data <b><u><span class="hl-yellow">M</span></u></b>ining framework that casts human data selection for VLA post-training in <b><u><span class="hl-yellow">Dex</span></u></b>terous manipulation as a <b>recommendation problem</b>. For each robot demonstration, SiMDex employs a three-layer hierarchical retrieval pipeline to distill task-relevant subsets from a pool of ~32M egocentric human samples (derived from EgoDex), operating in a morphology-agnostic action space (wrist 6D pose and five fingertip positions) that requires no changes to VLA architecture or training. Against a strong baseline trained with an equal amount of randomly sampled human data, SiMDex uses only <b>~1.49M mined samples (&lt;5% of the pool)</b> yet improves the overall success rate <b>from 47.7% to 61.1% (+13.4%)</b>—showing that <b>selective curation outperforms indiscriminate data&nbsp;mixing</b>.</p>
+    </div>
+  </section>
+
+  <!-- ===== 4 · METHOD ===== -->
+  <section class="section">
+    <div class="wrap reveal">
+      <p class="sec-title">Method</p>
+      <img src="static/images/method_hires.png" alt="Method Overview" style="width:100%;display:block;border-radius:8px;">
+      <div style="font-size:clamp(0.92rem,0.95vw,1.15rem);color:#374151;line-height:1.5;margin-top:16px;display:flex;flex-direction:column;gap:8px;">
+        <p><b>SiMDex mines the human demonstrations most similar to each robot demonstration</b> — from a pool of tens of millions — through a three-stage cascade of increasing precision and cost.</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">
+          <li style="display:flex;gap:8px;"><span style="color:#187fc2;font-size:0.8em;margin-top:0.25em;flex-shrink:0;">▶</span><span><b>Recall — cast a wide net, cheaply.</b> We first pull broad candidates by <b>language and hand-pose similarity</b>, keeping the stage lightweight enough to <b>scale to tens of millions of samples</b>.</span></li>
+          <li style="display:flex;gap:8px;"><span style="color:#187fc2;font-size:0.8em;margin-top:0.25em;flex-shrink:0;">▶</span><span><b>Ranking — align the actual motion.</b> We then score candidates by <b>fine-grained action similarity</b> — wrist trajectory, wrist rotation, and finger motion — so the retrieved demos move the way the target task does. This stage's output is the <b>mined subset used to train the VLA</b>.</span></li>
+          <li style="display:flex;gap:8px;"><span style="color:#187fc2;font-size:0.8em;margin-top:0.25em;flex-shrink:0;">▶</span><span><b>Re-ranking — verify with vision.</b> Finally, <b>optical flow</b> provides an <b>embodiment-agnostic</b> check, filtering out kinematic look-alikes whose real motion doesn't match — human hand or robot arm, only the motion has to agree.</span></li>
+        </ul>
+      </div>
+      <p class="sub-title reveal">Mining Human Demonstrations</p>
+      <div class="mining-viewer reveal">
+        <!-- Controls -->
+        <div class="mining-controls" style="flex-direction:column; align-items:flex-start; gap:10px;">
+          <div style="display:flex; align-items:center; gap:10px; width:100%;">
+            <span class="ctrl-label">Task</span>
+            <div class="ctrl-chips" id="mining-task-tabs">
+              <button class="tab-btn active" data-task="drill">Drill</button>
+              <button class="tab-btn" data-task="flick_wheel">Flick Wheel</button>
+              <button class="tab-btn" data-task="pick_place">Pick &amp; Place</button>
+            </div>
+            <div class="mining-mode-toggle" style="margin-left:auto;">
+              <button class="mode-btn active" data-mode="1v1">1 : 1</button>
+              <button class="mode-btn" data-mode="1vn">1 : N</button>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span class="ctrl-label">Sub-task</span>
+            <div class="ctrl-chips" id="mining-subtask-chips"></div>
+          </div>
+        </div>
+
+        <!-- 1:1 view -->
+        <div id="mining-view-1v1">
+          <div class="mining-1v1">
+            <div>
+              <div class="mining-vid-label lbl-anchor"><i class="fas fa-robot" style="margin-right:5px;"></i>Robot Anchor</div>
+              <video id="mining-anchor-vid" autoplay loop muted playsinline></video>
+            </div>
+            <div class="mining-sep">
+              <div class="mining-sep-line"></div>
+            </div>
+            <div>
+              <div class="mining-vid-label lbl-human"><i class="fas fa-user" style="margin-right:5px;"></i>Human Target</div>
+              <div class="mining-carousel-wrap">
+                <div class="mining-carousel-track" id="mining-carousel-track"></div>
+              </div>
+              <div class="mining-nav">
+                <button class="mining-nav-btn" id="mining-prev">‹</button>
+                <div class="mining-dots" id="mining-dots"></div>
+                <button class="mining-nav-btn" id="mining-next">›</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1:N view -->
+        <div id="mining-view-1vn" class="mining-hidden">
+          <div class="mining-1vn-wrap">
+            <!-- Left gallery peek -->
+            <div class="mining-gallery-side mining-gallery-left">
+              <div class="mining-peek-area">
+                <div class="mining-peek-stack">
+                  <div class="mining-peek-card mining-peek-card-b">
+                    <video id="peek-l-back" preload="auto" muted playsinline></video>
+                  </div>
+                  <div class="mining-peek-card mining-peek-card-a">
+                    <video id="peek-l-front" preload="auto" muted playsinline></video>
+                  </div>
+                </div>
+              </div>
+              <div class="mining-gallery-nav">
+                <button class="mining-gallery-nav-btn" id="mining-subtask-prev">‹</button>
+              </div>
+            </div>
+            <!-- Center: anchor -->
+            <div class="mining-1vn-center">
+              <div class="mining-vid-label lbl-anchor" style="margin-bottom:8px;"><i class="fas fa-robot" style="margin-right:5px;"></i>Robot Anchor</div>
+              <div class="mining-1vn-anchor">
+                <video id="mining-anchor-vid-1vn" autoplay loop muted playsinline></video>
+              </div>
+            </div>
+            <!-- Right gallery peek -->
+            <div class="mining-gallery-side mining-gallery-right">
+              <div class="mining-peek-area">
+                <div class="mining-peek-stack">
+                  <div class="mining-peek-card mining-peek-card-b">
+                    <video id="peek-r-back" preload="auto" muted playsinline></video>
+                  </div>
+                  <div class="mining-peek-card mining-peek-card-a">
+                    <video id="peek-r-front" preload="auto" muted playsinline></video>
+                  </div>
+                </div>
+              </div>
+              <div class="mining-gallery-nav">
+                <button class="mining-gallery-nav-btn" id="mining-subtask-next">›</button>
+              </div>
+            </div>
+          </div>
+          <!-- Human Target label + arrow (full-width, aligns with samples grid) -->
+          <div style="position:relative; width:100%; margin-top:14px; margin-bottom:8px; display:flex; align-items:center;">
+            <div class="mining-vid-label lbl-human" style="margin:0; white-space:nowrap;"><i class="fas fa-user" style="margin-right:5px;"></i>Human Target</div>
+            <span style="position:absolute; left:50%; top:-12px; transform:translateX(-50%);"><span class="mining-float-arrow">▼</span></span>
+          </div>
+          <!-- Samples grid -->
+          <div class="mining-grid" id="mining-samples-grid"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+    }, { threshold:0.15 });
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+    const VIEWS = ['ego','exo1','exo2','exo3','exo4'];
+    const VIEW_LABELS = { ego:'Ego View', exo1:'Exo 1', exo2:'Exo 2', exo3:'Exo 3', exo4:'Exo 4' };
+
+    function subtaskSlug(s){ return s.toLowerCase().replace(/\./g,'').replace(/ /g,'_'); }
+    function gridCols(n){ return n<=1?1 : n<=3?n : n===4?2 : 3; }
+
+    /* ===== Teleoperation viewer ===== */
+    const teleopState = { task:'drill', views: new Set(VIEWS) };
+
+    function renderTeleopVideos(){
+      const active = VIEWS.filter(v=>teleopState.views.has(v));
+      const grid = document.getElementById('teleop-video-grid');
+      grid.style.gridTemplateColumns = `repeat(${gridCols(active.length)},1fr)`;
+      if(!active.length){
+        grid.innerHTML = '<div class="eval-empty">Please select at least one view.</div>';
+        return;
+      }
+      grid.innerHTML = active.map(v=>`
+        <div class="eval-video-item">
+          <video autoplay loop muted playsinline controls>
+            <source src="static/videos/teleop/${teleopState.task}/${v}.mp4" type="video/mp4">
+          </video>
+          <div class="eval-video-label">${VIEW_LABELS[v]}</div>
+        </div>`).join('');
+    }
+
+    document.getElementById('teleop-task-tabs').querySelectorAll('[data-task]').forEach(b=>
+      b.addEventListener('click',()=>{
+        teleopState.task = b.dataset.task;
+        document.querySelectorAll('#teleop-task-tabs [data-task]').forEach(x=>x.classList.remove('active'));
+        b.classList.add('active');
+        renderTeleopVideos();
+      })
+    );
+
+    document.getElementById('teleop-view-chips').querySelectorAll('[data-view]').forEach(b=>
+      b.addEventListener('click',()=>{
+        const v = b.dataset.view;
+        if(teleopState.views.has(v)){
+          if(teleopState.views.size > 1){ teleopState.views.delete(v); b.classList.remove('active'); }
+        } else {
+          teleopState.views.add(v); b.classList.add('active');
+        }
+        renderTeleopVideos();
+      })
+    );
+
+    renderTeleopVideos();
+
+    /* ===== Mining Results viewer ===== */
+    const MINING_DATA = {
+      drill: {
+        subtasks: ['Grasp','Assembly','Drill'],
+        Grasp:    { dir:'static/videos/mining/drill/grasp',    samples:['sample1.mp4','sample2.mp4','sample3.mp4'] },
+        Assembly: { dir:'static/videos/mining/drill/assembly', samples:['sample1.mp4','sample2.mp4','sample3.mp4'] },
+        Drill:    { dir:'static/videos/mining/drill/drill',    samples:['sample1.mp4','sample2.mp4','sample3.mp4'] },
+      },
+      flick_wheel: {
+        subtasks: ['Grasp','Twist','Flick'],
+        Grasp: { dir:'static/videos/mining/flick_wheel/grasp', samples:['sample1.mp4','sample2.mp4','sample3.mp4'] },
+        Twist: { dir:'static/videos/mining/flick_wheel/twist', samples:['sample1.mp4','sample2.mp4','sample3.mp4'] },
+        Flick: { dir:'static/videos/mining/flick_wheel/flick', samples:['sample1.mp4','sample2.mp4','sample3.mp4'] },
+      },
+      pick_place: {
+        subtasks: ['Obj.1','Obj.2','Obj.3','Obj.4'],
+        'Obj.1': { dir:'static/videos/mining/pick_place/obj1', samples:['sample1.mp4','sample2.mp4','sample3.mp4'] },
+        'Obj.2': { dir:'static/videos/mining/pick_place/obj2', samples:['sample1.mp4','sample2.mp4','sample3.mp4'] },
+        'Obj.3': { dir:'static/videos/mining/pick_place/obj3', samples:['sample1.mp4','sample2.mp4','sample3.mp4'] },
+        'Obj.4': { dir:'static/videos/mining/pick_place/obj4', samples:['sample1.mp4','sample2.mp4','sample3.mp4'] },
+      },
+    };
+
+    const miningState = { task:'drill', subtask:'Grasp', mode:'1v1', slide:0 };
+
+    function setAnchor(id, src){
+      const v = document.getElementById(id);
+      if(!v) return;
+      v.innerHTML = `<source src="${src}" type="video/mp4">`;
+      v.load();
+    }
+    function setPeekVid(id, src){
+      const v = document.getElementById(id);
+      if(!v) return;
+      v.innerHTML = `<source src="${src}" type="video/mp4">`;
+      v.load();
+      v.addEventListener('loadedmetadata', ()=>{ v.currentTime = 0; v.pause(); }, { once:true });
+    }
+
+    function updateCarousel(){
+      const track = document.getElementById('mining-carousel-track');
+      if(track) track.style.transform = `translateX(-${miningState.slide * 100}%)`;
+      document.querySelectorAll('#mining-dots .mining-dot').forEach((d,i)=>
+        d.classList.toggle('active', i === miningState.slide)
+      );
+    }
+
+    function renderMiningContent(){
+      const { task, subtask, mode, slide } = miningState;
+      const d = MINING_DATA[task][subtask];
+      const anchorSrc = `${d.dir}/anchor.mp4`;
+
+      if(mode === '1v1'){
+        setAnchor('mining-anchor-vid', anchorSrc);
+        const track = document.getElementById('mining-carousel-track');
+        track.innerHTML = d.samples.map(f=>`
+          <div class="mining-carousel-slide">
+            <video autoplay loop muted playsinline>
+              <source src="${d.dir}/${f}" type="video/mp4">
+            </video>
+          </div>`).join('');
+        track.style.transition = 'none';
+        track.style.transform = `translateX(-${miningState.slide * 100}%)`;
+        requestAnimationFrame(()=>{ track.style.transition = ''; });
+
+        const dots = document.getElementById('mining-dots');
+        dots.innerHTML = d.samples.map((_,i)=>
+          `<button class="mining-dot${i===miningState.slide?' active':''}" data-i="${i}"></button>`
+        ).join('');
+        dots.querySelectorAll('[data-i]').forEach(b=>b.addEventListener('click',()=>{
+          miningState.slide = +b.dataset.i;
+          updateCarousel();
+        }));
+      } else {
+        setAnchor('mining-anchor-vid-1vn', anchorSrc);
+        const subs = MINING_DATA[task].subtasks;
+        const idx  = subs.indexOf(subtask);
+        const prevSub = subs[(idx - 1 + subs.length) % subs.length];
+        const nextSub = subs[(idx + 1) % subs.length];
+        const prevAnchor = `${MINING_DATA[task][prevSub].dir}/anchor.mp4`;
+        const nextAnchor = `${MINING_DATA[task][nextSub].dir}/anchor.mp4`;
+        setPeekVid('peek-l-front', prevAnchor);
+        setPeekVid('peek-l-back',  prevAnchor);
+        setPeekVid('peek-r-front', nextAnchor);
+        setPeekVid('peek-r-back',  nextAnchor);
+        document.getElementById('mining-samples-grid').innerHTML = d.samples.map((f,i)=>`
+          <div>
+            <video autoplay loop muted playsinline>
+              <source src="${d.dir}/${f}" type="video/mp4">
+            </video>
+            <div class="mining-sample-lbl">Sample ${i+1}</div>
+          </div>`).join('');
+      }
+    }
+
+    function renderMiningSubtasks(){
+      const subs = MINING_DATA[miningState.task].subtasks;
+      if(!subs.includes(miningState.subtask)) miningState.subtask = subs[0];
+      const c = document.getElementById('mining-subtask-chips');
+      c.innerHTML = subs.map(s=>
+        `<button class="chip-btn${s===miningState.subtask?' active':''}" data-subtask="${s}">${s}</button>`
+      ).join('');
+      c.querySelectorAll('[data-subtask]').forEach(b=>b.addEventListener('click',()=>{
+        miningState.subtask = b.dataset.subtask;
+        miningState.slide = 0;
+        renderMiningSubtasks();
+        renderMiningContent();
+      }));
+    }
+
+    document.getElementById('mining-task-tabs').querySelectorAll('[data-task]').forEach(b=>
+      b.addEventListener('click',()=>{
+        miningState.task = b.dataset.task;
+        miningState.slide = 0;
+        document.querySelectorAll('#mining-task-tabs [data-task]').forEach(x=>x.classList.remove('active'));
+        b.classList.add('active');
+        renderMiningSubtasks();
+        renderMiningContent();
+      })
+    );
+
+    document.getElementById('mining-prev').addEventListener('click',()=>{
+      const n = MINING_DATA[miningState.task][miningState.subtask].samples.length;
+      miningState.slide = (miningState.slide - 1 + n) % n;
+      updateCarousel();
+    });
+    document.getElementById('mining-next').addEventListener('click',()=>{
+      const n = MINING_DATA[miningState.task][miningState.subtask].samples.length;
+      miningState.slide = (miningState.slide + 1) % n;
+      updateCarousel();
+    });
+
+    function switchMiningMode(newMode){
+      if(newMode === miningState.mode) return;
+      const fromId = miningState.mode === '1v1' ? 'mining-view-1v1' : 'mining-view-1vn';
+      const toId   = newMode === '1v1' ? 'mining-view-1v1' : 'mining-view-1vn';
+      const fromEl = document.getElementById(fromId);
+      const toEl   = document.getElementById(toId);
+
+      fromEl.classList.add('mining-anim-out');
+      function onFromEnd(e){
+        if(e.target !== fromEl) return;
+        fromEl.removeEventListener('animationend', onFromEnd);
+        fromEl.classList.add('mining-hidden');
+        fromEl.classList.remove('mining-anim-out');
+        miningState.mode = newMode;
+        miningState.slide = 0;
+        renderMiningContent();
+        toEl.classList.remove('mining-hidden');
+        toEl.classList.add('mining-anim-in');
+        function onToEnd(e){
+          if(e.target !== toEl) return;
+          toEl.removeEventListener('animationend', onToEnd);
+          toEl.classList.remove('mining-anim-in');
+        }
+        toEl.addEventListener('animationend', onToEnd);
+      }
+      fromEl.addEventListener('animationend', onFromEnd);
+    }
+
+    document.querySelectorAll('.mode-btn').forEach(b=>b.addEventListener('click',()=>{
+      document.querySelectorAll('.mode-btn').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      switchMiningMode(b.dataset.mode);
+    }));
+
+    document.getElementById('mining-subtask-prev').addEventListener('click', ()=>{
+      const subs = MINING_DATA[miningState.task].subtasks;
+      const idx = subs.indexOf(miningState.subtask);
+      miningState.subtask = subs[(idx - 1 + subs.length) % subs.length];
+      miningState.slide = 0;
+      renderMiningSubtasks();
+      renderMiningContent();
+    });
+    document.getElementById('mining-subtask-next').addEventListener('click', ()=>{
+      const subs = MINING_DATA[miningState.task].subtasks;
+      const idx = subs.indexOf(miningState.subtask);
+      miningState.subtask = subs[(idx + 1) % subs.length];
+      miningState.slide = 0;
+      renderMiningSubtasks();
+      renderMiningContent();
+    });
+
+    renderMiningSubtasks();
+    renderMiningContent();
+  </script>
 
 </body>
 </html>
