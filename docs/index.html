@@ -610,12 +610,17 @@
       c.innerHTML = subs.map(s=>
         `<button class="chip-btn${s===miningState.subtask?' active':''}" data-subtask="${s}">${s}</button>`
       ).join('');
-      c.querySelectorAll('[data-subtask]').forEach(b=>b.addEventListener('click',()=>{
-        miningState.subtask = b.dataset.subtask;
-        miningState.slide = 0;
-        renderMiningSubtasks();
-        renderMiningContent();
-      }));
+      c.querySelectorAll('[data-subtask]').forEach((b,i)=>{
+        b.style.animationDelay = `${i*45}ms`;
+        b.addEventListener('click',()=>{
+          miningState.subtask = b.dataset.subtask;
+          miningState.slide = 0;
+          renderMiningSubtasks();
+          const activeChip = document.getElementById('mining-subtask-chips').querySelector('.chip-btn.active');
+          if(activeChip) jellyPop(activeChip);
+          renderMiningContent();
+        });
+      });
     }
 
     document.getElementById('mining-task-tabs').querySelectorAll('[data-task]').forEach(b=>
@@ -624,6 +629,7 @@
         miningState.slide = 0;
         document.querySelectorAll('#mining-task-tabs [data-task]').forEach(x=>x.classList.remove('active'));
         b.classList.add('active');
+        jellyPop(b);
         renderMiningSubtasks();
         renderMiningContent();
       })
@@ -674,7 +680,8 @@
       switchMiningMode(b.dataset.mode);
     }));
 
-    document.getElementById('mining-subtask-prev').addEventListener('click', ()=>{
+    document.getElementById('mining-subtask-prev').addEventListener('click', function(){
+      jellyPop(this);
       const subs = MINING_DATA[miningState.task].subtasks;
       const idx = subs.indexOf(miningState.subtask);
       miningState.subtask = subs[(idx - 1 + subs.length) % subs.length];
@@ -682,7 +689,8 @@
       renderMiningSubtasks();
       renderMiningContent();
     });
-    document.getElementById('mining-subtask-next').addEventListener('click', ()=>{
+    document.getElementById('mining-subtask-next').addEventListener('click', function(){
+      jellyPop(this);
       const subs = MINING_DATA[miningState.task].subtasks;
       const idx = subs.indexOf(miningState.subtask);
       miningState.subtask = subs[(idx + 1) % subs.length];
