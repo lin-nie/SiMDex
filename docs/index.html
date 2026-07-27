@@ -398,28 +398,30 @@
         </div>`).join('');
     }
 
-    document.getElementById('teleop-task-tabs').querySelectorAll('[data-task]').forEach(b=>
-      b.addEventListener('click',()=>{
-        teleopState.task = b.dataset.task;
-        document.querySelectorAll('#teleop-task-tabs [data-task]').forEach(x=>x.classList.remove('active'));
-        b.classList.add('active');
-        renderTeleopVideos();
-      })
-    );
+    if(document.getElementById('teleop-task-tabs')){
+      document.getElementById('teleop-task-tabs').querySelectorAll('[data-task]').forEach(b=>
+        b.addEventListener('click',()=>{
+          teleopState.task = b.dataset.task;
+          document.querySelectorAll('#teleop-task-tabs [data-task]').forEach(x=>x.classList.remove('active'));
+          b.classList.add('active');
+          renderTeleopVideos();
+        })
+      );
 
-    document.getElementById('teleop-view-chips').querySelectorAll('[data-view]').forEach(b=>
-      b.addEventListener('click',()=>{
-        const v = b.dataset.view;
-        if(teleopState.views.has(v)){
-          if(teleopState.views.size > 1){ teleopState.views.delete(v); b.classList.remove('active'); }
-        } else {
-          teleopState.views.add(v); b.classList.add('active');
-        }
-        renderTeleopVideos();
-      })
-    );
+      document.getElementById('teleop-view-chips').querySelectorAll('[data-view]').forEach(b=>
+        b.addEventListener('click',()=>{
+          const v = b.dataset.view;
+          if(teleopState.views.has(v)){
+            if(teleopState.views.size > 1){ teleopState.views.delete(v); b.classList.remove('active'); }
+          } else {
+            teleopState.views.add(v); b.classList.add('active');
+          }
+          renderTeleopVideos();
+        })
+      );
 
-    renderTeleopVideos();
+      renderTeleopVideos();
+    }
 
     /* ===== Mining Results viewer ===== */
     const MINING_DATA = {
