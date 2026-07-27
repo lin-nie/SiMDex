@@ -3,5 +3,4 @@
 
 # Exclude large videos — add back once ready
 docs/static/videos/demo.mp4
-docs/static/videos/teleop/
 docs/static/videos/eval/

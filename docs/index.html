@@ -89,21 +89,36 @@
   .ctrl-label { font-size:clamp(0.92rem, 0.95vw, 1.15rem); font-weight:700; letter-spacing:0; color:#999; min-width:68px; }
   .ctrl-chips { display:flex; flex-wrap:wrap; gap:8px; }
 
-  .tab-btn { padding:7px 20px; border-radius:8px; border:1.5px solid #ddd; background:#fff; font-size:clamp(0.92rem, 0.95vw, 1.15rem); font-weight:600; cursor:pointer; color:#555; transition:all .15s; }
+  .tab-btn { padding:7px 20px; border-radius:8px; border:1.5px solid #ddd; background:#fff; font-size:clamp(0.92rem, 0.95vw, 1.15rem); font-weight:600; cursor:pointer; color:#555; transition:background .15s, color .15s, border-color .15s; }
   .tab-btn:hover { border-color:#111; color:#111; }
   .tab-btn.active { background:#187fc2; color:#fff; border-color:#187fc2; }
+  .tab-btn.jelly-pop { animation:teleop-btn-pop .4s cubic-bezier(.34,1.56,.64,1) both; }
 
-  .chip-btn { padding:7px 20px; border-radius:999px; border:1.5px solid #ddd; background:#fff; font-size:clamp(0.92rem, 0.95vw, 1.15rem); font-weight:600; cursor:pointer; color:#555; transition:all .15s; }
+  .chip-btn { padding:7px 20px; border-radius:999px; border:1.5px solid #ddd; background:#fff; font-size:clamp(0.92rem, 0.95vw, 1.15rem); font-weight:600; cursor:pointer; color:#555; transition:background .15s, color .15s, border-color .15s; }
   .chip-btn:hover { border-color:#111; color:#111; }
   .chip-btn.active { background:#187fc2; color:#fff; border-color:#187fc2; }
   .chip-btn.view-btn.active { background:#187fc2; border-color:#187fc2; color:#fff; }
+  .chip-btn.jelly-pop { animation:teleop-btn-pop .4s cubic-bezier(.34,1.56,.64,1) both; }
+
+  @keyframes teleop-btn-pop {
+    0%   { transform:scale(1); }
+    40%  { transform:scale(.88); }
+    100% { transform:scale(1); }
+  }
 
   .eval-divider { border:none; border-top:1px solid #e0e0e0; margin:18px 0; }
 
   .eval-video-grid { display:grid; gap:10px; margin-top:4px; }
+  .eval-video-item { animation:teleop-item-in .45s cubic-bezier(.34,1.56,.64,1) both; }
   .eval-video-item video { width:100%; border-radius:8px; display:block; aspect-ratio:16/9; background:#111; }
+  .eval-video-grid[data-count="5"] .eval-video-item:first-child { grid-row:span 2; }
   .eval-video-label { font-size:0.78rem; font-weight:600; color:#666; text-align:center; margin-top:6px; letter-spacing:0.05em; }
   .eval-empty { grid-column:1/-1; text-align:center; padding:48px; color:#bbb; font-size:0.95rem; }
+
+  @keyframes teleop-item-in {
+    0%   { opacity:0; transform:scale(.88) translateY(8px); }
+    100% { opacity:1; transform:scale(1)   translateY(0); }
+  }
 
   /* ===== Mining viewer ===== */
   .mining-viewer { margin-top:0; }
@@ -281,6 +296,7 @@
               <button class="mode-btn" data-mode="1vn">1 : N</button>
             </div>
           </div>
+          <hr class="eval-divider" style="width:100%;margin:4px 0;">
           <div style="display:flex; align-items:center; gap:10px;">
             <span class="ctrl-label">Sub-task</span>
             <div class="ctrl-chips" id="mining-subtask-chips"></div>
@@ -366,6 +382,66 @@
     </div>
   </section>
 
+  <!-- ===== 6 · EVALUATION ===== -->
+  <section class="section">
+    <div class="wrap">
+      <p class="sec-title reveal">Evaluation</p>
+
+      <!-- Two overview images -->
+      <div class="eval-images reveal">
+        <div class="eval-img-card">
+          <img src="static/images/eval_tasks_hires.png" alt="Task Overview" style="width:100%;display:block;">
+          <div style="font-size:clamp(0.92rem,0.95vw,1.15rem);color:#374151;line-height:1.65;margin-top:16px;">
+            <p style="margin-bottom:16px;">We design <b>three real-world dexterous tasks</b> as our evaluation suite, each targeting a different capability — <b>tool use</b>, <b>fine-grained finger dexterity</b>, and <b>multi-object generalization</b>. Every task enforces a strict sequence: <b>fail one stage and the rest is blocked</b>.</p>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
+              <li style="display:flex;gap:8px;"><span style="color:#187fc2;font-size:0.8em;margin-top:0.25em;flex-shrink:0;">▶</span><span><b>Task I · Drill — <i>Tool use &amp; multi-step coordination.</i></b> The robot <b>grasps</b> the drill, <b>aligns and assembles</b> it onto a fixture, then <b>presses the trigger</b> — three dependent steps that must all land.</span></li>
+              <li style="display:flex;gap:8px;"><span style="color:#187fc2;font-size:0.8em;margin-top:0.25em;flex-shrink:0;">▶</span><span><b>Task II · Flick Wheel — <i>Fine-grained finger dexterity.</i></b> The robot grasps the assembly, <b>twists</b> the wheel with two fingers, and <b>flicks</b> it off with one — our hardest test of precise fingertip control.</span></li>
+              <li style="display:flex;gap:8px;"><span style="color:#187fc2;font-size:0.8em;margin-top:0.25em;flex-shrink:0;">▶</span><span><b>Task III · Pick &amp; Place — <i>Generalization across shapes.</i></b> Four objects of <b>diverse geometries</b> are scattered on the table; the robot picks and places each at its target — testing how well skills transfer across object shapes.</span></li>
+            </ul>
+            <p>Rather than scoring only final success, we grade <b>each stage separately</b> — a fine-grained breakdown that reveals <i>where</i> an improvement comes from and gives a more <b>three-dimensional</b> picture of a robot's dexterity.</p>
+          </div>
+        </div>
+        <div class="eval-img-card">
+          <p class="sub-title">Tools Introduction</p>
+          <img src="static/images/eval_tools_hires.png" alt="Tools &amp; Equipment" style="width:80%;display:block;margin:0 auto;">
+          <p style="font-size:clamp(0.92rem,0.95vw,1.15rem);color:#374151;line-height:1.65;margin-top:16px;">All tasks are performed on <b>real, physical objects</b>. The workspace includes interactive tools (an <b>electric drill</b>, a <b>wrench</b>), modular assembly parts (<b>bolted bars</b>, <b>wheels</b>, <b>cubes</b>, and <b>plastic screws</b>), and <b>baskets</b> for pick-and-place targets. Their varied geometries and tight tolerances demand the kind of <b>fine-grained, contact-rich manipulation</b> that low-DoF grippers cannot handle — and that makes them a faithful testbed for dexterous skill.</p>
+        </div>
+      </div>
+
+      <p class="sub-title reveal">Teleoperation</p>
+
+      <!-- Interactive video viewer -->
+      <div class="eval-viewer reveal">
+        <!-- Task -->
+        <div class="ctrl-row">
+          <span class="ctrl-label">Task</span>
+          <div class="ctrl-chips" id="teleop-task-tabs">
+            <button class="tab-btn active" data-task="drill">Drill</button>
+            <button class="tab-btn" data-task="flick_wheel">Flick Wheel</button>
+            <button class="tab-btn" data-task="pick_place">Pick &amp; Place</button>
+          </div>
+        </div>
+        <hr class="eval-divider">
+        <!-- View -->
+        <div class="ctrl-row">
+          <span class="ctrl-label">View</span>
+          <div class="ctrl-chips" id="teleop-view-chips">
+            <button class="chip-btn view-btn active" data-view="ego">Ego</button>
+            <button class="chip-btn view-btn active" data-view="exo1">Exo 1</button>
+            <button class="chip-btn view-btn active" data-view="exo2">Exo 2</button>
+            <button class="chip-btn view-btn active" data-view="exo3">Exo 3</button>
+            <button class="chip-btn view-btn active" data-view="exo4">Exo 4</button>
+          </div>
+        </div>
+        <!-- Video grid -->
+        <div class="eval-video-grid" id="teleop-video-grid"></div>
+
+      </div>
+    </div>
+  </section>
+
+  SECTIONS-END-->
+
   <script>
     const io = new IntersectionObserver((entries)=>{
       entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
@@ -385,17 +461,25 @@
       const active = VIEWS.filter(v=>teleopState.views.has(v));
       const grid = document.getElementById('teleop-video-grid');
       grid.style.gridTemplateColumns = `repeat(${gridCols(active.length)},1fr)`;
+      grid.dataset.count = active.length;
       if(!active.length){
         grid.innerHTML = '<div class="eval-empty">Please select at least one view.</div>';
         return;
       }
-      grid.innerHTML = active.map(v=>`
-        <div class="eval-video-item">
+      grid.innerHTML = active.map((v,i)=>`
+        <div class="eval-video-item" style="animation-delay:${i*55}ms">
           <video autoplay loop muted playsinline controls>
             <source src="static/videos/teleop/${teleopState.task}/${v}.mp4" type="video/mp4">
           </video>
-          <div class="eval-video-label">${VIEW_LABELS[v]}</div>
         </div>`).join('');
+    }
+
+    function jellyPop(el){
+      el.classList.remove('jelly-pop');
+      void el.offsetWidth;
+      el.classList.add('jelly-pop');
+      function onEnd(e){ if(e.target!==el) return; el.removeEventListener('animationend',onEnd); el.classList.remove('jelly-pop'); }
+      el.addEventListener('animationend', onEnd);
     }
 
     if(document.getElementById('teleop-task-tabs')){
@@ -404,6 +488,7 @@
           teleopState.task = b.dataset.task;
           document.querySelectorAll('#teleop-task-tabs [data-task]').forEach(x=>x.classList.remove('active'));
           b.classList.add('active');
+          jellyPop(b);
           renderTeleopVideos();
         })
       );
@@ -412,9 +497,9 @@
         b.addEventListener('click',()=>{
           const v = b.dataset.view;
           if(teleopState.views.has(v)){
-            if(teleopState.views.size > 1){ teleopState.views.delete(v); b.classList.remove('active'); }
+            if(teleopState.views.size > 1){ teleopState.views.delete(v); b.classList.remove('active'); jellyPop(b); }
           } else {
-            teleopState.views.add(v); b.classList.add('active');
+            teleopState.views.add(v); b.classList.add('active'); jellyPop(b);
           }
           renderTeleopVideos();
         })
