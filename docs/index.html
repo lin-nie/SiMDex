@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-padding-top: 72px; }
   sup { display:inline; font-size:0.65em; position:relative; top:-0.45em; line-height:0; }
   body { font-family:'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color:#111; background:#fff; line-height:1.65; }
 
@@ -194,12 +195,267 @@
   .mining-anim-in  { animation:mining-pop-in  .45s cubic-bezier(.34,1.56,.64,1) both; }
   .mining-anim-out { animation:mining-pop-out .2s ease both; }
   .mining-hidden { display:none !important; }
+
+  /* ===== 7 · EXPERIMENTS ===== */
+  #experiments .sub-title { margin-top:12px; }
+  .exp-tgroup { transition:opacity .25s, filter .25s; }
+  .exp-sub-item { cursor:default; transition:transform .3s cubic-bezier(.34,1.56,.64,1); }
+  .exp-sub-item:hover { transform:translateY(-4px); }
+
+  .exp-chart-bar {
+    position:relative;
+    transition:height .72s cubic-bezier(.34,1.2,.64,1),
+               box-shadow .3s cubic-bezier(.34,1.56,.64,1),
+               transform .3s cubic-bezier(.34,1.56,.64,1),
+               filter .25s;
+    transform-origin:bottom center;
+  }
+  .exp-chart-bar::after {
+    content:'';
+    position:absolute;
+    top:0; left:0; right:0;
+    height:4px;
+    border-radius:3px 3px 0 0;
+    background:rgba(255,255,255,0);
+    transition:background .25s;
+  }
+  .exp-sub-item:hover .exp-chart-bar.grd {
+    transform:scaleX(1.14);
+    box-shadow:5px 10px 22px rgba(0,0,0,.2), 2px 0 0 rgba(0,0,0,.1);
+    filter:brightness(1.12) saturate(1.1);
+  }
+  .exp-sub-item:hover .exp-chart-bar.grd::after { background:rgba(255,255,255,.4); }
+  .exp-sub-item:hover .exp-chart-bar.sim {
+    transform:scaleX(1.14);
+    box-shadow:5px 10px 22px rgba(0,0,0,.25), 2px 0 0 rgba(0,0,0,.15);
+    filter:brightness(1.15) saturate(1.15);
+  }
+  .exp-sub-item:hover .exp-chart-bar.sim::after { background:rgba(255,255,255,.5); }
+
+  .exp-delta-hover {
+    position:absolute; top:-34px; left:50%;
+    transform:translateX(-50%) translateY(6px) scale(.88);
+    font-size:.72rem; font-weight:800;
+    background:#fff; border:1.5px solid;
+    border-radius:8px; padding:3px 9px;
+    white-space:nowrap; opacity:0; pointer-events:none;
+    transition:opacity .22s, transform .32s cubic-bezier(.34,1.56,.64,1);
+    box-shadow:0 4px 12px rgba(0,0,0,.12);
+  }
+  .exp-sub-item:hover .exp-delta-hover {
+    opacity:1;
+    transform:translateX(-50%) translateY(0) scale(1);
+  }
+  .exp-panel[data-focus="drill"]   .exp-tgroup:not([data-task="drill"])  { opacity:.18; filter:grayscale(.4); }
+  .exp-panel[data-focus="flick"]   .exp-tgroup:not([data-task="flick"])  { opacity:.18; filter:grayscale(.4); }
+  .exp-panel[data-focus="pick"]    .exp-tgroup:not([data-task="pick"])   { opacity:.18; filter:grayscale(.4); }
+  .exp-rq { font-size:clamp(0.88rem,0.92vw,1.05rem); color:#6b7280; margin-bottom:28px; font-style:italic; }
+  .exp-legend { display:flex; gap:18px; align-items:center; margin-bottom:20px; }
+  .exp-legend-item { display:flex; gap:7px; align-items:center; font-size:0.82rem; font-weight:600; color:#555; }
+  .exp-swatch { width:13px; height:13px; border-radius:3px; flex-shrink:0; }
+  .exp-swatch-g { background:#9ca3af; }
+  .exp-swatch-b { background:#187fc2; }
+
+  /* task selector */
+  .exp-task-tabs { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:20px; }
+
+  /* main results panel — grouped bar chart */
+  .exp-panel { background:#fff; border-radius:16px; border:1.5px solid #e5e7eb; padding:22px 24px 18px; overflow:hidden; }
+  .exp-chart-bar { border-radius:3px 3px 0 0; height:0px; transition:height .72s cubic-bezier(.34,1.2,.64,1); }
+  .exp-chart-bar.sim { transition-delay:.08s; }
+  .exp-bval { font-size:.6rem; font-weight:700; margin-bottom:2px; opacity:0; transition:opacity .3s .65s; line-height:1; }
+  .exp-bval.vis { opacity:1; }
+
+  /* delta badge */
+  .exp-delta-badge { font-size:0.82rem; font-weight:800; text-align:center; padding:3px 0; border-radius:6px; }
+  .exp-delta-badge.pos { color:#16a34a; }
+  .exp-delta-badge.neg { color:#dc2626; }
+  .exp-delta-badge.neu { color:#6b7280; }
+
+  /* SR section (kept for JS compat) */
+  .exp-sr-section { display:none; }
+
+  /* overall stat */
+  .exp-overall-stat { background:linear-gradient(135deg,#f0f9ff,#e8f4fd); border:1.5px solid #bfdbfe; border-radius:16px; padding:22px 28px; margin-top:28px; }
+  .exp-overall-label { font-size:clamp(0.88rem,0.92vw,1.05rem); font-weight:700; color:#374151; margin-bottom:16px; letter-spacing:.02em; text-transform:uppercase; }
+  .exp-race-rows { display:flex; flex-direction:column; gap:12px; }
+  .exp-race-row { display:flex; align-items:center; gap:12px; position:relative; }
+  .exp-race-name { font-size:.82rem; font-weight:600; color:#555; width:110px; flex-shrink:0; }
+  .exp-race-track { flex:1; height:20px; background:#e5e7eb; border-radius:10px; overflow:hidden; }
+  .exp-race-fill { height:100%; border-radius:10px; transition:width 1.2s cubic-bezier(.25,.8,.25,1); }
+  .exp-race-num { font-size:.95rem; font-weight:800; width:52px; text-align:right; flex-shrink:0; color:#555; font-variant-numeric:tabular-nums; }
+  .exp-race-delta { font-size:.85rem; font-weight:800; color:#16a34a; background:#f0fdf4; border:1.5px solid #86efac; border-radius:8px; padding:2px 9px; opacity:0; transform:scale(.7) translateX(-6px); transition:opacity .35s, transform .45s cubic-bezier(.34,1.56,.64,1); white-space:nowrap; flex-shrink:0; }
+  .exp-race-delta.show { opacity:1; transform:scale(1) translateX(0); }
+  @keyframes exp-glow-pulse { 0%,100%{box-shadow:0 0 0 rgba(24,127,194,0)} 50%{box-shadow:0 0 14px rgba(24,127,194,.45)} }
+  .exp-race-fill.glowing { animation:exp-glow-pulse 1.6s ease-in-out 2; }
+
+  /* ablation study */
+  #ablation .sub-title { margin-top:12px; }
+  .abl-tab-bar { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin:20px 0; }
+  .abl-tab { border:1.5px solid #d1d5db; background:#fff; border-radius:20px; padding:7px 18px; font-size:.82rem; font-weight:600; color:#6b7280; cursor:pointer; transition:background .2s, color .2s, border-color .2s, transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .2s; user-select:none; }
+  .abl-tab.active { background:#1B6CA8; color:#fff; border-color:#1B6CA8; box-shadow:0 4px 14px rgba(27,108,168,.28); }
+  .abl-tab:hover:not(.active) { border-color:#1B6CA8; color:#1B6CA8; transform:translateY(-2px); }
+  .abl-outer-panel { background:#fff; border-radius:16px; border:1.5px solid #e5e7eb; padding:24px; }
+  .abl-legend { display:flex; gap:22px; align-items:center; margin-bottom:14px; flex-wrap:wrap; }
+  .abl-legend-item { display:flex; gap:8px; align-items:center; font-size:.8rem; font-weight:600; color:#444; }
+  .abl-legend-swatch { width:22px; height:3px; border-radius:2px; }
+  .abl-legend-swatch.dashed { background:repeating-linear-gradient(90deg,#9ca3af 0 5px,transparent 5px 9px); }
+  .abl-chart-svg { width:100%; overflow:visible; }
+  .abl-dot-grd,.abl-dot-sim { transform-box:fill-box; transform-origin:center; transform:scale(0); opacity:0; cursor:pointer; transition:transform .4s cubic-bezier(.34,1.56,.64,1), opacity .15s; stroke:#fff; stroke-width:2; }
+  .abl-dot-grd { fill:#9ca3af; }
+  .abl-dot-sim { fill:#1B6CA8; }
+  .abl-dot-grd.shown,.abl-dot-sim.shown { transform:scale(1); opacity:1; }
+  .abl-dot-grd:hover { transform:scale(1.55) !important; filter:brightness(1.1); }
+  .abl-dot-sim:hover { transform:scale(1.45) !important; filter:brightness(1.1); }
+  .abl-dlbl { transition:opacity .3s; }
+  .abl-bar-wrap { display:flex; gap:0; }
+  .abl-bar-yticks-col { display:flex; flex-direction:column; justify-content:space-between; align-items:flex-end; width:36px; flex-shrink:0; }
+  .abl-bar-chart-area { flex:1; min-width:0; }
+  .abl-bar-item { display:flex; flex-direction:column; align-items:center; cursor:default; transition:transform .3s cubic-bezier(.34,1.56,.64,1); }
+  .abl-bar-item:hover { transform:translateY(-4px); }
+  .abl-bar-el { position:relative; transition:height .72s cubic-bezier(.34,1.2,.64,1), transform .3s cubic-bezier(.34,1.56,.64,1), filter .25s, box-shadow .3s cubic-bezier(.34,1.56,.64,1); transform-origin:bottom center; }
+  .abl-bar-item:hover .abl-bar-el { transform:scaleX(1.12); filter:brightness(1.12) saturate(1.1); box-shadow:4px 8px 18px rgba(0,0,0,.14); }
+  .abl-bval { font-size:.58rem; font-weight:700; margin-bottom:2px; opacity:0; transition:opacity .3s .65s; line-height:1; }
+  .abl-bval.vis { opacity:1; }
+  .abl-ytick-label { font-size:.6rem; color:#9ca3af; line-height:1; }
+
+  /* ── Policy Rollout ─────────────────────────── */
+  .ro-ctrl-row { display:flex; align-items:center; gap:16px; margin:0 0 14px; flex-wrap:wrap; }
+  .ro-ctrl-label { font-size:clamp(0.92rem,0.95vw,1.15rem); font-weight:700; color:#6b7280; width:44px; flex-shrink:0; text-align:right; }
+  .ro-tabs { display:flex; gap:8px; flex-wrap:wrap; }
+  .ro-tab { border:1.5px solid #d1d5db; background:#fff; border-radius:20px; padding:7px 18px; font-size:clamp(0.92rem,0.95vw,1.15rem); font-weight:600; color:#6b7280; cursor:pointer; transition:background .2s, color .2s, border-color .2s, transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .2s; user-select:none; }
+  .ro-tab.active { background:#187fc2; color:#fff; border-color:#187fc2; box-shadow:0 4px 12px rgba(24,127,194,.28); }
+  .ro-tab:hover:not(.active) { border-color:#187fc2; color:#187fc2; transform:translateY(-2px); }
+  .ro-compare { display:grid; grid-template-columns:1fr 1px 1fr; gap:0 24px; align-items:start; margin-top:16px; }
+  .ro-side { display:flex; flex-direction:column; min-width:0; }
+  .ro-side-header { display:flex; align-items:center; gap:8px; padding:0 2px 10px; }
+  .ro-side-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
+  .ro-side-name { font-size:clamp(0.92rem,0.95vw,1.15rem); font-weight:600; color:#374151; }
+  .ro-side-badge { font-size:.78rem; font-weight:700; background:#187fc2; color:#fff; border-radius:4px; padding:2px 8px; margin-left:4px; letter-spacing:.03em; }
+  .ro-combo-lbl { font-size:.7rem; color:#9ca3af; margin-left:auto; white-space:nowrap; }
+  .ro-divider-col { background-image:repeating-linear-gradient(to bottom,#d1d5db 0,#d1d5db 6px,transparent 6px,transparent 14px); width:1px; align-self:stretch; }
+  .ro-video-wrap { aspect-ratio:16/9; background:#111; border-radius:10px; overflow:hidden; position:relative; }
+  .ro-video-wrap video { width:100%; height:100%; object-fit:cover; display:block; transition:opacity .28s, transform .35s cubic-bezier(.34,1.56,.64,1); transform:scale(1); }
+  .ro-video-wrap video.fading { opacity:0; transform:scale(.97); }
+  #ro-single-wrap { display:none; margin-top:16px; }
+
+  /* tooltip */
+  .exp-tooltip { position:fixed; background:#111; color:#fff; font-size:0.75rem; font-weight:600; padding:6px 10px; border-radius:7px; pointer-events:none; white-space:nowrap; z-index:9999; opacity:0; transition:opacity .12s; line-height:1.5; }
+  .exp-tooltip.show { opacity:1; }
+  .exp-tooltip.abl { background:#fff; color:#222; border:1.5px solid #e5e7eb; box-shadow:0 4px 16px rgba(0,0,0,.12); }
+
+  /* ── Navbar ────────────────────────────────────── */
+  .simdex-nav {
+    position:fixed; top:0; left:0; right:0; z-index:1000;
+    background:rgba(255,255,255,.88); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(0,0,0,.06);
+    transform:translateY(-110%);
+    transition:transform .5s cubic-bezier(0.34,1.56,0.64,1), box-shadow .25s;
+    will-change:transform;
+  }
+  .simdex-nav.nav-visible { transform:translateY(0); }
+  .simdex-nav.nav-scrolled { box-shadow:0 2px 20px rgba(0,0,0,.07); }
+  .nav-inner {
+    max-width:1280px; margin:0 auto; padding:10px 24px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .nav-logo {
+    font-size:1.05rem; font-weight:800; color:#187fc2; text-decoration:none;
+    letter-spacing:-.02em;
+    display:inline-block;
+    transition:transform .35s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .nav-logo:hover { transform:scale(1.08); }
+  .nav-links { display:flex; gap:2px; }
+  .nav-links a {
+    font-size:.88rem; color:#6b7280; text-decoration:none;
+    padding:5px 11px; border-radius:8px;
+    font-weight:500; position:relative;
+    display:inline-block;
+    transition:color .15s, background .15s, transform .35s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .nav-links a:hover { color:#187fc2; background:rgba(24,127,194,.08); transform:translateY(-2px); }
+  .nav-links a.nav-active { color:#187fc2; font-weight:600; }
+  .nav-links a.nav-active::after {
+    content:''; position:absolute; bottom:2px; left:11px; right:11px;
+    height:2px; background:#187fc2; border-radius:1px;
+    animation:nav-underline-in .3s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+  @keyframes nav-underline-in { from { transform:scaleX(0); opacity:0; } to { transform:scaleX(1); opacity:1; } }
+  .nav-links a.nav-jelly { animation:nav-link-pop .38s cubic-bezier(0.34,1.56,0.64,1) both; }
+  @keyframes nav-link-pop {
+    0%   { transform:scale(1) translateY(0); }
+    30%  { transform:scale(.88) translateY(3px); }
+    100% { transform:scale(1) translateY(0); }
+  }
+  .nav-item { position:relative; }
+  .nav-has-sub { display:flex; align-items:center; gap:3px; }
+  .nav-has-sub::after { content:'▾'; font-size:.65em; opacity:.45; margin-top:1px; }
+  .nav-dropdown {
+    position:absolute; top:100%; left:50%;
+    transform:translateX(-50%) translateY(-6px) scale(.96);
+    background:rgba(255,255,255,.97); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    border:1px solid rgba(0,0,0,.08); border-radius:10px;
+    padding:8px 5px 5px; min-width:172px;
+    box-shadow:0 8px 32px rgba(0,0,0,.1);
+    opacity:0; pointer-events:none;
+    transition:opacity .18s, transform .38s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .nav-item:hover .nav-dropdown {
+    opacity:1; pointer-events:auto;
+    transform:translateX(-50%) translateY(0) scale(1);
+  }
+  .nav-dropdown a {
+    display:block; padding:6px 12px; border-radius:6px;
+    font-size:.83rem; font-weight:500; color:#6b7280;
+    white-space:nowrap; text-decoration:none;
+    transition:color .15s, background .15s;
+    transform:none !important;
+  }
+  .nav-dropdown a:hover { color:#187fc2; background:rgba(24,127,194,.08); }
+  @media (max-width:640px) {
+    .nav-links a { font-size:.75rem; padding:4px 7px; }
+    .nav-logo { font-size:.92rem; }
+  }
 </style>
 </head>
 <body>
 
+  <!-- ===== NAVBAR ===== -->
+  <nav class="simdex-nav" id="simdex-nav">
+    <div class="nav-inner">
+      <a class="nav-logo" href="#hero">SiMDex</a>
+      <div class="nav-links" id="nav-links">
+        <a href="#demo-anchor" data-section="demo">Demo</a>
+        <a href="#abstract-anchor" data-section="abstract">Abstract</a>
+        <div class="nav-item">
+          <a href="#method-anchor" data-section="method" class="nav-has-sub">Method</a>
+          <div class="nav-dropdown">
+            <a href="#method-mining">Mining Human Demos</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a href="#evaluation-anchor" data-section="evaluation" class="nav-has-sub">Evaluation</a>
+          <div class="nav-dropdown">
+            <a href="#eval-tools">Tools Introduction</a>
+            <a href="#eval-teleop">Teleoperation</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a href="#experiments-anchor" data-section="experiments" class="nav-has-sub">Experiments</a>
+          <div class="nav-dropdown">
+            <a href="#exp-results">Main Results</a>
+            <a href="#exp-ablation">Ablation Study</a>
+          </div>
+        </div>
+        <a href="#rollout-anchor" data-section="rollout">Rollout</a>
+        <a href="#takeaways-anchor" data-section="takeaways">Takeaways</a>
+      </div>
+    </div>
+  </nav>
+
   <!-- ===== 1 · HERO ===== -->
-  <section class="hero">
+  <section class="hero" id="hero">
     <video autoplay loop muted playsinline>
       <source src="static/videos/hero-grid.mp4" type="video/mp4">
     </video>
@@ -246,13 +502,13 @@
   </section>
 
   <!-- ===== 2 · DEMO ===== -->
-  <section class="section">
+  <section class="section" id="demo">
     <div class="demo-wrap">
       <div class="tldr reveal">
         <span class="tldr-icon">&#9889;</span>
         <span><span class="tldr-label">TL;DR</span>Like a <strong>recommender system</strong>, we recommend the human demos <strong>most relevant to the robot's task</strong>.</span>
       </div>
-      <p class="sec-title reveal">Demo</p>
+      <p class="sec-title reveal" id="demo-anchor">Demo</p>
       <div class="reveal" style="position:relative; width:100%; aspect-ratio:16/9; border-radius:12px; overflow:hidden; box-shadow:0 8px 40px rgba(0,0,0,0.18);">
         <iframe src="https://www.youtube.com/embed/SsqdK0xTtzY?autoplay=0&rel=0" style="position:absolute; inset:0; width:100%; height:100%; border:none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
@@ -261,19 +517,19 @@
 
   <!--SECTIONS-START
   <!-- ===== 3 · ABSTRACT ===== -->
-  <section class="section abstract">
+  <section class="section abstract" id="abstract">
     <div class="wrap reveal">
-      <p class="sec-title">Abstract</p>
+      <p class="sec-title" id="abstract-anchor">Abstract</p>
       <p>Recent years have witnessed an explosive scaling of egocentric human videos for robot manipulation, yet it remains unclear which data actually benefits dexterous manipulation. We present <b><span class="hl-yellow">SiMDex</span></b>, a <b><u><span class="hl-yellow">Si</span></u></b>milarity-based data <b><u><span class="hl-yellow">M</span></u></b>ining framework that casts human data selection for VLA post-training in <b><u><span class="hl-yellow">Dex</span></u></b>terous manipulation as a <b>recommendation problem</b>. For each robot demonstration, SiMDex employs a three-layer hierarchical retrieval pipeline to distill task-relevant subsets from a pool of ~32M egocentric human samples (derived from EgoDex), operating in a morphology-agnostic action space (wrist 6D pose and five fingertip positions) that requires no changes to VLA architecture or training. Against a strong baseline trained with an equal amount of randomly sampled human data, SiMDex uses only <b>~1.49M mined samples (&lt;5% of the pool)</b> yet improves the overall success rate <b>from 47.7% to 61.1% (+13.4%)</b>—showing that <b>selective curation outperforms indiscriminate data&nbsp;mixing</b>.</p>
     </div>
   </section>
 
   <!-- ===== 4 · METHOD ===== -->
-  <section class="section">
+  <section class="section" id="method">
     <div class="wrap reveal">
-      <p class="sec-title">Method</p>
+      <p class="sec-title" id="method-anchor">Method</p>
       <img src="static/images/method_hires.png" alt="Method Overview" style="width:100%;display:block;border-radius:8px;">
-      <div style="font-size:clamp(0.92rem,0.95vw,1.15rem);color:#374151;line-height:1.5;margin-top:16px;display:flex;flex-direction:column;gap:8px;">
+      <div style="font-size:clamp(0.92rem,0.95vw,1.15rem);color:#374151;line-height:1.5;margin-top:6px;display:flex;flex-direction:column;gap:8px;">
         <p><b>SiMDex mines the human demonstrations most similar to each robot demonstration</b> — from a pool of tens of millions — through a three-stage cascade of increasing precision and cost.</p>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">
           <li style="display:flex;gap:8px;"><span style="color:#187fc2;font-size:0.8em;margin-top:0.25em;flex-shrink:0;">▶</span><span><b>Recall — cast a wide net, cheaply.</b> We first pull broad candidates by <b>language and hand-pose similarity</b>, keeping the stage lightweight enough to <b>scale to tens of millions of samples</b>.</span></li>
@@ -281,7 +537,7 @@
           <li style="display:flex;gap:8px;"><span style="color:#187fc2;font-size:0.8em;margin-top:0.25em;flex-shrink:0;">▶</span><span><b>Re-ranking — verify with vision.</b> Finally, <b>optical flow</b> provides an <b>embodiment-agnostic</b> check, filtering out kinematic look-alikes whose real motion doesn't match — human hand or robot arm, only the motion has to agree.</span></li>
         </ul>
       </div>
-      <p class="sub-title reveal">Mining Human Demonstrations</p>
+      <p class="sub-title reveal" id="method-mining">Mining Human Demonstrations</p>
       <div class="mining-viewer reveal">
         <!-- Controls -->
         <div class="mining-controls" style="flex-direction:column; align-items:flex-start; gap:10px;">
@@ -384,9 +640,9 @@
   </section>
 
   <!-- ===== 6 · EVALUATION ===== -->
-  <section class="section">
+  <section class="section" id="evaluation">
     <div class="wrap">
-      <p class="sec-title reveal">Evaluation</p>
+      <p class="sec-title reveal" id="evaluation-anchor">Evaluation</p>
 
       <!-- Two overview images -->
       <div class="eval-images reveal">
@@ -403,13 +659,13 @@
           </div>
         </div>
         <div class="eval-img-card">
-          <p class="sub-title">Tools Introduction</p>
+          <p class="sub-title" id="eval-tools">Tools Introduction</p>
           <img src="static/images/eval_tools_hires.png" alt="Tools &amp; Equipment" style="width:80%;display:block;margin:0 auto;">
           <p style="font-size:clamp(0.92rem,0.95vw,1.15rem);color:#374151;line-height:1.65;margin-top:16px;">All tasks are performed on <b>real, physical objects</b>. The workspace includes interactive tools (an <b>electric drill</b>, a <b>wrench</b>), modular assembly parts (<b>bolted bars</b>, <b>wheels</b>, <b>cubes</b>, and <b>plastic screws</b>), and <b>baskets</b> for pick-and-place targets. Their varied geometries and tight tolerances demand the kind of <b>fine-grained, contact-rich manipulation</b> that low-DoF grippers cannot handle — and that makes them a faithful testbed for dexterous skill.</p>
         </div>
       </div>
 
-      <p class="sub-title reveal">Teleoperation</p>
+      <p class="sub-title reveal" id="eval-teleop">Teleoperation</p>
 
       <!-- Interactive video viewer -->
       <div class="eval-viewer reveal">
@@ -431,7 +687,6 @@
             <button class="chip-btn view-btn active" data-view="exo1">Exo 1</button>
             <button class="chip-btn view-btn active" data-view="exo2">Exo 2</button>
             <button class="chip-btn view-btn active" data-view="exo3">Exo 3</button>
-            <button class="chip-btn view-btn active" data-view="exo4">Exo 4</button>
           </div>
         </div>
         <!-- Video grid -->
@@ -441,7 +696,212 @@
     </div>
   </section>
 
-  SECTIONS-END-->
+  <!-- ===== 7 · EXPERIMENTS ===== -->
+  <section class="section" id="experiments">
+    <div class="wrap">
+      <p class="sec-title reveal" id="experiments-anchor">Experiments</p>
+
+      <!-- ── Main Results ── -->
+      <p class="sub-title reveal" id="exp-results">Main Results</p>
+      <p class="exp-rq reveal">RQ1 · Does SiMDex-selected human data improve dexterous manipulation performance?</p>
+
+      <div class="reveal">
+        <div class="ctrl-row" style="margin-bottom:14px;">
+          <span class="ctrl-label">Task</span>
+          <div class="ctrl-chips" id="exp-main-task-tabs">
+            <button class="tab-btn active" data-task="all">All</button>
+            <button class="tab-btn" data-task="drill">Drill</button>
+            <button class="tab-btn" data-task="flick">Flick Wheel</button>
+            <button class="tab-btn" data-task="pick">Pick &amp; Place</button>
+          </div>
+        </div>
+        <div class="exp-panel"></div>
+
+        <div class="exp-overall-stat">
+          <div class="exp-overall-label">Overall Success Rate</div>
+          <div class="exp-race-rows">
+            <div class="exp-race-row">
+              <span class="exp-race-name">GR-Dexter</span>
+              <div class="exp-race-track">
+                <div class="exp-race-fill" id="exp-race-grd" style="width:0%;background:#9ca3af;"></div>
+              </div>
+              <span class="exp-race-num" id="exp-race-num-grd">0.0%</span>
+              <div class="exp-race-delta" style="visibility:hidden;pointer-events:none;" aria-hidden="true">+13.4%</div>
+            </div>
+            <div class="exp-race-row">
+              <span class="exp-race-name" style="color:#187fc2;font-weight:700;">SiMDex (Ours)</span>
+              <div class="exp-race-track">
+                <div class="exp-race-fill" id="exp-race-sim" style="width:0%;background:#187fc2;box-shadow:0 0 0 rgba(24,127,194,0);"></div>
+              </div>
+              <span class="exp-race-num" id="exp-race-num-sim" style="color:#187fc2;">0.0%</span>
+              <div class="exp-race-delta" id="exp-race-delta">+13.4%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ── Ablation Study ── -->
+      <p class="sub-title reveal" id="exp-ablation" style="margin-top:36px;">Ablation Study</p>
+      <p class="exp-rq reveal">RQ2 · How does SiMDex performance scale with the amount of robot demonstration data?</p>
+      <div id="ablation" style="max-width:840px;margin:16px auto 0;">
+        <div class="abl-tab-bar" id="abl-tabs">
+          <button class="abl-tab active" data-abl="overall">Overall</button>
+          <button class="abl-tab" data-abl="drill">Drill</button>
+          <button class="abl-tab" data-abl="flick">Flick Wheel</button>
+          <button class="abl-tab" data-abl="pick">Pick &amp; Place</button>
+        </div>
+        <div class="abl-outer-panel" id="abl-panel"></div>
+        <div class="exp-overall-stat" id="abl-sr-box" style="margin-top:28px;">
+          <div class="exp-overall-label" id="abl-sr-label">Overall SR · 1× Data Scale</div>
+          <div class="exp-race-rows">
+            <div class="exp-race-row">
+              <span class="exp-race-name">GR-Dexter</span>
+              <div class="exp-race-track">
+                <div class="exp-race-fill" id="abl-race-grd" style="width:0%;background:#9ca3af;"></div>
+              </div>
+              <span class="exp-race-num" id="abl-race-num-grd" style="color:#555;">0.0%</span>
+              <div class="exp-race-delta" style="visibility:hidden;pointer-events:none;" aria-hidden="true">+12.7%</div>
+            </div>
+            <div class="exp-race-row">
+              <span class="exp-race-name" style="color:#1B6CA8;font-weight:700;">SiMDex (Ours)</span>
+              <div class="exp-race-track">
+                <div class="exp-race-fill" id="abl-race-sim" style="width:0%;background:#1B6CA8;"></div>
+              </div>
+              <span class="exp-race-num" id="abl-race-num-sim" style="color:#1B6CA8;">0.0%</span>
+              <div class="exp-race-delta" id="abl-race-delta"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Policy Rollout ===== -->
+  <section class="section" id="rollout">
+    <div class="wrap">
+      <p class="sec-title reveal" id="rollout-anchor">Rollout</p>
+      <p style="color:#555;margin-bottom:24px;">
+        Side-by-side comparison of GR-Dexter and SiMDex executing the same task. Choose a task and camera view to explore.
+      </p>
+
+      <div class="ro-ctrl-row">
+        <span class="ro-ctrl-label">Task</span>
+        <div class="ro-tabs" id="ro-task-tabs">
+          <button class="ro-tab active" data-task="drill">Drill</button>
+          <button class="ro-tab" data-task="flick">Flick Wheel</button>
+          <button class="ro-tab" data-task="pick">Pick &amp; Place</button>
+        </div>
+      </div>
+
+      <div class="ro-ctrl-row">
+        <span class="ro-ctrl-label">Model</span>
+        <div class="ro-tabs" id="ro-model-tabs">
+          <button class="ro-tab active" data-model="both">Compare</button>
+          <button class="ro-tab" data-model="grd">GR-Dexter</button>
+          <button class="ro-tab" data-model="sim">SiMDex</button>
+        </div>
+      </div>
+      <!-- Compare mode: single-select view + side-by-side -->
+      <div id="ro-compare-area">
+        <div class="ro-ctrl-row">
+          <span class="ro-ctrl-label">View</span>
+          <div class="ro-tabs" id="ro-view-tabs">
+            <button class="ro-tab active" data-view="ego">Ego</button>
+            <button class="ro-tab" data-view="exo1">Exo 1</button>
+            <button class="ro-tab" data-view="exo2">Exo 2</button>
+            <button class="ro-tab" data-view="exo3">Exo 3</button>
+          </div>
+        </div>
+        <div class="ro-compare" id="ro-compare-wrap">
+          <div class="ro-side" id="ro-side-grd">
+            <div class="ro-side-header">
+              <div class="ro-side-dot" style="background:#9ca3af;"></div>
+              <span class="ro-side-name">GR-Dexter</span>
+            </div>
+            <div class="ro-video-wrap">
+              <video id="ro-grd" autoplay loop muted playsinline controls></video>
+            </div>
+          </div>
+          <div class="ro-divider-col"></div>
+          <div class="ro-side" id="ro-side-sim">
+            <div class="ro-side-header">
+              <div class="ro-side-dot" style="background:#187fc2;"></div>
+              <span class="ro-side-name" style="color:#187fc2;">SiMDex</span>
+              <span class="ro-side-badge">Ours</span>
+            </div>
+            <div class="ro-video-wrap">
+              <video id="ro-sim" autoplay loop muted playsinline controls></video>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Single-model mode -->
+      <div id="ro-single-wrap">
+        <div class="ro-ctrl-row">
+          <span class="ro-ctrl-label">View</span>
+          <div class="ro-tabs" id="ro-view-chips">
+            <button class="ro-tab active" data-view="ego">Ego</button>
+            <button class="ro-tab active" data-view="exo1">Exo 1</button>
+            <button class="ro-tab active" data-view="exo2">Exo 2</button>
+            <button class="ro-tab active" data-view="exo3">Exo 3</button>
+          </div>
+        </div>
+        <div class="eval-video-grid" id="ro-single-grid" style="margin-top:8px;"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TAKEAWAYS ===== -->
+  <section class="section" id="takeaways">
+    <div class="wrap">
+      <p class="sec-title reveal" id="takeaways-anchor">Takeaways</p>
+
+      <ul style="list-style:none;padding:0;margin:0 0 32px;display:flex;flex-direction:column;gap:20px;">
+        <li class="reveal" style="display:flex;gap:10px;">
+          <span style="color:#187fc2;font-size:0.8em;margin-top:0.28em;flex-shrink:0;">▶</span>
+          <span style="font-size:clamp(0.92rem,0.95vw,1.15rem);color:#374151;line-height:1.65;"><b>Selection beats scale.</b> For dexterous VLA post-training, which human data you use matters more than how much — a well-chosen &lt;5% of the pool beats an equal amount sampled at random, lifting overall success from 47.7% to 61.1%, with the biggest gains where robot data is scarce.</span>
+        </li>
+        <li class="reveal" style="display:flex;gap:10px;">
+          <span style="color:#187fc2;font-size:0.8em;margin-top:0.28em;flex-shrink:0;">▶</span>
+          <span style="font-size:clamp(0.92rem,0.95vw,1.15rem);color:#374151;line-height:1.65;"><b>Collection pays off twice.</b> By re-mining the same egocentric corpus already used for pre-training — now task-aware — SiMDex extracts a second round of value from data you've already gathered, reducing reliance on costly robot demonstrations without collecting anything new.</span>
+        </li>
+        <li class="reveal" style="display:flex;gap:10px;">
+          <span style="color:#187fc2;font-size:0.8em;margin-top:0.28em;flex-shrink:0;">▶</span>
+          <span style="font-size:clamp(0.92rem,0.95vw,1.15rem);color:#374151;line-height:1.65;"><b>Relevance is atomic, not semantic.</b> Retrieved human clips need not perform the same task as the robot — they only need to match at the atomic action level of a training window (~1s for a VLA). This is why a wildly heterogeneous human pool becomes an asset rather than noise: the same twisting or grasping motion recurs across cooking, assembly, and play, even when the activities share nothing. Human video is valuable not for doing the same thing, but for sharing transferable action atoms.</span>
+        </li>
+        <li class="reveal" style="display:flex;gap:10px;">
+          <span style="color:#187fc2;font-size:0.8em;margin-top:0.28em;flex-shrink:0;">▶</span>
+          <span style="font-size:clamp(0.92rem,0.95vw,1.15rem);color:#374151;line-height:1.65;"><b>For dexterity, grade the stages, not just the outcome.</b> Success rate alone collapses a rich, multi-step skill into a single bit. Scoring each sub-stage separately — grasp, align, twist, place — reveals where a policy succeeds or breaks down, exposes gains that a pass/fail metric would hide, and gives a far more faithful measure of dexterous ability.</span>
+        </li>
+      </ul>
+      <p class="reveal" style="font-size:clamp(0.92rem,0.95vw,1.15rem);color:#6b7280;line-height:1.65;font-style:italic;border-left:3px solid #e5e7eb;padding-left:16px;margin:0;"><b style="font-style:normal;color:#374151;">Still a long road ahead.</b> SiMDex is an early step toward robots that acquire new skills by retrieving human experience — not a finished solution. Much remains to be done.</p>
+    </div>
+  </section>
+
+  <!-- ===== CITATION ===== -->
+  <section class="section" id="citation" style="padding-top:0;">
+    <div class="wrap">
+      <hr style="border:none;border-top:1px solid #e5e7eb;margin-bottom:48px;">
+      <p style="font-size:clamp(1.1rem,1.3vw,1.4rem);font-weight:600;color:#111;margin-bottom:20px;">Citation</p>
+      <pre style="background:#f8f9fa;border:1.5px solid #e5e7eb;border-radius:10px;padding:24px 28px;font-size:.82rem;line-height:1.75;color:#374151;overflow-x:auto;white-space:pre;font-family:'JetBrains Mono','Fira Mono','Courier New',monospace;">@article{lin2026simdex,
+  title     = {SiMDex: Mining Similar Egocentric Videos for Cross-Embodiment Dexterous Manipulation},
+  author    = {Lin, Nie and Ohkawa, Takehiko and Chen, Sijin and Wen, Ruoshi and Li, Zhuohang and Huang, Liqun and Zhu, Zhengming and Bao, Yiming and Li, Yunfei and Cai, Minjie and Ma, Xiao and Xu, Wei and Sato, Yoichi},
+  booktitle = {arXiv preprint arXiv:xxxx.xxxxx},
+  year      = {2026}
+}</pre>
+    </div>
+  </section>
+
+  <!-- ===== ACKNOWLEDGEMENT ===== -->
+  <section class="section" id="acknowledgement" style="padding-top:0;">
+    <div class="wrap">
+      <hr style="border:none;border-top:1px solid #e5e7eb;margin-bottom:48px;">
+      <p style="font-size:clamp(1.1rem,1.3vw,1.4rem);font-weight:600;color:#111;margin-bottom:16px;">Acknowledgement</p>
+      <p style="font-size:clamp(0.92rem,0.95vw,1.15rem);color:#374151;line-height:1.75;">We thank the <b>Bytedance Seed</b> team for their generous support of the dexterous manipulation platform used in this project and for validating my key ideas. We also thank all co-authors for their insightful discussions throughout the development of SiMDex.</p>
+    </div>
+  </section>
 
   <script>
     const io = new IntersectionObserver((entries)=>{
@@ -449,8 +909,8 @@
     }, { threshold:0.15 });
     document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-    const VIEWS = ['ego','exo1','exo2','exo3','exo4'];
-    const VIEW_LABELS = { ego:'Ego View', exo1:'Exo 1', exo2:'Exo 2', exo3:'Exo 3', exo4:'Exo 4' };
+    const VIEWS = ['ego','exo1','exo2','exo3'];
+    const VIEW_LABELS = { ego:'Ego View', exo1:'Exo 1', exo2:'Exo 2', exo3:'Exo 3' };
 
     function subtaskSlug(s){ return s.toLowerCase().replace(/\./g,'').replace(/ /g,'_'); }
     function gridCols(n){ return n<=1?1 : n<=3?n : n===4?2 : 3; }
@@ -702,7 +1162,582 @@
 
     renderMiningSubtasks();
     renderMiningContent();
+
+    /* ===== EXPERIMENTS ===== */
+    const EXP_MAIN = {
+      drill: {
+        label:'Drill', max:3,
+        subtasks:['Grasp','Assem.','Drill'],
+        grd:{ scores:[0.80,0.80,0.33], std:[0.00,0.00,0.00], sr:64.5 },
+        sim:{ scores:[0.73,0.63,0.27], std:[0.10,0.33,0.28], sr:54.5 },
+      },
+      flick: {
+        label:'Flick Wheel', max:3,
+        subtasks:['Grasp','Twist','Flick'],
+        grd:{ scores:[0.60,0.13,0.00], std:[0.14,0.19,0.00], sr:24.5 },
+        sim:{ scores:[0.80,0.47,0.10], std:[0.09,0.09,0.00], sr:45.5 },
+      },
+      pick: {
+        label:'Pick & Place', max:4,
+        subtasks:['Obj. 1','Obj. 2','Obj. 3','Obj. 4'],
+        grd:{ scores:[0.30,0.67,0.53,0.67], std:[0.05,0.09,0.09,0.09], sr:54.0 },
+        sim:{ scores:[0.67,0.87,0.97,0.83], std:[0.19,0.00,0.05,0.05], sr:83.4 },
+      }
+    };
+
+
+
+    let expPanelVisible = false;
+    let overallSRDone = false;
+
+    const EXP_PLOT_H = 450;
+    const EXP_GROUPS = [
+      { key:'drill', label:'Drill',        bg:'rgba(27,108,168,.07)',   simColor:'#1B6CA8', grdColor:'#8FB8D8', flex:3,
+        subtasks: EXP_MAIN.drill.subtasks, grd: EXP_MAIN.drill.grd.scores, sim: EXP_MAIN.drill.sim.scores },
+      { key:'flick', label:'Flick Wheel',  bg:'rgba(160,140,110,.06)',  simColor:'#C08000', grdColor:'#C9A86A', flex:3,
+        subtasks: EXP_MAIN.flick.subtasks, grd: EXP_MAIN.flick.grd.scores, sim: EXP_MAIN.flick.sim.scores },
+      { key:'pick',  label:'Pick & Place', bg:'rgba(61,122,87,.07)',    simColor:'#3D7A57', grdColor:'#85B89A', flex:4,
+        subtasks: EXP_MAIN.pick.subtasks,  grd: EXP_MAIN.pick.grd.scores,  sim: EXP_MAIN.pick.sim.scores },
+    ];
+
+    function animateExpBars(){
+      document.querySelectorAll('.exp-panel .exp-chart-bar').forEach(el=>{
+        el.style.height = el.dataset.h + 'px';
+      });
+      document.querySelectorAll('.exp-panel .exp-bval').forEach(el=>el.classList.add('vis'));
+    }
+
+    function animateOverallSR(){
+      if(overallSRDone) return;
+      overallSRDone = true;
+      const grdSR = (EXP_MAIN.drill.grd.sr + EXP_MAIN.flick.grd.sr + EXP_MAIN.pick.grd.sr) / 3;
+      const simSR = (EXP_MAIN.drill.sim.sr + EXP_MAIN.flick.sim.sr + EXP_MAIN.pick.sim.sr) / 3;
+      function countUp(numEl, barEl, target, isOurs, delayMs){
+        const duration = 1400;
+        const t0 = performance.now();
+        function tick(now){
+          const elapsed = now - t0 - delayMs;
+          if(elapsed < 0){ requestAnimationFrame(tick); return; }
+          const p = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          const v = target * eased;
+          numEl.textContent = v.toFixed(1) + '%';
+          barEl.style.width = v + '%';
+          if(p < 1){ requestAnimationFrame(tick); }
+          else {
+            numEl.textContent = target.toFixed(1) + '%';
+            barEl.style.width = target + '%';
+            if(isOurs){
+              barEl.classList.add('glowing');
+              setTimeout(()=>{ document.getElementById('exp-race-delta').classList.add('show'); }, 350);
+            }
+          }
+        }
+        requestAnimationFrame(tick);
+      }
+      countUp(document.getElementById('exp-race-num-grd'), document.getElementById('exp-race-grd'), grdSR, false, 0);
+      countUp(document.getElementById('exp-race-num-sim'), document.getElementById('exp-race-sim'), simSR, true, 500);
+    }
+
+    function renderExpMain(animate){
+      const yticks = ['1.0','0.8','0.6','0.4','0.2','0.0'];
+      const gridPcts = [100,80,60,40,20];
+
+      const sepHtml = `<div style="width:1px;align-self:stretch;border-left:2px dashed #d1d5db;margin:0 4px;flex-shrink:0;"></div>`;
+      const groupsHtml = EXP_GROUPS.map((g,gi)=>{
+        const pairs = g.subtasks.map((s,i)=>{
+          const gh = Math.round(g.grd[i] * EXP_PLOT_H);
+          const sh = Math.round(g.sim[i] * EXP_PLOT_H);
+          const delta = g.sim[i] - g.grd[i];
+          const dSign = delta >= 0 ? '+' : '';
+          const dColor = delta > 0.005 ? '#16a34a' : delta < -0.005 ? '#dc2626' : '#6b7280';
+          return `<div class="exp-sub-item" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;position:relative;z-index:1;">
+            <div style="display:flex;align-items:flex-end;gap:3px;width:100%;min-width:0;padding:0 18%;position:relative;">
+              <div class="exp-delta-hover" style="color:${dColor};border-color:${dColor};">${dSign}${delta.toFixed(2)}</div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;min-width:0;">
+                ${g.grd[i]>0?`<span class="exp-bval" style="color:${g.grdColor};">${g.grd[i].toFixed(2)}</span>`:''}
+                <div class="exp-chart-bar grd" data-h="${gh}" style="width:100%;background:${g.grdColor};"></div>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;min-width:0;">
+                ${g.sim[i]>0?`<span class="exp-bval" style="color:${g.simColor};">${g.sim[i].toFixed(2)}</span>`:''}
+                <div class="exp-chart-bar sim" data-h="${sh}" style="width:100%;background:${g.simColor};"></div>
+              </div>
+            </div>
+            <div style="font-size:.6rem;color:#9ca3af;margin-top:5px;text-align:center;line-height:1.2;">${s}</div>
+          </div>`;
+        }).join('');
+        return (gi > 0 ? sepHtml : '') + `<div class="exp-tgroup" data-task="${g.key}" style="flex:${g.flex};display:flex;align-items:flex-end;gap:6px;position:relative;padding:0 8px;height:100%;">
+          <div style="position:absolute;inset:0;border-radius:6px 6px 0 0;background:${g.bg};pointer-events:none;"></div>
+          ${pairs}
+        </div>`;
+      }).join('');
+
+      document.querySelector('.exp-panel').innerHTML = `
+        <div style="display:flex;gap:16px;align-items:center;margin-bottom:16px;flex-wrap:wrap;">
+          ${EXP_GROUPS.map(g=>`
+            <div style="display:flex;gap:10px;align-items:center;font-size:.78rem;font-weight:600;color:#444;">
+              <div style="display:flex;gap:3px;align-items:center;">
+                <div style="width:11px;height:11px;border-radius:2px;background:${g.grdColor};opacity:.85;"></div>
+                <div style="width:11px;height:11px;border-radius:2px;background:${g.simColor};"></div>
+              </div>
+              ${g.label}
+            </div>`).join('')}
+          <div style="margin-left:6px;font-size:.8rem;font-weight:600;color:#374151;">Light = GR-Dexter &nbsp;·&nbsp; Dark = SiMDex (Ours)</div>
+        </div>
+        <div style="display:flex;gap:0;">
+          <div style="display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end;width:34px;padding-bottom:42px;flex-shrink:0;">
+            ${yticks.map(t=>`<span style="font-size:.6rem;color:#9ca3af;line-height:1;">${t}</span>`).join('')}
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="position:relative;display:flex;align-items:flex-end;gap:6px;height:${EXP_PLOT_H}px;border-bottom:2px solid #e5e7eb;">
+              ${gridPcts.map(p=>`<div style="position:absolute;left:0;right:0;bottom:${p}%;height:1px;background:#f0f1f3;pointer-events:none;"></div>`).join('')}
+              ${groupsHtml}
+            </div>
+            <div style="display:flex;gap:6px;margin-top:8px;">
+              ${EXP_GROUPS.map(g=>`<div style="flex:${g.flex};text-align:center;font-size:.75rem;font-weight:700;color:#374151;">${g.label}</div>`).join('')}
+            </div>
+          </div>
+        </div>`;
+
+      if(animate || expPanelVisible){
+        requestAnimationFrame(()=>requestAnimationFrame(()=>{ animateExpBars(); animateOverallSR(); }));
+      }
+    }
+
+    // trigger bar animations on scroll into view
+    const expPanelEl = document.getElementById('experiments');
+    if(expPanelEl){
+      const expIo = new IntersectionObserver(entries=>{
+        if(entries[0].isIntersecting && !expPanelVisible){
+          expPanelVisible = true;
+          requestAnimationFrame(()=>requestAnimationFrame(()=>{ animateExpBars(); animateOverallSR(); }));
+        }
+      }, { threshold: 0.1 });
+      expIo.observe(expPanelEl);
+    }
+
+    renderExpMain();
+
+    document.getElementById('exp-main-task-tabs').querySelectorAll('[data-task]').forEach(b=>{
+      b.addEventListener('click',()=>{
+        document.querySelectorAll('#exp-main-task-tabs [data-task]').forEach(x=>x.classList.remove('active'));
+        b.classList.add('active');
+        jellyPop(b);
+        const task = b.dataset.task;
+        const panel = document.querySelector('.exp-panel');
+        if(task === 'all') panel.removeAttribute('data-focus');
+        else panel.setAttribute('data-focus', task);
+      });
+    });
+
+    /* ===== Ablation Study ===== */
+    const ABL = {
+      scales:['0.25×','0.5×','1×','2×'],
+      times: ['~3.1h','~6.2h','~12.4h','~24.9h'],
+      grd:{
+        overall:[0.294055556,0.408555556,0.453111111,0.5085],
+        drill:  [0.266,0.355333333,0.644666667,0.688],
+        flick:  [0.166666667,0.355333333,0.166666667,0.222],
+        pick:   [0.4495,0.515,0.548,0.6155],
+      },
+      sim:{
+        overall:[0.36,0.58,0.58,0.57],
+        drill:  [0.355333333,0.489333333,0.377333333,0.622],
+        flick:  [0.3,0.488666667,0.5,0.322],
+        pick:   [0.432,0.7665,0.867,0.7665],
+      },
+      simColors:{drill:'#1B6CA8',flick:'#C08000',pick:'#3D7A57'},
+    };
+
+    let ablVisible=false, ablTask='overall';
+
+    // ── Line chart constants (Overall) ──────────────────────────────────────
+    const ABL_W=700,ABL_H=300,ABL_LP=58,ABL_RP=22,ABL_TP=32,ABL_BP=50;
+    const ABL_CW=ABL_W-ABL_LP-ABL_RP, ABL_CH=ABL_H-ABL_TP-ABL_BP;
+    const ABL_YMIN=0.20,ABL_YMAX=0.66;
+    const ABL_XS=[0,1,2,3].map(i=>ABL_LP+i/3*ABL_CW);
+    const ablY=v=>ABL_TP+ABL_CH-(v-ABL_YMIN)/(ABL_YMAX-ABL_YMIN)*ABL_CH;
+    const ABL_GY=ABL.grd.overall.map(ablY);
+    const ABL_SY=ABL.sim.overall.map(ablY);
+
+    function renderAblLine(){
+      const yticks=[0.20,0.30,0.40,0.50,0.60];
+      const grid=yticks.map(v=>`<line stroke="#f0f1f3" stroke-width="1" x1="${ABL_LP}" y1="${ablY(v).toFixed(1)}" x2="${ABL_W-ABL_RP}" y2="${ablY(v).toFixed(1)}"/>`).join('');
+      const yLbls=yticks.map(v=>`<text style="font-size:11px;fill:#9ca3af;font-family:inherit;" text-anchor="end" x="${ABL_LP-5}" y="${(ablY(v)+4).toFixed(1)}">${(v*100).toFixed(0)}%</text>`).join('');
+      const xLbls=ABL.scales.map((s,i)=>`
+        <text style="font-size:11px;fill:#9ca3af;font-family:inherit;" text-anchor="middle" x="${ABL_XS[i].toFixed(1)}" y="${(ABL_TP+ABL_CH+16).toFixed(1)}">${s}</text>
+        <text style="font-size:9px;fill:#c8c8c8;font-family:inherit;" text-anchor="middle" x="${ABL_XS[i].toFixed(1)}" y="${(ABL_TP+ABL_CH+28).toFixed(1)}">${ABL.times[i]}</text>`).join('');
+      const fwdSim=ABL_XS.map((x,i)=>(i?'L':'M')+x.toFixed(1)+','+ABL_SY[i].toFixed(1)).join(' ');
+      const fwdGrd=ABL_XS.map((x,i)=>(i?'L':'M')+x.toFixed(1)+','+ABL_GY[i].toFixed(1)).join(' ');
+      const bwdGrd=[3,2,1,0].map(i=>'L'+ABL_XS[i].toFixed(1)+','+ABL_GY[i].toFixed(1)).join(' ');
+      const dLbls=ABL.scales.map((s,i)=>{
+        const d=ABL.sim.overall[i]-ABL.grd.overall[i];
+        const sign=d>=0?'+':'';
+        const col=d>0.005?'#16a34a':d<-0.005?'#dc2626':'#6b7280';
+        const my=((ABL_SY[i]+ABL_GY[i])/2+4).toFixed(1);
+        return `<text class="abl-dlbl" style="font-size:10.5px;font-weight:800;font-family:inherit;fill:${col};opacity:0;" text-anchor="middle" x="${ABL_XS[i].toFixed(1)}" y="${my}">${sign}${(d*100).toFixed(1)}%</text>`;
+      }).join('');
+      const gDots=ABL_XS.map((x,i)=>`<circle class="abl-dot-grd" cx="${x.toFixed(1)}" cy="${ABL_GY[i].toFixed(1)}" r="5" data-idx="${i}"/>`).join('');
+      const sDots=ABL_XS.map((x,i)=>`<circle class="abl-dot-sim" cx="${x.toFixed(1)}" cy="${ABL_SY[i].toFixed(1)}" r="6.5" data-idx="${i}"/>`).join('');
+      document.getElementById('abl-panel').innerHTML=
+        `<div class="abl-legend">
+          <div class="abl-legend-item"><div class="abl-legend-swatch dashed"></div>GR-Dexter</div>
+          <div class="abl-legend-item"><div class="abl-legend-swatch" style="background:#1B6CA8;"></div>SiMDex (Ours)</div>
+        </div>
+        <svg class="abl-chart-svg" viewBox="0 0 ${ABL_W} ${ABL_H}" preserveAspectRatio="xMidYMid meet">
+          <defs><clipPath id="abl-clip"><rect id="abl-crect" x="${ABL_LP-2}" y="0" width="0" height="${ABL_H}"/></clipPath></defs>
+          ${grid}
+          <line stroke="#e5e7eb" stroke-width="1.5" x1="${ABL_LP}" y1="${ABL_TP}" x2="${ABL_LP}" y2="${ABL_TP+ABL_CH}"/>
+          <line stroke="#e5e7eb" stroke-width="1.5" x1="${ABL_LP}" y1="${ABL_TP+ABL_CH}" x2="${ABL_W-ABL_RP}" y2="${ABL_TP+ABL_CH}"/>
+          ${yLbls}${xLbls}
+          <g clip-path="url(#abl-clip)">
+            <path style="fill:rgba(27,108,168,.09);opacity:0;transition:opacity .6s;" id="abl-area" d="${fwdSim} ${bwdGrd} Z"/>
+            <path style="fill:none;stroke:#9ca3af;stroke-width:2;stroke-dasharray:6 4;stroke-linecap:round;" d="${fwdGrd}"/>
+            <path style="fill:none;stroke:#1B6CA8;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round;" d="${fwdSim}"/>
+          </g>
+          ${gDots}${sDots}${dLbls}
+        </svg>`;
+
+      const tt=document.getElementById('exp-tooltip');
+      document.querySelectorAll('.abl-dot-grd,.abl-dot-sim').forEach(dot=>{
+        dot.addEventListener('mouseenter',()=>{
+          if(!tt) return;
+          const i=+dot.dataset.idx;
+          const gv=(ABL.grd.overall[i]*100).toFixed(1), sv=(ABL.sim.overall[i]*100).toFixed(1);
+          const d=(ABL.sim.overall[i]-ABL.grd.overall[i])*100;
+          const sign=d>=0?'+':'';
+          const dc=d>0.5?'#16a34a':d<-0.5?'#dc2626':'#6b7280';
+          tt.innerHTML=`<b>${ABL.scales[i]}</b>  ${ABL.times[i]}<br>GR&#8209;Dexter: ${gv}%<br><span style="color:#1B6CA8;font-weight:700;">SiMDex: ${sv}%</span><br><span style="color:${dc};">Δ ${sign}${d.toFixed(1)}%</span>`;
+          tt.classList.add('show','abl');
+        });
+        dot.addEventListener('mousemove',e=>{ if(tt){ tt.style.left=(e.clientX+14)+'px'; tt.style.top=(e.clientY-12)+'px'; } });
+        dot.addEventListener('mouseleave',()=>{ if(tt){ tt.classList.remove('show','abl'); } });
+      });
+    }
+
+    function animateAblLine(){
+      const cr=document.getElementById('abl-crect');
+      if(!cr) return;
+      const target=ABL_CW+ABL_RP+6, dur=1300, t0=performance.now();
+      function tick(now){
+        const p=Math.min((now-t0)/dur,1);
+        const e=p<0.5?2*p*p:-1+(4-2*p)*p;
+        const w=target*e;
+        cr.setAttribute('width',w.toFixed(1));
+        ABL_XS.forEach((x,i)=>{
+          if(w>=(x-ABL_LP+2)){
+            ['abl-dot-grd','abl-dot-sim'].forEach(cls=>{
+              const d=document.querySelector(`.${cls}[data-idx="${i}"]`);
+              if(d&&!d.classList.contains('shown')) d.classList.add('shown');
+            });
+          }
+        });
+        if(p<1) requestAnimationFrame(tick);
+        else {
+          const ar=document.getElementById('abl-area');
+          if(ar) ar.style.opacity='1';
+          document.querySelectorAll('.abl-dlbl').forEach((el,i)=>setTimeout(()=>{ el.style.transition='opacity .35s'; el.style.opacity='1'; },i*90+100));
+        }
+      }
+      requestAnimationFrame(tick);
+    }
+
+    // ── Bar chart (per-task) ─────────────────────────────────────────────────
+    const ABL_BAR_H=450;
+    function renderAblBar(taskKey){
+      const sc=ABL.simColors[taskKey]||'#1B6CA8', gc='#9ca3af';
+      const gd=ABL.grd[taskKey], sd=ABL.sim[taskKey];
+      const yticks=[1.0,0.8,0.6,0.4,0.2,0.0];
+      const gridHtml=yticks.map(v=>`<div style="position:absolute;left:0;right:0;top:${((1-v)*100).toFixed(1)}%;height:1px;background:${v===0?'#e5e7eb':'#f3f4f6'};pointer-events:none;z-index:0;"></div>`).join('');
+      const sep=`<div style="width:1px;align-self:stretch;border-left:2px dashed #e5e7eb;margin:0 2px;flex-shrink:0;"></div>`;
+      const groups=ABL.scales.map((scale,gi)=>{
+        const gv=gd[gi],sv=sd[gi],delta=sv-gv;
+        const sign=delta>=0?'+':'';
+        const dc=delta>0.005?'#16a34a':delta<-0.005?'#dc2626':'#6b7280';
+        const db=delta>0.005?'#f0fdf4':delta<-0.005?'#fef2f2':'#f9fafb';
+        const dbd=delta>0.005?'#86efac':delta<-0.005?'#fca5a5':'#e5e7eb';
+        const gh=Math.round(gv*ABL_BAR_H), sh=Math.round(sv*ABL_BAR_H);
+        return (gi>0?sep:'')+`
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;position:relative;z-index:1;">
+            <div class="abl-group-delta" style="position:absolute;top:-26px;left:50%;transform:translateX(-50%);background:${db};color:${dc};border:1px solid ${dbd};font-size:.65rem;font-weight:800;padding:2px 7px;border-radius:5px;white-space:nowrap;opacity:0;transition:opacity .35s;pointer-events:none;">${sign}${(delta*100).toFixed(1)}%</div>
+            <div style="display:flex;gap:3px;align-items:flex-end;width:100%;padding:0 12%;">
+              <div class="abl-bar-item" style="flex:1;">
+                ${gv>0?`<span class="abl-bval" style="color:${gc};">${(gv*100).toFixed(1)}%</span>`:''}
+                <div class="abl-bar-el" data-h="${gh}" style="background:${gc};height:0;width:100%;border-radius:3px 3px 0 0;"></div>
+              </div>
+              <div class="abl-bar-item" style="flex:1;">
+                ${sv>0?`<span class="abl-bval" style="color:${sc};">${(sv*100).toFixed(1)}%</span>`:''}
+                <div class="abl-bar-el" data-h="${sh}" style="background:${sc};height:0;width:100%;border-radius:3px 3px 0 0;"></div>
+              </div>
+            </div>
+          </div>`;
+      }).join('');
+      const scaleLbls=ABL.scales.map((s,i)=>`<div style="flex:1;text-align:center;font-size:.68rem;font-weight:700;color:#374151;line-height:1.5;">${s}<br><span style="font-weight:400;color:#9ca3af;font-size:.58rem;">${ABL.times[i]}</span></div>`).join('');
+      document.getElementById('abl-panel').innerHTML=
+        `<div class="abl-legend">
+          <div class="abl-legend-item"><div class="abl-legend-swatch" style="background:${gc};"></div>GR-Dexter</div>
+          <div class="abl-legend-item"><div class="abl-legend-swatch" style="background:${sc};"></div>SiMDex (Ours)</div>
+        </div>
+        <div class="abl-bar-wrap">
+          <div class="abl-bar-yticks-col" style="padding-top:26px;padding-bottom:42px;">
+            ${yticks.map(v=>`<span class="abl-ytick-label">${(v*100).toFixed(0)}%</span>`).join('')}
+          </div>
+          <div class="abl-bar-chart-area">
+            <div style="height:26px;"></div>
+            <div style="display:flex;align-items:flex-end;gap:6px;height:${ABL_BAR_H}px;border-bottom:2px solid #e5e7eb;position:relative;overflow:visible;">
+              ${gridHtml}${groups}
+            </div>
+            <div style="display:flex;gap:6px;margin-top:6px;">${scaleLbls}</div>
+          </div>
+        </div>`;
+    }
+
+    function animateAblBars(){
+      document.querySelectorAll('#abl-panel .abl-bar-el').forEach(el=>{ el.style.height=el.dataset.h+'px'; });
+      document.querySelectorAll('#abl-panel .abl-bval').forEach(el=>el.classList.add('vis'));
+      setTimeout(()=>{ document.querySelectorAll('#abl-panel .abl-group-delta').forEach(el=>{ el.style.opacity='1'; }); }, 920);
+    }
+
+    // ── SR box (bottom) ─────────────────────────────────────────────────────
+    // Shows 1× scale SR for whichever task/view is active
+    let ablSRDone=false;
+
+    // task→ label mapping for the SR box
+    const ABL_SR_LABELS={
+      overall:'Overall SR · 1× Data Scale',
+      drill:'Drill SR · 1× Data Scale',
+      flick:'Flick Wheel SR · 1× Data Scale',
+      pick:'Pick & Place SR · 1× Data Scale',
+    };
+
+    function animateAblSR(taskKey, resetFirst){
+      const grdVal=ABL.grd[taskKey][2]*100;   // index 2 = 1× scale
+      const simVal=ABL.sim[taskKey][2]*100;
+      const delta=simVal-grdVal;
+      const sign=delta>=0?'+':'';
+
+      // update label
+      const lbl=document.getElementById('abl-sr-label');
+      if(lbl) lbl.textContent=ABL_SR_LABELS[taskKey]||'SR · 1× Data Scale';
+
+      // reset delta badge
+      const db=document.getElementById('abl-race-delta');
+      if(db){ db.classList.remove('show'); db.textContent=sign+delta.toFixed(1)+'%'; }
+
+      // if re-triggering on tab switch, reset bars to 0 first
+      const barGrd=document.getElementById('abl-race-grd');
+      const barSim=document.getElementById('abl-race-sim');
+      const numGrd=document.getElementById('abl-race-num-grd');
+      const numSim=document.getElementById('abl-race-num-sim');
+      if(!barGrd||!barSim) return;
+
+      if(resetFirst){
+        barGrd.style.transition='none'; barGrd.style.width='0%';
+        barSim.style.transition='none'; barSim.style.width='0%';
+        numGrd.textContent='0.0%'; numSim.textContent='0.0%';
+        barSim.classList.remove('glowing');
+        void barGrd.offsetWidth; // reflow
+      }
+
+      function countUp(numEl,barEl,target,isOurs,delayMs){
+        const dur=1300,t0=performance.now();
+        function tick(now){
+          const elapsed=now-t0-delayMs;
+          if(elapsed<0){requestAnimationFrame(tick);return;}
+          const p=Math.min(elapsed/dur,1);
+          const eased=1-Math.pow(1-p,3);
+          const v=target*eased;
+          numEl.textContent=v.toFixed(1)+'%';
+          barEl.style.transition='';
+          barEl.style.width=v+'%';
+          if(p<1){requestAnimationFrame(tick);}
+          else{
+            numEl.textContent=target.toFixed(1)+'%';
+            barEl.style.width=target+'%';
+            if(isOurs){
+              barEl.classList.add('glowing');
+              setTimeout(()=>{ if(db) db.classList.add('show'); },350);
+            }
+          }
+        }
+        requestAnimationFrame(tick);
+      }
+      countUp(numGrd,barGrd,grdVal,false,0);
+      countUp(numSim,barSim,simVal,true,480);
+    }
+
+    // ── Init ────────────────────────────────────────────────────────────────
+    renderAblLine();
+
+    const ablSectionEl=document.getElementById('ablation');
+    if(ablSectionEl){
+      const ablIo=new IntersectionObserver(entries=>{
+        if(entries[0].isIntersecting&&!ablVisible){
+          ablVisible=true;
+          requestAnimationFrame(()=>requestAnimationFrame(ablTask==='overall'?animateAblLine:animateAblBars));
+          requestAnimationFrame(()=>requestAnimationFrame(()=>animateAblSR(ablTask,false)));
+        }
+      },{threshold:0.1});
+      ablIo.observe(ablSectionEl);
+    }
+
+    document.getElementById('abl-tabs').querySelectorAll('.abl-tab').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        document.querySelectorAll('#abl-tabs .abl-tab').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        jellyPop(btn);
+        ablTask=btn.dataset.abl;
+        if(ablTask==='overall'){
+          renderAblLine();
+          requestAnimationFrame(()=>requestAnimationFrame(animateAblLine));
+        } else {
+          renderAblBar(ablTask);
+          requestAnimationFrame(()=>requestAnimationFrame(animateAblBars));
+        }
+        // re-animate SR box for the new task
+        if(ablVisible) setTimeout(()=>animateAblSR(ablTask,true),80);
+      });
+    });
+
+    /* ===== Policy Rollout ===== */
+    const RO_TASK_LABELS={drill:'Drill',flick:'Flick Wheel',pick:'Pick & Place'};
+    const RO_VIEW_LABELS={ego:'Ego',exo1:'Exo 1',exo2:'Exo 2',exo3:'Exo 3'};
+    const RO_VIEWS=['ego','exo1','exo2','exo3'];
+    let roTask='drill', roView='ego', roModel='both';
+    const roSingleViews=new Set(RO_VIEWS);
+
+    function roSrc(method,task,view){
+      return `static/videos/rollout/${task}/${method}/${view}.mp4`;
+    }
+
+    function renderRoSingleGrid(){
+      const grid=document.getElementById('ro-single-grid');
+      if(!grid) return;
+      const active=RO_VIEWS.filter(v=>roSingleViews.has(v));
+      grid.style.gridTemplateColumns=`repeat(${gridCols(active.length)},1fr)`;
+      grid.dataset.count=active.length;
+      if(!active.length){
+        grid.innerHTML='<div class="eval-empty">Please select at least one view.</div>';
+        return;
+      }
+      grid.innerHTML=active.map((v,i)=>`
+        <div class="eval-video-item" style="animation-delay:${i*55}ms">
+          <video autoplay loop muted playsinline controls>
+            <source src="${roSrc(roModel,roTask,v)}" type="video/mp4">
+          </video>
+          <div class="eval-video-label">${RO_VIEW_LABELS[v]}</div>
+        </div>`).join('');
+    }
+
+    function updateRoVideos(){
+      const vGrd=document.getElementById('ro-grd');
+      const vSim=document.getElementById('ro-sim');
+      const lbl=document.getElementById('ro-combo-lbl');
+      if(!vGrd||!vSim) return;
+      vGrd.classList.add('fading'); vSim.classList.add('fading');
+      setTimeout(()=>{
+        vGrd.src=roSrc('grd',roTask,roView); vGrd.load(); vGrd.play().catch(()=>{});
+        vSim.src=roSrc('sim',roTask,roView); vSim.load(); vSim.play().catch(()=>{});
+        requestAnimationFrame(()=>requestAnimationFrame(()=>{
+          vGrd.classList.remove('fading'); vSim.classList.remove('fading');
+        }));
+      },280);
+    }
+
+    function applyRoModelLayout(){
+      const cmpArea=document.getElementById('ro-compare-area');
+      const singleWrap=document.getElementById('ro-single-wrap');
+      if(!cmpArea||!singleWrap) return;
+      if(roModel==='both'){
+        cmpArea.style.display=''; singleWrap.style.display='none';
+        updateRoVideos();
+      } else {
+        cmpArea.style.display='none'; singleWrap.style.display='block';
+        renderRoSingleGrid();
+      }
+    }
+
+    document.getElementById('ro-task-tabs').querySelectorAll('.ro-tab').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        document.querySelectorAll('#ro-task-tabs .ro-tab').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active'); jellyPop(btn);
+        roTask=btn.dataset.task;
+        if(roModel==='both') updateRoVideos(); else renderRoSingleGrid();
+      });
+    });
+
+    document.getElementById('ro-view-tabs').querySelectorAll('.ro-tab').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        document.querySelectorAll('#ro-view-tabs .ro-tab').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active'); jellyPop(btn);
+        roView=btn.dataset.view; updateRoVideos();
+      });
+    });
+
+    document.getElementById('ro-view-chips').querySelectorAll('.ro-tab').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const v=btn.dataset.view;
+        if(roSingleViews.has(v)){
+          if(roSingleViews.size>1){ roSingleViews.delete(v); btn.classList.remove('active'); jellyPop(btn); }
+        } else { roSingleViews.add(v); btn.classList.add('active'); jellyPop(btn); }
+        renderRoSingleGrid();
+      });
+    });
+
+    document.getElementById('ro-model-tabs').querySelectorAll('.ro-tab').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        document.querySelectorAll('#ro-model-tabs .ro-tab').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active'); jellyPop(btn);
+        roModel=btn.dataset.model;
+        applyRoModelLayout();
+      });
+    });
+
+    applyRoModelLayout();
+
+    /* ===== Navbar ===== */
+    const simdexNav = document.getElementById('simdex-nav');
+    const heroEl = document.getElementById('hero');
+
+    function updateNav() {
+      const past = window.scrollY >= heroEl.offsetHeight - 60;
+      simdexNav.classList.toggle('nav-visible', past);
+      simdexNav.classList.toggle('nav-scrolled', past);
+    }
+    window.addEventListener('scroll', updateNav, { passive: true });
+    updateNav();
+
+    const navSectionIds = ['demo','abstract','method','evaluation','experiments','rollout','takeaways'];
+    const navLinks = document.querySelectorAll('#nav-links a[data-section]');
+
+    const navSectionObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        const link = document.querySelector(`#nav-links a[data-section="${e.target.id}"]`);
+        if (link) link.classList.toggle('nav-active', e.isIntersecting);
+      });
+    }, { threshold: 0.25, rootMargin: '-5% 0px -55% 0px' });
+
+    navSectionIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) navSectionObs.observe(el);
+    });
+
+    document.querySelectorAll('#nav-links a').forEach(a => {
+      a.addEventListener('click', () => {
+        a.classList.remove('nav-jelly');
+        void a.offsetWidth;
+        a.classList.add('nav-jelly');
+        function onEnd(ev) { if (ev.target !== a) return; a.removeEventListener('animationend', onEnd); a.classList.remove('nav-jelly'); }
+        a.addEventListener('animationend', onEnd);
+      });
+    });
   </script>
 
+<div class="exp-tooltip" id="exp-tooltip"></div>
+
+<footer style="text-align:center;padding:36px 20px;color:#9ca3af;font-size:.85rem;border-top:1px solid #e5e7eb;line-height:1.8;">
+  SiMDex: Mining Similar Egocentric Videos for Cross-Embodiment Dexterous Manipulation<br>
+  <span style="font-size:.92em;">This project page was built with the support of <a href="https://claude.ai" target="_blank" rel="noopener" style="color:#9ca3af;text-decoration:underline;text-underline-offset:3px;display:inline-flex;align-items:center;gap:4px;vertical-align:middle;"><img src="https://cdn.prod.website-files.com/67ce28cfec624e2b733f8a52/681d52619fec35886a7f1a70_favicon.png" alt="" style="width:14px;height:14px;border-radius:3px;opacity:.8;"> Claude AI</a> &mdash; many thanks. Visual inspiration drawn from <a href="https://shirleymaxx.github.io/" target="_blank" rel="noopener" style="color:#9ca3af;text-decoration:underline;text-underline-offset:3px;">Xiaoxuan (Shirley) Ma</a> (<a href="https://www.ri.cmu.edu/" target="_blank" rel="noopener" style="color:#9ca3af;text-decoration:underline;text-underline-offset:3px;">CMU Robotics Institute</a>)'s <a href="https://shirleymaxx.github.io/REST3D/" target="_blank" rel="noopener" style="color:#9ca3af;text-decoration:underline;text-underline-offset:3px;">REST3D</a> page, whose tasteful design we gratefully admire.</span>
+</footer>
 </body>
 </html>
