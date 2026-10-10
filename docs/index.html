@@ -491,6 +491,7 @@
           <a href="#method-anchor" data-section="method" class="nav-has-sub">Method</a>
           <div class="nav-dropdown">
             <a href="#method-mining">Mining Human Demos</a>
+            <a href="#method-training">Cross-Embodiment Training</a>
           </div>
         </div>
         <div class="nav-item">
@@ -697,6 +698,20 @@
           <div class="mining-grid" id="mining-samples-grid"></div>
         </div>
       </div>
+
+      <p class="sub-title reveal" id="method-training">Cross-Embodiment Training</p>
+      <div class="reveal">
+        <img src="static/images/training_hires.png" alt="Cross-embodiment training with mined human data" style="width:100%;display:block;border-radius:8px;">
+        <div style="font-size:clamp(0.92rem,0.95vw,1.15rem);color:#374151;line-height:1.5;margin-top:6px;display:flex;flex-direction:column;gap:8px;">
+          <p><b>Mined human data enters training as an additional data source alongside the robot data</b>, with no other change to the model or training procedure, so that data selection remains the only variable.</p>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">
+            <li style="display:flex;gap:8px;"><span style="color:#187fc2;font-size:0.8em;margin-top:0.25em;flex-shrink:0;">▶</span><span><b>Data streams — two sources, one descriptor.</b> Robot demonstrations (top left) and mined egocentric videos (bottom left) are sampled as two independently weighted streams at a <b>1:1 ratio</b> and retargeted onto a <b>shared descriptor</b>, so a single policy consumes both through the same inputs and outputs.</span></li>
+            <li style="display:flex;gap:8px;"><span style="color:#187fc2;font-size:0.8em;margin-top:0.25em;flex-shrink:0;">▶</span><span><b>Cross-embodiment supervision — the difference lives in a mask.</b> Both are laid out in one unified action chunk. Robot samples are supervised on all four segments; human samples only on the <b>embodiment-shared</b> wrist and fingertip segments (green). The robot-only arm and hand segments (yellow) are masked out for human samples (dashed).</span></li>
+            <li style="display:flex;gap:8px;"><span style="color:#187fc2;font-size:0.8em;margin-top:0.25em;flex-shrink:0;">▶</span><span><b>Architecture — one unchanged path.</b> The policy is an off-the-shelf π₀-like flow-matching VLA, and the path is identical for robot and human samples: the same encoders, the same backbone, and the same input and output dimensions.</span></li>
+            <li style="display:flex;gap:8px;"><span style="color:#187fc2;font-size:0.8em;margin-top:0.25em;flex-shrink:0;">▶</span><span><b>Training objective — masked flow matching.</b> The upper lane carries the supervision target and the lower lane the model prediction; they meet at the <b>masked flow-matching loss</b>, computed only on the unmasked entries of the chunk, so human samples contribute gradients only through the wrist and fingertip dimensions.</span></li>
+          </ul>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -722,7 +737,15 @@
         <div class="eval-img-card">
           <p class="sub-title" id="eval-tools">Tools Introduction</p>
           <img src="static/images/eval_tools_hires.png" alt="Tools &amp; Equipment" style="width:80%;display:block;margin:0 auto;">
-          <p style="font-size:clamp(0.92rem,0.95vw,1.15rem);color:#374151;line-height:1.65;margin-top:16px;">All tasks are performed on <b>physical objects</b>. The workspace includes interactive tools (an <b>electric drill</b>, a <b>wrench</b>), modular assembly parts (<b>bolted bars</b>, <b>wheels</b>, <b>cubes</b>, and <b>plastic screws</b>), and <b>baskets</b> for pick-and-place targets. Their varied geometries and tight tolerances demand the kind of <b>fine-grained, contact-rich manipulation</b> that low-DoF grippers cannot handle — and that makes them a faithful testbed for dexterous skill.</p>
+          <div style="font-size:clamp(0.92rem,0.95vw,1.15rem);color:#374151;line-height:1.65;margin-top:16px;">
+            <p style="margin-bottom:16px;">All tasks are performed on <b>physical objects</b>.</p>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">
+              <li style="display:flex;gap:8px;"><span style="color:#187fc2;font-size:0.8em;margin-top:0.25em;flex-shrink:0;">▶</span><span><b>Interactive tools.</b> An electric drill and a wrench.</span></li>
+              <li style="display:flex;gap:8px;"><span style="color:#187fc2;font-size:0.8em;margin-top:0.25em;flex-shrink:0;">▶</span><span><b>Modular assembly parts.</b> Bolted bars, wheels, cubes, and plastic screws.</span></li>
+              <li style="display:flex;gap:8px;"><span style="color:#187fc2;font-size:0.8em;margin-top:0.25em;flex-shrink:0;">▶</span><span><b>Placement targets.</b> Baskets for pick-and-place.</span></li>
+              <li style="display:flex;gap:8px;"><span style="color:#187fc2;font-size:0.8em;margin-top:0.25em;flex-shrink:0;">▶</span><span><b>Why these objects.</b> Their varied geometries and tight tolerances demand the kind of <b>fine-grained, contact-rich manipulation</b> that low-DoF grippers cannot handle — and that makes them a faithful testbed for dexterous skill.</span></li>
+            </ul>
+          </div>
         </div>
       </div>
 
