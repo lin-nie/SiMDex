@@ -318,6 +318,17 @@
   .abl-bval { font-size:.58rem; font-weight:700; margin-bottom:2px; opacity:0; transition:opacity .3s .65s; line-height:1; }
   .abl-bval.vis { opacity:1; }
   .abl-ytick-label { font-size:.6rem; color:#9ca3af; line-height:1; }
+  .abl-sr-table { width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; }
+  .abl-sr-table th, .abl-sr-table td { padding:8px 10px; text-align:right; white-space:nowrap; }
+  .abl-sr-table thead th { font-size:.78rem; font-weight:700; color:#6b7280; border-bottom:1.5px solid #bfdbfe; }
+  .abl-sr-table tbody th { text-align:left; font-size:.82rem; font-weight:600; color:#555; }
+  .abl-sr-table td { font-size:.95rem; font-weight:800; color:#555; }
+  .abl-sr-table tr.sim th, .abl-sr-table tr.sim td { color:#1B6CA8; }
+  .abl-sr-table tr.sim th { font-weight:700; }
+  .abl-sr-table tr.delta th, .abl-sr-table tr.delta td { border-top:1px solid #bfdbfe; }
+  .abl-sr-table td.pos { color:#16a34a; }
+  .abl-sr-table td.neg { color:#dc2626; }
+  .abl-sr-note { font-size:.75rem; color:#6b7280; line-height:1.5; margin-top:12px; }
 
   /* ── Policy Rollout ─────────────────────────── */
   .ro-ctrl-row { display:flex; align-items:center; gap:16px; margin:0 0 14px; flex-wrap:wrap; }
@@ -413,9 +424,57 @@
     transform:none !important;
   }
   .nav-dropdown a:hover { color:#187fc2; background:rgba(24,127,194,.08); }
-  @media (max-width:640px) {
-    .nav-links a { font-size:.75rem; padding:4px 7px; }
-    .nav-logo { font-size:.92rem; }
+  @media (max-width:720px) {
+    .nav-inner { padding:8px 12px; gap:10px; }
+    .nav-logo { font-size:.92rem; flex-shrink:0; }
+    /* links scroll sideways instead of running off screen; no hover menus on touch */
+    .nav-links { min-width:0; overflow-x:auto; padding:2px 0; scrollbar-width:none; }
+    .nav-links::-webkit-scrollbar { display:none; }
+    .nav-links a { font-size:.75rem; padding:4px 7px; white-space:nowrap; }
+    .nav-dropdown, .nav-has-sub::after { display:none; }
+  }
+
+  /* ── Mobile ────────────────────────────────────── */
+  @media (max-width:720px) {
+    .wrap, .demo-wrap { padding:0 16px; }
+    .section { padding:64px 0; }
+
+    .hero .content { padding:56px 16px; }
+    .authors { gap:4px 1em; margin:22px auto 6px; }
+    .author-pill { font-size:1.12rem; -webkit-text-stroke:5px #000; }
+    .affil { line-height:1.7; }
+    .affil-item { font-size:1rem; padding:0 6px; }
+    .links { gap:12px; }
+    .links a { font-size:1.1rem; }
+
+    .eval-img-card img { min-height:0; }
+    .eval-viewer { padding:18px 16px; }
+
+    .mining-controls > div:first-child { flex-wrap:wrap; }
+    .mining-controls > div:first-child > .ctrl-chips { flex:1 1 200px; }
+    .mode-btn { white-space:nowrap; }
+    .mining-1v1 { grid-template-columns:1fr; row-gap:16px; }
+    .mining-sep { display:none; }
+    .mining-1vn-wrap { grid-template-columns:52px 1fr 52px; column-gap:8px; }
+
+    .exp-panel { padding:16px 14px 14px; }
+    .exp-chart-block { margin-top:26px; }
+    .exp-overall-stat { padding:18px 16px; }
+    .exp-race-row { flex-wrap:wrap; row-gap:6px; }
+    .exp-race-name { width:100%; }
+
+    .abl-outer-panel { padding:16px 14px; }
+    .abl-bar-yticks-col { width:30px; }
+    .abl-bar-plot { gap:2px !important; }
+    .abl-bar-group, .abl-bar-item { min-width:0; }
+    .abl-bar-pair { padding:0 3% !important; gap:2px !important; }
+    .abl-bval { font-size:.5rem; }
+    .abl-sr-table th, .abl-sr-table td { padding:6px 4px; }
+    .abl-sr-table td { font-size:.8rem; }
+    .abl-sr-table tbody th { font-size:.74rem; white-space:normal; }
+
+    .ro-compare { grid-template-columns:1fr; row-gap:18px; }
+    .ro-divider-col { display:none; }
   }
 </style>
 </head>
@@ -468,7 +527,7 @@
     <div class="authors">
       <span class="author-pill"><a href="https://lin-nie.github.io/">Nie Lin</a><sup>1</sup></span>
       <span class="author-pill"><a href="https://tkhkaeio.github.io/">Takehiko Ohkawa</a><sup>1</sup></span>
-      <span class="author-pill"><a href="https://ch3cook-fdu.github.io/">Sijin Chen</a><sup>3</sup></span>
+      <span class="author-pill"><a href="https://ch3cook-fdu.github.io/">Sijin Chen</a><sup>2,3</sup></span>
       <span class="author-pill"><a href="https://github.com/ruoshiwen">Ruoshi Wen</a><sup>2</sup></span>
       <span class="author-pill">Zhuohang Li<sup>4</sup></span>
       <div style="width:100%;height:0;"></div>
@@ -479,8 +538,8 @@
       <span class="author-pill"><a href="https://cai-mj.github.io/">Minjie Cai</a><sup>1</sup></span>
       <div style="width:100%;height:0;"></div>
       <span class="author-pill"><a href="https://yusufma03.github.io/">Xiao Ma</a><sup>2</sup></span>
-      <span class="author-pill">Wei Xu<sup>2</sup></span>
-      <span class="author-pill"><a href="https://sites.google.com/ut-vision.org/ysato/">Yoichi Sato</a><sup>1</sup></span>
+      <span class="author-pill">Wei Xu<sup>2,†</sup></span>
+      <span class="author-pill"><a href="https://sites.google.com/ut-vision.org/ysato/">Yoichi Sato</a><sup>1,†</sup></span>
     </div>
 
     <div class="affil">
@@ -490,12 +549,17 @@
       <span class="affil-item"><sup>4</sup>Shanghai Jiao Tong University</span>
       <span class="affil-item"><sup>5</sup>Tsinghua University</span>
     </div>
+    <div class="affil">
+      <span class="affil-item"><sup>†</sup>Corresponding authors</span>
+    </div>
 
 <div class="links">
       <a href="https://arxiv.org/abs/2608.04196" target="_blank" rel="noopener"><i class="fas fa-file-lines"></i> Paper</a>
       <a href="https://www.youtube.com/watch?v=SsqdK0xTtzY" target="_blank" rel="noopener"><i class="fas fa-circle-play"></i> Demo</a>
+      <!-- Hidden until the links are ready
       <a href="#" class="disabled"><i class="fab fa-github"></i> Code</a>
       <a href="#" class="disabled"><span style="font-size:1.1em;">🤗</span> Hugging Face</a>
+      -->
     </div>
     </div>
     <div class="scrollcue">▼</div>
@@ -519,7 +583,7 @@
   <section class="section abstract" id="abstract">
     <div class="wrap reveal">
       <p class="sec-title" id="abstract-anchor">Abstract</p>
-      <p>Recent years have witnessed an explosive trend of scaling ego-centric human videos for robot manipulation, yet it remains unclear which data actually benefits dexterous manipulation. We present <b><span class="hl-yellow">SiMDex</span></b>, a <b><u><span class="hl-yellow">Si</span></u></b>milarity-based data <b><u><span class="hl-yellow">M</span></u></b>ining framework that casts human data selection for VLA post-training in <b><u><span class="hl-yellow">Dex</span></u></b>terous manipulation as a <b>recommendation problem</b>. For each robot demonstration, SiMDex employs a three-layer recall–ranking–re-ranking pipeline to extract task-relevant subsets from a pool of ~32M egocentric human samples, operating in a morphology-agnostic action space that requires no changes to VLA architecture or training. Against a strong baseline trained with an equal amount of randomly sampled human data, SiMDex uses only <b>~1.49M mined samples (&lt;5% of the pool)</b> yet improves the overall success rate <b>from 47.7% to 61.1%</b>—showing that <b>selective curation outperforms indiscriminate data&nbsp;mixing</b>.</p>
+      <p>Recent years have witnessed an explosive trend of scaling ego-centric human videos for robot manipulation, yet it remains unclear which data actually benefits dexterous manipulation. We present <b><span class="hl-yellow">SiMDex</span></b>, a <b><u><span class="hl-yellow">si</span></u></b>milarity-based data <b><u><span class="hl-yellow">m</span></u></b>ining framework that casts human data selection for VLA post-training in <b><u><span class="hl-yellow">dex</span></u></b>terous manipulation as a <b>recommendation problem</b>. For each robot demonstration, SiMDex runs a three-stage recall–ranking–re-ranking cascade over ~32M egocentric human samples: recall and ranking select a task-relevant subset in a morphology-agnostic action space, and re-ranking verifies it on pixels, with no change to VLA architecture or training. Against a strong baseline trained with an equal amount of randomly sampled human data, SiMDex uses only <b>~1.49M mined samples (&lt;5% of the pool)</b> yet improves the overall success rate <b>from 47.7% to 61.7%</b>—showing that <b>selective curation outperforms indiscriminate data&nbsp;mixing</b>.</p>
     </div>
   </section>
 
@@ -533,7 +597,7 @@
         <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">
           <li style="display:flex;gap:8px;"><span style="color:#187fc2;font-size:0.8em;margin-top:0.25em;flex-shrink:0;">▶</span><span><b>Recall — cast a wide net, cheaply.</b> We first pull broad candidates by <b>language and hand-pose similarity</b>, keeping the stage lightweight enough to <b>scale to tens of millions of samples</b>.</span></li>
           <li style="display:flex;gap:8px;"><span style="color:#187fc2;font-size:0.8em;margin-top:0.25em;flex-shrink:0;">▶</span><span><b>Ranking — align the actual motion.</b> We then score candidates by <b>fine-grained action similarity</b> — wrist trajectory, wrist rotation, and finger motion — so the retrieved demos move the way the target task does. This stage's output is the <b>mined subset used to train the VLA</b>.</span></li>
-          <li style="display:flex;gap:8px;"><span style="color:#187fc2;font-size:0.8em;margin-top:0.25em;flex-shrink:0;">▶</span><span><b>Re-ranking — verify with vision.</b> Finally, <b>optical flow</b> provides an <b>embodiment-agnostic</b> check, filtering out kinematic look-alikes whose real motion doesn't match — human hand or robot arm, only the motion has to agree.</span></li>
+          <li style="display:flex;gap:8px;"><span style="color:#187fc2;font-size:0.8em;margin-top:0.25em;flex-shrink:0;">▶</span><span><b>Re-ranking — verify with vision.</b> Re-ranking checks the mined subset on pixels with <b>optical flow</b>, an <b>embodiment-agnostic</b> signal, and flags kinematic look-alikes whose motion does not match. It does not change which samples are used for training.</span></li>
         </ul>
       </div>
       <p class="sub-title reveal" id="method-mining">Mining Human Demonstrations</p>
@@ -648,11 +712,11 @@
         <div class="eval-img-card">
           <img src="static/images/eval_tasks_hires.png" alt="Task Overview" style="width:100%;display:block;">
           <div style="font-size:clamp(0.92rem,0.95vw,1.15rem);color:#374151;line-height:1.65;margin-top:16px;">
-            <p style="margin-bottom:16px;">We design <b>three real-world dexterous tasks</b> as our evaluation suite, each targeting a different capability — <b>tool use</b>, <b>fine-grained finger dexterity</b>, and <b>multi-object generalization</b>. Every task enforces a strict sequence: <b>fail one stage and the rest is blocked</b>.</p>
+            <p style="margin-bottom:16px;">We design <b>three real-world dexterous tasks</b> as our evaluation suite, each targeting a different capability — <b>tool use</b>, <b>fine-grained finger dexterity</b>, and <b>precise grasping of multiple objects with diverse shapes</b>. <b>Stages are sequential</b> except in Pick &amp; Place, whose objects are scored independently.</p>
             <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
               <li style="display:flex;gap:8px;"><span style="color:#187fc2;font-size:0.8em;margin-top:0.25em;flex-shrink:0;">▶</span><span><b>Task I · Drill — <i>Tool use &amp; multi-step coordination.</i></b> The robot <b>grasps</b> the drill, <b>aligns and assembles</b> it onto a fixture, then <b>presses the trigger</b> — three dependent steps that must all land.</span></li>
               <li style="display:flex;gap:8px;"><span style="color:#187fc2;font-size:0.8em;margin-top:0.25em;flex-shrink:0;">▶</span><span><b>Task II · Flick Wheel — <i>Fine-grained finger dexterity.</i></b> The robot grasps the assembly, <b>twists</b> the wheel with two fingers, and <b>flicks</b> it off with one — our hardest test of precise fingertip control.</span></li>
-              <li style="display:flex;gap:8px;"><span style="color:#187fc2;font-size:0.8em;margin-top:0.25em;flex-shrink:0;">▶</span><span><b>Task III · Pick &amp; Place — <i>Generalization across shapes.</i></b> Four objects of <b>diverse geometries</b> are scattered on the table; the robot picks and places each at its target — testing how well skills transfer across object shapes.</span></li>
+              <li style="display:flex;gap:8px;"><span style="color:#187fc2;font-size:0.8em;margin-top:0.25em;flex-shrink:0;">▶</span><span><b>Task III · Pick &amp; Place — <i>Precise grasping across shapes.</i></b> Four objects of <b>diverse geometries</b> are scattered on the table; the robot picks and places each at its target — testing precise grasps across object shapes.</span></li>
             </ul>
             <p>Rather than scoring only final success, we grade <b>each stage separately</b> — a fine-grained breakdown that reveals <i>where</i> an improvement comes from and gives a more <b>three-dimensional</b> picture of a robot's dexterity.</p>
           </div>
@@ -723,7 +787,7 @@
                 <div class="exp-race-fill" id="exp-race-grd" style="width:0%;background:#9ca3af;"></div>
               </div>
               <span class="exp-race-num" id="exp-race-num-grd">0.0%</span>
-              <div class="exp-race-delta" style="visibility:hidden;pointer-events:none;" aria-hidden="true">+13.4%</div>
+              <div class="exp-race-delta" style="visibility:hidden;pointer-events:none;" aria-hidden="true">+14.0%</div>
             </div>
             <div class="exp-race-row">
               <span class="exp-race-name" style="color:#187fc2;font-weight:700;">SiMDex (Ours)</span>
@@ -731,7 +795,7 @@
                 <div class="exp-race-fill" id="exp-race-sim" style="width:0%;background:#187fc2;box-shadow:0 0 0 rgba(24,127,194,0);"></div>
               </div>
               <span class="exp-race-num" id="exp-race-num-sim" style="color:#187fc2;">0.0%</span>
-              <div class="exp-race-delta" id="exp-race-delta">+13.4%</div>
+              <div class="exp-race-delta" id="exp-race-delta">+14.0%</div>
             </div>
           </div>
         </div>
@@ -749,25 +813,9 @@
         </div>
         <div class="abl-outer-panel" id="abl-panel"></div>
         <div class="exp-overall-stat" id="abl-sr-box" style="margin-top:28px;">
-          <div class="exp-overall-label" id="abl-sr-label">Overall SR · 1× Data Scale</div>
-          <div class="exp-race-rows">
-            <div class="exp-race-row">
-              <span class="exp-race-name">GR-Dexter</span>
-              <div class="exp-race-track">
-                <div class="exp-race-fill" id="abl-race-grd" style="width:0%;background:#9ca3af;"></div>
-              </div>
-              <span class="exp-race-num" id="abl-race-num-grd" style="color:#555;">0.0%</span>
-              <div class="exp-race-delta" style="visibility:hidden;pointer-events:none;" aria-hidden="true">+12.7%</div>
-            </div>
-            <div class="exp-race-row">
-              <span class="exp-race-name" style="color:#1B6CA8;font-weight:700;">SiMDex (Ours)</span>
-              <div class="exp-race-track">
-                <div class="exp-race-fill" id="abl-race-sim" style="width:0%;background:#1B6CA8;"></div>
-              </div>
-              <span class="exp-race-num" id="abl-race-num-sim" style="color:#1B6CA8;">0.0%</span>
-              <div class="exp-race-delta" id="abl-race-delta"></div>
-            </div>
-          </div>
+          <div class="exp-overall-label">Overall SR vs. robot-data budget</div>
+          <table class="abl-sr-table" id="abl-sr-table"></table>
+          <p class="abl-sr-note">One round of five trials per budget; the 1× column is the first of the two rounds in Main Results.</p>
         </div>
       </div>
     </div>
@@ -857,11 +905,11 @@
       <ul style="list-style:none;padding:0;margin:0 0 32px;display:flex;flex-direction:column;gap:20px;">
         <li class="reveal" style="display:flex;gap:10px;">
           <span style="color:#187fc2;font-size:0.8em;margin-top:0.28em;flex-shrink:0;">▶</span>
-          <span style="font-size:clamp(0.92rem,0.95vw,1.15rem);color:#374151;line-height:1.65;"><b>Selection beats scale.</b> For dexterous VLA post-training, which human data you use matters more than how much — a well-chosen &lt;5% of the pool beats an equal amount sampled at random, lifting overall success from 47.7% to 61.1%, with the biggest gains where robot data is scarce.</span>
+          <span style="font-size:clamp(0.92rem,0.95vw,1.15rem);color:#374151;line-height:1.65;"><b>Selection beats scale.</b> For dexterous VLA post-training, which human data you use matters more than how much — a well-chosen &lt;5% of the pool beats an equal amount sampled at random, lifting overall success from 47.7% to 61.7%. SiMDex leads the baseline at every robot-data budget we test (0.25× to 2×), with the largest gain (+17.3) at 0.5×.</span>
         </li>
         <li class="reveal" style="display:flex;gap:10px;">
           <span style="color:#187fc2;font-size:0.8em;margin-top:0.28em;flex-shrink:0;">▶</span>
-          <span style="font-size:clamp(0.92rem,0.95vw,1.15rem);color:#374151;line-height:1.65;"><b>Collection pays off twice.</b> By re-mining the same egocentric corpus already used for pre-training — now task-aware — SiMDex extracts a second round of value from data you've already gathered, reducing reliance on costly robot demonstrations without collecting anything new.</span>
+          <span style="font-size:clamp(0.92rem,0.95vw,1.15rem);color:#374151;line-height:1.65;"><b>Collection pays off twice.</b> By re-mining the same egocentric corpus already used for pre-training — now task-aware — SiMDex extracts a second round of value from data you've already gathered, without collecting anything new. Selective human-data mining is a practical complement to the costly collection of more robot demonstrations.</span>
         </li>
         <li class="reveal" style="display:flex;gap:10px;">
           <span style="color:#187fc2;font-size:0.8em;margin-top:0.28em;flex-shrink:0;">▶</span>
@@ -869,7 +917,7 @@
         </li>
         <li class="reveal" style="display:flex;gap:10px;">
           <span style="color:#187fc2;font-size:0.8em;margin-top:0.28em;flex-shrink:0;">▶</span>
-          <span style="font-size:clamp(0.92rem,0.95vw,1.15rem);color:#374151;line-height:1.65;"><b>For dexterity, grade the stages, not just the outcome.</b> Success rate alone collapses a rich, multi-step skill into a single bit. Scoring each sub-stage separately — grasp, align, twist, place — reveals where a policy succeeds or breaks down, exposes gains that a pass/fail metric would hide, and gives a far more faithful measure of dexterous ability.</span>
+          <span style="font-size:clamp(0.92rem,0.95vw,1.15rem);color:#374151;line-height:1.65;"><b>For dexterity, grade the stages, not just the outcome.</b> Binary success alone collapses a rich, multi-step skill into a single bit. Scoring each sub-stage separately — grasp, align, twist, place — reveals where a policy succeeds or breaks down, exposes gains that a pass/fail metric would hide, and gives a far more faithful measure of dexterous ability.</span>
         </li>
       </ul>
       <p class="reveal" style="font-size:clamp(0.92rem,0.95vw,1.15rem);color:#6b7280;line-height:1.65;font-style:italic;border-left:3px solid #e5e7eb;padding-left:16px;margin:0;"><b style="font-style:normal;color:#374151;">Still a long road ahead.</b> SiMDex is an early step toward robots that acquire new skills by retrieving human experience — not a finished solution. Much remains to be done.</p>
@@ -1170,26 +1218,32 @@
     renderMiningContent();
 
     /* ===== EXPERIMENTS ===== */
+    // delta: sub-task Δ as reported in the paper (from unrounded scores), not recomputed here
     const EXP_MAIN = {
       drill: {
         label:'Drill', max:3,
         subtasks:['Grasp','Assem.','Drill'],
         grd:{ scores:[0.80,0.80,0.33], std:[0.00,0.00,0.00], sr:64.5 },
         sim:{ scores:[0.73,0.63,0.27], std:[0.10,0.33,0.28], sr:54.5 },
+        delta:[-0.07,-0.17,-0.07],
       },
       flick: {
         label:'Flick Wheel', max:3,
         subtasks:['Grasp','Twist','Flick'],
         grd:{ scores:[0.60,0.13,0.00], std:[0.14,0.19,0.00], sr:24.5 },
-        sim:{ scores:[0.80,0.47,0.10], std:[0.09,0.09,0.00], sr:45.5 },
+        sim:{ scores:[0.85,0.47,0.10], std:[0.07,0.09,0.00], sr:47.2 },
+        delta:[0.25,0.33,0.10],
       },
       pick: {
         label:'Pick & Place', max:4,
         subtasks:['Obj. 1','Obj. 2','Obj. 3','Obj. 4'],
         grd:{ scores:[0.30,0.67,0.53,0.67], std:[0.05,0.09,0.09,0.09], sr:54.0 },
-        sim:{ scores:[0.67,0.87,0.97,0.83], std:[0.19,0.00,0.05,0.05], sr:83.4 },
+        sim:{ scores:[0.67,0.87,0.97,0.83], std:[0.19,0.00,0.05,0.05], sr:83.3 },
+        delta:[0.37,0.20,0.44,0.17],
       }
     };
+    // Overall SR (%) as reported in the paper, not recomputed from the per-task values
+    const EXP_OVERALL_SR = { grd:47.7, sim:61.7 };
 
 
 
@@ -1197,13 +1251,15 @@
     let overallSRDone = false;
 
     const EXP_PLOT_H = 450;
+    const EXP_PLOT_H_MOBILE = 220;
+    const MOBILE_MQ = window.matchMedia('(max-width:720px)');
     const EXP_GROUPS = [
       { key:'drill', label:'Drill',        bg:'rgba(27,108,168,.07)',   simColor:'#1B6CA8', grdColor:'#8FB8D8', flex:3,
-        subtasks: EXP_MAIN.drill.subtasks, grd: EXP_MAIN.drill.grd.scores, sim: EXP_MAIN.drill.sim.scores },
+        subtasks: EXP_MAIN.drill.subtasks, grd: EXP_MAIN.drill.grd.scores, sim: EXP_MAIN.drill.sim.scores, delta: EXP_MAIN.drill.delta },
       { key:'flick', label:'Flick Wheel',  bg:'rgba(160,140,110,.06)',  simColor:'#C08000', grdColor:'#C9A86A', flex:3,
-        subtasks: EXP_MAIN.flick.subtasks, grd: EXP_MAIN.flick.grd.scores, sim: EXP_MAIN.flick.sim.scores },
+        subtasks: EXP_MAIN.flick.subtasks, grd: EXP_MAIN.flick.grd.scores, sim: EXP_MAIN.flick.sim.scores, delta: EXP_MAIN.flick.delta },
       { key:'pick',  label:'Pick & Place', bg:'rgba(61,122,87,.07)',    simColor:'#3D7A57', grdColor:'#85B89A', flex:4,
-        subtasks: EXP_MAIN.pick.subtasks,  grd: EXP_MAIN.pick.grd.scores,  sim: EXP_MAIN.pick.sim.scores },
+        subtasks: EXP_MAIN.pick.subtasks,  grd: EXP_MAIN.pick.grd.scores,  sim: EXP_MAIN.pick.sim.scores,  delta: EXP_MAIN.pick.delta },
     ];
 
     function animateExpBars(){
@@ -1216,8 +1272,8 @@
     function animateOverallSR(){
       if(overallSRDone) return;
       overallSRDone = true;
-      const grdSR = (EXP_MAIN.drill.grd.sr + EXP_MAIN.flick.grd.sr + EXP_MAIN.pick.grd.sr) / 3;
-      const simSR = (EXP_MAIN.drill.sim.sr + EXP_MAIN.flick.sim.sr + EXP_MAIN.pick.sim.sr) / 3;
+      const grdSR = EXP_OVERALL_SR.grd;
+      const simSR = EXP_OVERALL_SR.sim;
       function countUp(numEl, barEl, target, isOurs, delayMs){
         const duration = 1400;
         const t0 = performance.now();
@@ -1248,13 +1304,18 @@
     function renderExpMain(animate){
       const yticks = ['1.0','0.8','0.6','0.4','0.2','0.0'];
       const gridPcts = [100,80,60,40,20];
+      // On phones each task gets its own shorter chart, stacked vertically
+      const mobile = MOBILE_MQ.matches;
+      const plotH = mobile ? EXP_PLOT_H_MOBILE : EXP_PLOT_H;
+      // Bars stand on the sub-task labels, so the 0–1 axis spans 24px less than the plot
+      const barScale = plotH - 24;
 
       const sepHtml = `<div style="width:1px;align-self:stretch;border-left:2px dashed #d1d5db;margin:0 4px;flex-shrink:0;"></div>`;
-      const groupsHtml = EXP_GROUPS.map((g,gi)=>{
+      const groupHtml = g => {
         const pairs = g.subtasks.map((s,i)=>{
-          const gh = Math.round(g.grd[i] * EXP_PLOT_H);
-          const sh = Math.round(g.sim[i] * EXP_PLOT_H);
-          const delta = g.sim[i] - g.grd[i];
+          const gh = Math.round(g.grd[i] * barScale);
+          const sh = Math.round(g.sim[i] * barScale);
+          const delta = g.delta[i];
           const dSign = delta >= 0 ? '+' : '';
           const dColor = delta > 0.005 ? '#16a34a' : delta < -0.005 ? '#dc2626' : '#6b7280';
           return `<div class="exp-sub-item" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;position:relative;z-index:1;">
@@ -1272,11 +1333,26 @@
             <div style="font-size:.6rem;color:#9ca3af;margin-top:5px;text-align:center;line-height:1.2;">${s}</div>
           </div>`;
         }).join('');
-        return (gi > 0 ? sepHtml : '') + `<div class="exp-tgroup" data-task="${g.key}" style="flex:${g.flex};display:flex;align-items:flex-end;gap:6px;position:relative;padding:0 8px;height:100%;">
+        return `<div class="exp-tgroup" data-task="${g.key}" style="flex:${g.flex};display:flex;align-items:flex-end;gap:6px;position:relative;padding:0 8px;height:100%;">
           <div style="position:absolute;inset:0;border-radius:6px 6px 0 0;background:${g.bg};pointer-events:none;"></div>
           ${pairs}
         </div>`;
-      }).join('');
+      };
+      const chartHtml = groups => `
+        <div style="display:flex;gap:0;">
+          <div style="display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end;width:34px;padding-bottom:42px;flex-shrink:0;">
+            ${yticks.map(t=>`<span style="font-size:.6rem;color:#9ca3af;line-height:1;">${t}</span>`).join('')}
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="position:relative;display:flex;align-items:flex-end;gap:6px;height:${plotH}px;border-bottom:2px solid #e5e7eb;">
+              ${gridPcts.map(p=>`<div style="position:absolute;left:0;right:0;bottom:${p}%;height:1px;background:#f0f1f3;pointer-events:none;"></div>`).join('')}
+              ${groups.map((g,gi)=>(gi > 0 ? sepHtml : '') + groupHtml(g)).join('')}
+            </div>
+            <div style="display:flex;gap:6px;margin-top:8px;">
+              ${groups.map(g=>`<div style="flex:${g.flex};text-align:center;font-size:.75rem;font-weight:700;color:#374151;">${g.label}</div>`).join('')}
+            </div>
+          </div>
+        </div>`;
 
       document.querySelector('.exp-panel').innerHTML = `
         <div style="display:flex;gap:16px;align-items:center;margin-bottom:16px;flex-wrap:wrap;">
@@ -1290,20 +1366,7 @@
             </div>`).join('')}
           <div style="margin-left:6px;font-size:.8rem;font-weight:600;color:#374151;">Light = GR-Dexter &nbsp;·&nbsp; Dark = SiMDex (Ours)</div>
         </div>
-        <div style="display:flex;gap:0;">
-          <div style="display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end;width:34px;padding-bottom:42px;flex-shrink:0;">
-            ${yticks.map(t=>`<span style="font-size:.6rem;color:#9ca3af;line-height:1;">${t}</span>`).join('')}
-          </div>
-          <div style="flex:1;min-width:0;">
-            <div style="position:relative;display:flex;align-items:flex-end;gap:6px;height:${EXP_PLOT_H}px;border-bottom:2px solid #e5e7eb;">
-              ${gridPcts.map(p=>`<div style="position:absolute;left:0;right:0;bottom:${p}%;height:1px;background:#f0f1f3;pointer-events:none;"></div>`).join('')}
-              ${groupsHtml}
-            </div>
-            <div style="display:flex;gap:6px;margin-top:8px;">
-              ${EXP_GROUPS.map(g=>`<div style="flex:${g.flex};text-align:center;font-size:.75rem;font-weight:700;color:#374151;">${g.label}</div>`).join('')}
-            </div>
-          </div>
-        </div>`;
+        ${mobile ? EXP_GROUPS.map(g=>`<div class="exp-chart-block">${chartHtml([g])}</div>`).join('') : chartHtml(EXP_GROUPS)}`;
 
       if(animate || expPanelVisible){
         requestAnimationFrame(()=>requestAnimationFrame(()=>{ animateExpBars(); animateOverallSR(); }));
@@ -1323,6 +1386,7 @@
     }
 
     renderExpMain();
+    MOBILE_MQ.addEventListener('change', ()=>renderExpMain());
 
     document.getElementById('exp-main-task-tabs').querySelectorAll('[data-task]').forEach(b=>{
       b.addEventListener('click',()=>{
@@ -1341,32 +1405,48 @@
       scales:['0.25×','0.5×','1×','2×'],
       times: ['~3.1h','~6.2h','~12.4h','~24.9h'],
       grd:{
-        overall:[0.294055556,0.408555556,0.453111111,0.5085],
-        drill:  [0.266,0.355333333,0.644666667,0.688],
-        flick:  [0.166666667,0.355333333,0.166666667,0.222],
-        pick:   [0.4495,0.515,0.548,0.6155],
+        overall:[0.294,0.409,0.453,0.509],
+        drill:  [0.266,0.355,0.645,0.688],
+        flick:  [0.167,0.355,0.167,0.222],
+        pick:   [0.450,0.515,0.548,0.616],
       },
       sim:{
-        overall:[0.36,0.58,0.58,0.57],
-        drill:  [0.355333333,0.489333333,0.377333333,0.622],
-        flick:  [0.3,0.488666667,0.5,0.322],
-        pick:   [0.432,0.7665,0.867,0.7665],
+        overall:[0.362,0.582,0.585,0.570],
+        drill:  [0.355,0.489,0.377,0.622],
+        flick:  [0.300,0.489,0.511,0.322],
+        pick:   [0.432,0.767,0.867,0.767],
+      },
+      // Δ (pp) as reported in the paper, not recomputed from the rounded values above
+      delta:{
+        overall:[6.8,17.3,13.2,6.2],
+        drill:  [8.9,13.4,-26.7,-6.6],
+        flick:  [13.3,13.3,34.5,10.0],
+        pick:   [-1.8,25.2,31.9,15.1],
       },
       simColors:{drill:'#1B6CA8',flick:'#C08000',pick:'#3D7A57'},
     };
 
     let ablVisible=false, ablTask='overall';
 
-    // ── Line chart constants (Overall) ──────────────────────────────────────
-    const ABL_W=700,ABL_H=300,ABL_LP=58,ABL_RP=22,ABL_TP=32,ABL_BP=50;
-    const ABL_CW=ABL_W-ABL_LP-ABL_RP, ABL_CH=ABL_H-ABL_TP-ABL_BP;
+    // ── Line chart geometry (Overall) ───────────────────────────────────────
+    // On phones the SVG is drawn at the panel's real width so its text stays readable
     const ABL_YMIN=0.20,ABL_YMAX=0.66;
-    const ABL_XS=[0,1,2,3].map(i=>ABL_LP+i/3*ABL_CW);
+    let ABL_W,ABL_H,ABL_LP,ABL_RP,ABL_TP,ABL_BP,ABL_CW,ABL_CH,ABL_XS,ABL_GY,ABL_SY;
     const ablY=v=>ABL_TP+ABL_CH-(v-ABL_YMIN)/(ABL_YMAX-ABL_YMIN)*ABL_CH;
-    const ABL_GY=ABL.grd.overall.map(ablY);
-    const ABL_SY=ABL.sim.overall.map(ablY);
+    function setAblGeometry(){
+      const panel=document.getElementById('abl-panel');
+      const narrow=MOBILE_MQ.matches;
+      const pad=parseFloat(getComputedStyle(panel).paddingLeft)+parseFloat(getComputedStyle(panel).paddingRight);
+      ABL_W=narrow?Math.max(260,Math.round(panel.clientWidth-pad)):700;
+      ABL_H=narrow?250:300; ABL_LP=narrow?40:58; ABL_RP=narrow?18:22; ABL_TP=32; ABL_BP=narrow?46:50;
+      ABL_CW=ABL_W-ABL_LP-ABL_RP; ABL_CH=ABL_H-ABL_TP-ABL_BP;
+      ABL_XS=[0,1,2,3].map(i=>ABL_LP+i/3*ABL_CW);
+      ABL_GY=ABL.grd.overall.map(ablY);
+      ABL_SY=ABL.sim.overall.map(ablY);
+    }
 
     function renderAblLine(){
+      setAblGeometry();
       const yticks=[0.20,0.30,0.40,0.50,0.60];
       const grid=yticks.map(v=>`<line stroke="#f0f1f3" stroke-width="1" x1="${ABL_LP}" y1="${ablY(v).toFixed(1)}" x2="${ABL_W-ABL_RP}" y2="${ablY(v).toFixed(1)}"/>`).join('');
       const yLbls=yticks.map(v=>`<text style="font-size:11px;fill:#9ca3af;font-family:inherit;" text-anchor="end" x="${ABL_LP-5}" y="${(ablY(v)+4).toFixed(1)}">${(v*100).toFixed(0)}%</text>`).join('');
@@ -1377,11 +1457,11 @@
       const fwdGrd=ABL_XS.map((x,i)=>(i?'L':'M')+x.toFixed(1)+','+ABL_GY[i].toFixed(1)).join(' ');
       const bwdGrd=[3,2,1,0].map(i=>'L'+ABL_XS[i].toFixed(1)+','+ABL_GY[i].toFixed(1)).join(' ');
       const dLbls=ABL.scales.map((s,i)=>{
-        const d=ABL.sim.overall[i]-ABL.grd.overall[i];
+        const d=ABL.delta.overall[i];
         const sign=d>=0?'+':'';
-        const col=d>0.005?'#16a34a':d<-0.005?'#dc2626':'#6b7280';
+        const col=d>0.5?'#16a34a':d<-0.5?'#dc2626':'#6b7280';
         const my=((ABL_SY[i]+ABL_GY[i])/2+4).toFixed(1);
-        return `<text class="abl-dlbl" style="font-size:10.5px;font-weight:800;font-family:inherit;fill:${col};opacity:0;" text-anchor="middle" x="${ABL_XS[i].toFixed(1)}" y="${my}">${sign}${(d*100).toFixed(1)}%</text>`;
+        return `<text class="abl-dlbl" style="font-size:10.5px;font-weight:800;font-family:inherit;fill:${col};opacity:0;" text-anchor="middle" x="${ABL_XS[i].toFixed(1)}" y="${my}">${sign}${d.toFixed(1)}%</text>`;
       }).join('');
       const gDots=ABL_XS.map((x,i)=>`<circle class="abl-dot-grd" cx="${x.toFixed(1)}" cy="${ABL_GY[i].toFixed(1)}" r="5" data-idx="${i}"/>`).join('');
       const sDots=ABL_XS.map((x,i)=>`<circle class="abl-dot-sim" cx="${x.toFixed(1)}" cy="${ABL_SY[i].toFixed(1)}" r="6.5" data-idx="${i}"/>`).join('');
@@ -1410,7 +1490,7 @@
           if(!tt) return;
           const i=+dot.dataset.idx;
           const gv=(ABL.grd.overall[i]*100).toFixed(1), sv=(ABL.sim.overall[i]*100).toFixed(1);
-          const d=(ABL.sim.overall[i]-ABL.grd.overall[i])*100;
+          const d=ABL.delta.overall[i];
           const sign=d>=0?'+':'';
           const dc=d>0.5?'#16a34a':d<-0.5?'#dc2626':'#6b7280';
           tt.innerHTML=`<b>${ABL.scales[i]}</b>  ${ABL.times[i]}<br>GR&#8209;Dexter: ${gv}%<br><span style="color:#1B6CA8;font-weight:700;">SiMDex: ${sv}%</span><br><span style="color:${dc};">Δ ${sign}${d.toFixed(1)}%</span>`;
@@ -1449,24 +1529,25 @@
     }
 
     // ── Bar chart (per-task) ─────────────────────────────────────────────────
-    const ABL_BAR_H=450;
+    const ABL_BAR_H=450, ABL_BAR_H_MOBILE=280;
     function renderAblBar(taskKey){
       const sc=ABL.simColors[taskKey]||'#1B6CA8', gc='#9ca3af';
       const gd=ABL.grd[taskKey], sd=ABL.sim[taskKey];
       const yticks=[1.0,0.8,0.6,0.4,0.2,0.0];
       const gridHtml=yticks.map(v=>`<div style="position:absolute;left:0;right:0;top:${((1-v)*100).toFixed(1)}%;height:1px;background:${v===0?'#e5e7eb':'#f3f4f6'};pointer-events:none;z-index:0;"></div>`).join('');
       const sep=`<div style="width:1px;align-self:stretch;border-left:2px dashed #e5e7eb;margin:0 2px;flex-shrink:0;"></div>`;
+      const barH=MOBILE_MQ.matches?ABL_BAR_H_MOBILE:ABL_BAR_H;
       const groups=ABL.scales.map((scale,gi)=>{
-        const gv=gd[gi],sv=sd[gi],delta=sv-gv;
+        const gv=gd[gi],sv=sd[gi],delta=ABL.delta[taskKey][gi];
         const sign=delta>=0?'+':'';
-        const dc=delta>0.005?'#16a34a':delta<-0.005?'#dc2626':'#6b7280';
-        const db=delta>0.005?'#f0fdf4':delta<-0.005?'#fef2f2':'#f9fafb';
-        const dbd=delta>0.005?'#86efac':delta<-0.005?'#fca5a5':'#e5e7eb';
-        const gh=Math.round(gv*ABL_BAR_H), sh=Math.round(sv*ABL_BAR_H);
+        const dc=delta>0.5?'#16a34a':delta<-0.5?'#dc2626':'#6b7280';
+        const db=delta>0.5?'#f0fdf4':delta<-0.5?'#fef2f2':'#f9fafb';
+        const dbd=delta>0.5?'#86efac':delta<-0.5?'#fca5a5':'#e5e7eb';
+        const gh=Math.round(gv*barH), sh=Math.round(sv*barH);
         return (gi>0?sep:'')+`
-          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;position:relative;z-index:1;">
-            <div class="abl-group-delta" style="position:absolute;top:-26px;left:50%;transform:translateX(-50%);background:${db};color:${dc};border:1px solid ${dbd};font-size:.65rem;font-weight:800;padding:2px 7px;border-radius:5px;white-space:nowrap;opacity:0;transition:opacity .35s;pointer-events:none;">${sign}${(delta*100).toFixed(1)}%</div>
-            <div style="display:flex;gap:3px;align-items:flex-end;width:100%;padding:0 12%;">
+          <div class="abl-bar-group" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;position:relative;z-index:1;">
+            <div class="abl-group-delta" style="position:absolute;top:-26px;left:50%;transform:translateX(-50%);background:${db};color:${dc};border:1px solid ${dbd};font-size:.65rem;font-weight:800;padding:2px 7px;border-radius:5px;white-space:nowrap;opacity:0;transition:opacity .35s;pointer-events:none;">${sign}${delta.toFixed(1)}%</div>
+            <div class="abl-bar-pair" style="display:flex;gap:3px;align-items:flex-end;width:100%;padding:0 12%;">
               <div class="abl-bar-item" style="flex:1;">
                 ${gv>0?`<span class="abl-bval" style="color:${gc};">${(gv*100).toFixed(1)}%</span>`:''}
                 <div class="abl-bar-el" data-h="${gh}" style="background:${gc};height:0;width:100%;border-radius:3px 3px 0 0;"></div>
@@ -1490,7 +1571,7 @@
           </div>
           <div class="abl-bar-chart-area">
             <div style="height:26px;"></div>
-            <div style="display:flex;align-items:flex-end;gap:6px;height:${ABL_BAR_H}px;border-bottom:2px solid #e5e7eb;position:relative;overflow:visible;">
+            <div class="abl-bar-plot" style="display:flex;align-items:flex-end;gap:6px;height:${barH}px;border-bottom:2px solid #e5e7eb;position:relative;overflow:visible;">
               ${gridHtml}${groups}
             </div>
             <div style="display:flex;gap:6px;margin-top:6px;">${scaleLbls}</div>
@@ -1504,76 +1585,24 @@
       setTimeout(()=>{ document.querySelectorAll('#abl-panel .abl-group-delta').forEach(el=>{ el.style.opacity='1'; }); }, 920);
     }
 
-    // ── SR box (bottom) ─────────────────────────────────────────────────────
-    // Shows 1× scale SR for whichever task/view is active
-    let ablSRDone=false;
-
-    // task→ label mapping for the SR box
-    const ABL_SR_LABELS={
-      overall:'Overall SR · 1× Data Scale',
-      drill:'Drill SR · 1× Data Scale',
-      flick:'Flick Wheel SR · 1× Data Scale',
-      pick:'Pick & Place SR · 1× Data Scale',
-    };
-
-    function animateAblSR(taskKey, resetFirst){
-      const grdVal=ABL.grd[taskKey][2]*100;   // index 2 = 1× scale
-      const simVal=ABL.sim[taskKey][2]*100;
-      const delta=simVal-grdVal;
-      const sign=delta>=0?'+':'';
-
-      // update label
-      const lbl=document.getElementById('abl-sr-label');
-      if(lbl) lbl.textContent=ABL_SR_LABELS[taskKey]||'SR · 1× Data Scale';
-
-      // reset delta badge
-      const db=document.getElementById('abl-race-delta');
-      if(db){ db.classList.remove('show'); db.textContent=sign+delta.toFixed(1)+'%'; }
-
-      // if re-triggering on tab switch, reset bars to 0 first
-      const barGrd=document.getElementById('abl-race-grd');
-      const barSim=document.getElementById('abl-race-sim');
-      const numGrd=document.getElementById('abl-race-num-grd');
-      const numSim=document.getElementById('abl-race-num-sim');
-      if(!barGrd||!barSim) return;
-
-      if(resetFirst){
-        barGrd.style.transition='none'; barGrd.style.width='0%';
-        barSim.style.transition='none'; barSim.style.width='0%';
-        numGrd.textContent='0.0%'; numSim.textContent='0.0%';
-        barSim.classList.remove('glowing');
-        void barGrd.offsetWidth; // reflow
-      }
-
-      function countUp(numEl,barEl,target,isOurs,delayMs){
-        const dur=1300,t0=performance.now();
-        function tick(now){
-          const elapsed=now-t0-delayMs;
-          if(elapsed<0){requestAnimationFrame(tick);return;}
-          const p=Math.min(elapsed/dur,1);
-          const eased=1-Math.pow(1-p,3);
-          const v=target*eased;
-          numEl.textContent=v.toFixed(1)+'%';
-          barEl.style.transition='';
-          barEl.style.width=v+'%';
-          if(p<1){requestAnimationFrame(tick);}
-          else{
-            numEl.textContent=target.toFixed(1)+'%';
-            barEl.style.width=target+'%';
-            if(isOurs){
-              barEl.classList.add('glowing');
-              setTimeout(()=>{ if(db) db.classList.add('show'); },350);
-            }
-          }
-        }
-        requestAnimationFrame(tick);
-      }
-      countUp(numGrd,barGrd,grdVal,false,0);
-      countUp(numSim,barSim,simVal,true,480);
+    // ── Overall SR table (bottom) ───────────────────────────────────────────
+    function renderAblTable(){
+      const tbl=document.getElementById('abl-sr-table');
+      if(!tbl) return;
+      const pct=v=>(v*100).toFixed(1)+'%';
+      const row=(cls,name,cells)=>`<tr class="${cls}"><th scope="row">${name}</th>${cells}</tr>`;
+      tbl.innerHTML=
+        `<thead><tr><th></th>${ABL.scales.map(s=>`<th scope="col">${s}</th>`).join('')}</tr></thead>
+        <tbody>
+          ${row('grd','GR-Dexter',ABL.grd.overall.map(v=>`<td>${pct(v)}</td>`).join(''))}
+          ${row('sim','SiMDex (Ours)',ABL.sim.overall.map(v=>`<td>${pct(v)}</td>`).join(''))}
+          ${row('delta','Δ',ABL.delta.overall.map(d=>`<td class="${d>0.5?'pos':d<-0.5?'neg':''}">${d>=0?'+':''}${d.toFixed(1)}%</td>`).join(''))}
+        </tbody>`;
     }
 
     // ── Init ────────────────────────────────────────────────────────────────
     renderAblLine();
+    renderAblTable();
 
     const ablSectionEl=document.getElementById('ablation');
     if(ablSectionEl){
@@ -1581,11 +1610,29 @@
         if(entries[0].isIntersecting&&!ablVisible){
           ablVisible=true;
           requestAnimationFrame(()=>requestAnimationFrame(ablTask==='overall'?animateAblLine:animateAblBars));
-          requestAnimationFrame(()=>requestAnimationFrame(()=>animateAblSR(ablTask,false)));
         }
       },{threshold:0.1});
       ablIo.observe(ablSectionEl);
     }
+
+    // Redraw for the new width when a phone rotates or the window crosses the mobile breakpoint
+    let ablPanelW=document.getElementById('abl-panel').clientWidth, ablResizeT;
+    window.addEventListener('resize',()=>{
+      clearTimeout(ablResizeT);
+      ablResizeT=setTimeout(()=>{
+        const w=document.getElementById('abl-panel').clientWidth;
+        if(w===ablPanelW) return;
+        ablPanelW=w;
+        if(ablTask!=='overall' || (!MOBILE_MQ.matches && ABL_W===700)) return;
+        renderAblLine();
+        if(ablVisible) animateAblLine();
+      },200);
+    });
+    MOBILE_MQ.addEventListener('change',()=>{
+      if(ablTask==='overall') return;
+      renderAblBar(ablTask);
+      if(ablVisible) requestAnimationFrame(()=>requestAnimationFrame(animateAblBars));
+    });
 
     document.getElementById('abl-tabs').querySelectorAll('.abl-tab').forEach(btn=>{
       btn.addEventListener('click',()=>{
@@ -1600,8 +1647,6 @@
           renderAblBar(ablTask);
           requestAnimationFrame(()=>requestAnimationFrame(animateAblBars));
         }
-        // re-animate SR box for the new task
-        if(ablVisible) setTimeout(()=>animateAblSR(ablTask,true),80);
       });
     });
 
@@ -1716,12 +1761,23 @@
     const navSectionIds = ['demo','abstract','method','evaluation','experiments','rollout','takeaways'];
     const navLinks = document.querySelectorAll('#nav-links a[data-section]');
 
+    // On phones the link row scrolls sideways; keep the active link in view
+    function keepNavLinkVisible(link) {
+      const box = document.getElementById('nav-links');
+      if (box.scrollWidth <= box.clientWidth) return;
+      const lr = link.getBoundingClientRect(), br = box.getBoundingClientRect();
+      box.scrollBy({ left: (lr.left + lr.width / 2) - (br.left + br.width / 2), behavior: 'smooth' });
+    }
+
+    // A section is active while it crosses a thin band 40% down the viewport, so tall sections count too
     const navSectionObs = new IntersectionObserver(entries => {
       entries.forEach(e => {
         const link = document.querySelector(`#nav-links a[data-section="${e.target.id}"]`);
-        if (link) link.classList.toggle('nav-active', e.isIntersecting);
+        if (!link) return;
+        link.classList.toggle('nav-active', e.isIntersecting);
+        if (e.isIntersecting) keepNavLinkVisible(link);
       });
-    }, { threshold: 0.25, rootMargin: '-5% 0px -55% 0px' });
+    }, { rootMargin: '-40% 0px -59% 0px' });
 
     navSectionIds.forEach(id => {
       const el = document.getElementById(id);
