@@ -424,7 +424,8 @@
     transform:none !important;
   }
   .nav-dropdown a:hover { color:#187fc2; background:rgba(24,127,194,.08); }
-  @media (max-width:720px) {
+  /* the full link row needs ~800px, so the navbar switches to its compact form earlier than the page */
+  @media (max-width:860px) {
     .nav-inner { padding:8px 12px; gap:10px; }
     .nav-logo { font-size:.92rem; flex-shrink:0; }
     /* links scroll sideways instead of running off screen; no hover menus on touch */
@@ -476,6 +477,169 @@
     .ro-compare { grid-template-columns:1fr; row-gap:18px; }
     .ro-divider-col { display:none; }
   }
+
+  /* ── SiMTok (For You feed) ─────────────────────── */
+  .st-floor { display:grid; grid-template-columns:1fr auto 1fr; gap:36px; align-items:start; }
+  .st-side { font-size:clamp(0.92rem,0.95vw,1.15rem); color:#374151; line-height:1.55; min-width:0; }
+  .st-sub { font-size:clamp(1.1rem,1.3vw,1.4rem); font-weight:600; color:#6b7280; margin:4px 0 16px; }
+  .st-lead { margin-bottom:12px; }
+  .st-stamp { width:fit-content; max-width:100%; margin:-4px 0 18px; padding:6px 12px; border:1.5px solid #e5e7eb; border-radius:10px; font-size:.8rem; font-weight:600; color:#6b7280; line-height:1.5; text-wrap:balance; }
+  .st-stamp i { color:#187fc2; }
+  .st-stamp a { color:#187fc2; font-weight:700; text-decoration:none; }
+  .st-stamp a:hover { text-decoration:underline; }
+  .st-list { list-style:none; display:flex; flex-direction:column; gap:8px; }
+  .st-list li { display:flex; gap:8px; }
+  .st-list li > span:first-child { color:#187fc2; font-size:0.8em; margin-top:0.25em; flex-shrink:0; }
+  .st-keys { margin-top:18px; display:grid; grid-template-columns:auto 1fr; gap:6px 10px; align-items:center; font-size:.82rem; color:#6b7280; }
+  .st-keys p { grid-column:1 / -1; font-weight:600; color:#374151; }
+  .st-keys kbd { font-family:inherit; font-size:.75rem; font-weight:700; color:#374151; background:#fff; border:1px solid #e5e7eb; border-bottom-width:2px; border-radius:6px; padding:1px 7px; justify-self:start; }
+  .st-funnel { border:1.5px solid #e5e7eb; border-radius:14px; padding:12px 16px; margin-bottom:22px; }
+  .st-funnel div { display:flex; justify-content:space-between; gap:10px; font-size:.84rem; padding:5px 0; border-bottom:1px dashed #e5e7eb; }
+  .st-funnel div:last-child { border-bottom:none; }
+  .st-funnel b { color:#111; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .st-mined-head { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:10px; }
+  .st-mined-head b { font-size:1.05rem; color:#111; }
+  .st-mined-head span { font-size:.85rem; color:#6b7280; }
+  .st-mined-head span b { font-size:inherit; color:#187fc2; }
+  .st-mined-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+  .st-mined-grid button { border:none; padding:0; background:#ddd; border-radius:8px; overflow:hidden; aspect-ratio:16/7.9; cursor:pointer; position:relative; animation:st-pop .5s cubic-bezier(.34,1.56,.64,1) both; }
+  .st-mined-grid img { width:100%; height:100%; object-fit:cover; object-position:50% 100%; display:block; }
+  .st-mined-grid span { position:absolute; left:4px; bottom:3px; font-size:.62rem; font-weight:700; color:#fff; text-shadow:0 1px 3px rgba(0,0,0,.8); }
+  .st-mined-empty { font-size:.85rem; color:#6b7280; border:1.5px dashed #e5e7eb; border-radius:12px; padding:18px; text-align:center; }
+  .st-note { font-size:.78rem; color:#6b7280; line-height:1.5; margin-top:12px; }
+  .st-vision { container-type:inline-size; margin-top:22px; padding:18px 20px 20px; border-radius:16px; background:linear-gradient(135deg,#f0f9ff,#e8f4fd); border:1.5px solid #bfdbfe; }
+  .st-vision-eyebrow { display:flex; align-items:center; gap:6px; font-size:.74rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:#187fc2; }
+  /* the title scales with the card ("Recommendation algorithms" is ~14x the font size wide), so it always stays on two lines */
+  .st-vision-title { font-size:clamp(1rem,1.35vw,1.5rem); font-size:clamp(1rem,6.8cqi,1.6rem); font-weight:800; line-height:1.25; letter-spacing:-.01em; color:#111; margin-top:8px; }
+  .st-vision-text { font-size:clamp(0.92rem,0.95vw,1.08rem); color:#374151; line-height:1.55; margin-top:10px; }
+  .st-vision-text b { color:#111; }
+  /* even out line lengths so no paragraph ends on a lonely word or two */
+  .st-sub, .st-lead, .st-list li > span:last-child, .st-note, .st-mined-empty, .st-vision-title, .st-vision-text,
+  .st-plain h3, .st-plain p, .st-quote, .st-cta p, .st-text, .st-sheet-sub, .st-step p, .st-spec, .st-callout, .st-foot { text-wrap:balance; }
+  .st-line { display:block; text-wrap:balance; }
+  @keyframes st-pop { from { opacity:0; transform:translateY(12px) scale(.97); } to { opacity:1; transform:none; } }
+  @keyframes st-jelly { 0% { transform:scale(1); } 30% { transform:scale(.88); } 100% { transform:scale(1); } }
+  .st-jelly { animation:st-jelly .42s cubic-bezier(.34,1.56,.64,1) both; }
+
+  /* the phone */
+  .st-phone { position:relative; height:min(780px, calc(100vh - 110px)); height:min(780px, calc(100svh - 110px)); aspect-ratio:9 / 19.5; background:#000; border-radius:38px; overflow:hidden; box-shadow:0 0 0 10px #111, 0 30px 80px rgba(0,0,0,.25); outline:none; color:#fff; isolation:isolate; }
+  .st-phone:focus-visible { box-shadow:0 0 0 10px #111, 0 0 0 14px #187fc2, 0 30px 80px rgba(0,0,0,.25); }
+  .st-feed { position:absolute; inset:0; overflow-y:scroll; scroll-snap-type:y mandatory; overscroll-behavior:contain; scrollbar-width:none; }
+  .st-feed::-webkit-scrollbar { display:none; }
+  .st-card { position:relative; height:100%; scroll-snap-align:start; scroll-snap-stop:always; overflow:hidden; background:#000; user-select:none; -webkit-user-select:none; }
+  .st-bg { position:absolute; inset:-40px; width:calc(100% + 80px); height:calc(100% + 80px); object-fit:cover; filter:blur(26px) brightness(.45) saturate(1.2); }
+  .st-stage { position:absolute; inset:0; }
+  .st-stage figure { margin:0; position:relative; }
+  /* crop the top strip of each clip, which carries a burnt-in "frame / slow speed" overlay */
+  .st-stage video { width:100%; aspect-ratio:16/7.9; display:block; object-fit:cover; object-position:50% 100%; background:#111; }
+  .st-speed { position:absolute; left:6px; bottom:6px; font-size:.6rem; font-weight:800; letter-spacing:.02em; background:rgba(0,0,0,.55); padding:2px 6px; border-radius:4px; }
+  .st-human { position:absolute; left:0; right:0; top:50%; transform:translateY(-50%); }
+  .st-anchor { position:absolute; top:66px; left:12px; width:42%; z-index:3; border-radius:10px; overflow:hidden; box-shadow:0 6px 20px rgba(0,0,0,.45); border:2px solid rgba(255,255,255,.9); transition:transform .35s cubic-bezier(.34,1.56,.64,1); }
+  .st-anchor:hover { transform:scale(1.04); }
+  .st-anchor figcaption, .st-human figcaption { position:absolute; left:6px; top:6px; font-size:.62rem; font-weight:800; letter-spacing:.03em; background:rgba(0,0,0,.55); padding:2px 6px; border-radius:4px; }
+  .st-human figcaption, .st-anchor .st-speed { display:none; }
+  .st-card.st-split .st-anchor .st-speed, .st-card.st-split .st-human figcaption, .st-post-card .st-human figcaption { display:block; }
+  .st-card.st-split .st-stage { display:flex; flex-direction:column; justify-content:center; gap:10px; padding:0 0 70px; }
+  .st-card.st-split .st-anchor, .st-card.st-split .st-human { position:relative; inset:auto; top:auto; left:auto; transform:none; width:100%; border:none; border-radius:0; box-shadow:none; animation:st-pop .45s cubic-bezier(.34,1.56,.64,1) both; }
+  .st-card.st-split figcaption, .st-post-card .st-human figcaption { font-size:.72rem; }
+  .st-split-hint { display:none; position:absolute; left:0; right:0; top:64px; text-align:center; font-size:.78rem; font-weight:600; color:rgba(255,255,255,.85); z-index:2; }
+  .st-card.st-split .st-split-hint { display:block; }
+
+  /* overlay chrome */
+  .st-topbar { position:absolute; top:0; left:0; right:0; z-index:20; height:60px; display:flex; align-items:center; justify-content:center; gap:18px; background:linear-gradient(rgba(0,0,0,.55), transparent); pointer-events:none; }
+  .st-topbar button { pointer-events:auto; background:none; border:none; color:rgba(255,255,255,.65); font-weight:700; font-size:.98rem; cursor:pointer; padding:6px 2px; position:relative; font-family:inherit; }
+  .st-topbar button.st-on { color:#fff; }
+  .st-topbar button.st-on::after { content:''; position:absolute; left:30%; right:30%; bottom:0; height:3px; border-radius:2px; background:#fff; }
+  .st-topbar .st-info { position:absolute; right:14px; top:14px; font-size:1.05rem; color:#fff; }
+  .st-progress { position:absolute; top:0; left:0; height:3px; width:0; background:#187fc2; z-index:25; transition:width .4s cubic-bezier(.34,1.56,.64,1); }
+
+  .st-rail { position:absolute; right:8px; bottom:120px; z-index:6; display:flex; flex-direction:column; align-items:center; gap:16px; }
+  .st-rail button { background:none; border:none; color:#fff; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:3px; font-size:.68rem; font-weight:700; text-shadow:0 1px 4px rgba(0,0,0,.6); font-family:inherit; }
+  .st-rail i { font-size:1.6rem; filter:drop-shadow(0 2px 4px rgba(0,0,0,.5)); transition:transform .35s cubic-bezier(.34,1.56,.64,1), color .2s; }
+  .st-rail button:active i { transform:scale(.85); }
+  .st-avatar { width:46px; height:46px; border-radius:50%; background:#fff; color:#187fc2; display:grid; place-items:center; border:2px solid #fff; position:relative; margin-bottom:4px; }
+  .st-avatar i { font-size:1.25rem !important; filter:none !important; }
+  .st-avatar::after { content:'+'; position:absolute; bottom:-9px; left:50%; transform:translateX(-50%); width:19px; height:19px; border-radius:50%; background:#fe2c55; color:#fff; font-size:.85rem; font-weight:800; display:grid; place-items:center; line-height:1; }
+  .st-rail .st-liked i { color:#fe2c55; animation:st-jelly .45s cubic-bezier(.34,1.56,.64,1); }
+  .st-rail .st-on i { color:#7dd3fc; }
+  .st-disc { width:42px; height:42px; border-radius:50%; background:radial-gradient(circle, #333 30%, #111 32%, #222 60%, #111 62%); display:grid; place-items:center; border:7px solid #222; animation:st-spin 4s linear infinite; }
+  .st-disc i { font-size:.8rem !important; color:#7dd3fc; }
+  .st-card.st-paused .st-disc { animation-play-state:paused; }
+  @keyframes st-spin { to { transform:rotate(360deg); } }
+
+  .st-cap { position:absolute; left:12px; right:68px; bottom:16px; z-index:6; text-shadow:0 1px 4px rgba(0,0,0,.7); }
+  .st-handle { font-weight:800; font-size:.95rem; }
+  .st-handle small { font-weight:500; opacity:.8; font-size:.78rem; }
+  .st-text { font-size:.86rem; margin-top:4px; line-height:1.4; }
+  .st-tags { font-size:.82rem; font-weight:700; margin-top:3px; opacity:.95; }
+  .st-music { margin-top:8px; font-size:.78rem; display:flex; align-items:center; gap:6px; overflow:hidden; white-space:nowrap; }
+  .st-music span { display:inline-block; animation:st-marquee 9s linear infinite; }
+  @keyframes st-marquee { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+
+  .st-paused-icon { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%) scale(.6); font-size:3.4rem; color:rgba(255,255,255,.8); opacity:0; transition:opacity .2s, transform .35s cubic-bezier(.34,1.56,.64,1); pointer-events:none; z-index:4; }
+  .st-card.st-paused .st-paused-icon { opacity:1; transform:translate(-50%,-50%) scale(1); }
+  .st-burst { position:absolute; z-index:30; font-size:5rem; color:#fe2c55; pointer-events:none; animation:st-burst .9s cubic-bezier(.34,1.56,.64,1) forwards; filter:drop-shadow(0 4px 12px rgba(0,0,0,.4)); }
+  @keyframes st-burst { 0% { transform:translate(-50%,-50%) scale(0) rotate(-15deg); opacity:1; } 35% { transform:translate(-50%,-50%) scale(1.15) rotate(0); opacity:1; } 100% { transform:translate(-50%,-160%) scale(1) rotate(0); opacity:0; } }
+
+  /* robot post card */
+  .st-post { position:absolute; left:16px; right:16px; top:72px; z-index:5; }
+  .st-chip { display:inline-flex; align-items:center; gap:6px; background:#187fc2; padding:4px 10px; border-radius:999px; font-size:.74rem; font-weight:800; letter-spacing:.03em; }
+  .st-post h3 { font-size:1.7rem; font-weight:800; line-height:1.15; margin-top:10px; letter-spacing:-.01em; color:#fff; }
+  .st-quote { margin-top:8px; font-size:.9rem; opacity:.9; font-style:italic; }
+  .st-cta { position:absolute; left:16px; right:16px; bottom:26px; z-index:5; text-align:center; }
+  .st-cta p { font-size:.86rem; opacity:.9; }
+  .st-swipe { margin-top:10px; font-size:1.4rem; animation:st-bob 1.4s ease-in-out infinite; }
+  @keyframes st-bob { 0%,100% { transform:translateY(0); opacity:.6; } 50% { transform:translateY(-8px); opacity:1; } }
+
+  /* intro + end cards */
+  .st-plain { position:absolute; inset:0; overflow-y:auto; display:flex; flex-direction:column; justify-content:center; padding:70px 22px 40px; background:radial-gradient(120% 80% at 50% 0%, #10283d 0%, #000 70%); }
+  .st-plain h3 { font-size:1.9rem; font-weight:800; line-height:1.12; letter-spacing:-.02em; color:#fff; }
+  .st-plain p { margin-top:12px; font-size:.92rem; opacity:.88; line-height:1.5; }
+  .st-logo { font-size:2.6rem; font-weight:900; letter-spacing:-.03em; color:#f9be00; -webkit-text-stroke:4px #000; paint-order:stroke fill; }
+  .st-btns { margin-top:18px; display:flex; flex-wrap:wrap; gap:8px; }
+  .st-btns a, .st-btns button { border:1.5px solid rgba(255,255,255,.4); background:rgba(255,255,255,.08); color:#fff; border-radius:999px; padding:8px 14px; font-size:.85rem; font-weight:700; text-decoration:none; cursor:pointer; font-family:inherit; }
+  .st-btns .st-primary { background:#fe2c55; border-color:#fe2c55; }
+  .st-end-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:5px; margin-top:14px; }
+  .st-end-grid img { width:100%; aspect-ratio:16/7.9; object-fit:cover; object-position:50% 100%; border-radius:5px; display:block; }
+
+  /* bottom sheets (inside the phone) */
+  .st-backdrop { position:absolute; inset:0; background:rgba(0,0,0,.45); opacity:0; pointer-events:none; transition:opacity .25s; z-index:40; }
+  .st-backdrop.st-on { opacity:1; pointer-events:auto; }
+  .st-sheet { position:absolute; left:0; right:0; bottom:0; max-height:78%; overflow-y:auto; overscroll-behavior:contain; background:#fff; color:#111; border-radius:18px 18px 0 0; z-index:41; transform:translateY(105%); transition:transform .45s cubic-bezier(.34,1.56,.64,1); padding:10px 18px 22px; line-height:1.5; }
+  .st-sheet.st-on { transform:translateY(0); }
+  .st-grab { width:38px; height:4px; border-radius:2px; background:#d1d5db; margin:0 auto 12px; }
+  .st-sheet h3 { font-size:1.05rem; font-weight:800; }
+  .st-sheet-sub { font-size:.8rem; color:#6b7280; margin-top:2px; }
+  .st-step { display:flex; gap:12px; padding:12px 0; border-bottom:1px solid #e5e7eb; animation:st-pop .45s cubic-bezier(.34,1.56,.64,1) both; }
+  .st-step:last-of-type { border-bottom:none; }
+  .st-num { width:28px; height:28px; border-radius:50%; background:rgba(24,127,194,.1); color:#187fc2; font-weight:800; font-size:.85rem; display:grid; place-items:center; flex-shrink:0; }
+  .st-step b { font-size:.92rem; }
+  .st-step p { font-size:.84rem; color:#374151; margin-top:2px; line-height:1.45; }
+  .st-spec { font-size:.74rem; color:#6b7280; margin-top:4px; }
+  .st-callout { margin-top:12px; background:#fff7ed; border:1px solid #fed7aa; border-radius:10px; padding:10px 12px; font-size:.82rem; color:#7c2d12; line-height:1.45; }
+  .st-foot { margin-top:12px; font-size:.78rem; color:#6b7280; line-height:1.45; }
+  .st-sheet .st-list { font-size:.88rem; color:#374151; margin-top:12px; }
+  .st-pick-group { margin-top:12px; }
+  .st-pick-group h4 { font-size:.78rem; font-weight:800; color:#6b7280; text-transform:uppercase; letter-spacing:.05em; margin-bottom:6px; }
+  .st-pick-row { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+  .st-pick-row button { border:2px solid transparent; background:none; padding:0; cursor:pointer; text-align:left; border-radius:10px; transition:transform .3s cubic-bezier(.34,1.56,.64,1), border-color .2s; font-family:inherit; }
+  .st-pick-row button:hover { transform:translateY(-2px); }
+  .st-pick-row button.st-cur { border-color:#187fc2; }
+  .st-pick-row img { width:100%; aspect-ratio:16/7.9; object-fit:cover; object-position:50% 100%; border-radius:8px; display:block; }
+  .st-pick-row span { display:block; font-size:.72rem; font-weight:700; color:#374151; padding:3px 2px 0; }
+
+  .st-toast { position:absolute; left:50%; top:27%; transform:translate(-50%,-20px); background:rgba(255,255,255,.95); color:#111; font-size:.8rem; font-weight:700; padding:7px 14px; border-radius:999px; box-shadow:0 6px 20px rgba(0,0,0,.25); opacity:0; transition:opacity .2s, transform .45s cubic-bezier(.34,1.56,.64,1); z-index:45; pointer-events:none; white-space:nowrap; }
+  .st-toast.st-on { opacity:1; transform:translate(-50%,0); }
+
+  @media (max-width:1080px) {
+    .st-floor { grid-template-columns:1fr; justify-items:center; gap:28px; }
+    .st-side { max-width:560px; width:100%; }
+    .st-left { order:1; } .st-phone { order:2; } .st-right { order:3; }
+    .st-keys { display:none; }
+  }
+  @media (max-width:720px) {
+    .st-phone { width:100%; height:min(72vh, 640px); height:min(72svh, 640px); aspect-ratio:auto; border-radius:26px; box-shadow:0 0 0 6px #111, 0 18px 40px rgba(0,0,0,.22); }
+  }
 </style>
 </head>
 <body>
@@ -487,6 +651,7 @@
       <div class="nav-links" id="nav-links">
         <a href="#demo-anchor" data-section="demo">Demo</a>
         <a href="#abstract-anchor" data-section="abstract">Abstract</a>
+        <a href="#simtok-anchor" data-section="simtok">SiMTok</a>
         <div class="nav-item">
           <a href="#method-anchor" data-section="method" class="nav-has-sub">Method</a>
           <div class="nav-dropdown">
@@ -583,6 +748,65 @@
     <div class="wrap reveal">
       <p class="sec-title" id="abstract-anchor">Abstract</p>
       <p>Recent years have witnessed an explosive trend of scaling ego-centric human videos for robot manipulation, yet it remains unclear which data actually benefits dexterous manipulation. We present <b><span class="hl-yellow">SiMDex</span></b>, a <b><u><span class="hl-yellow">si</span></u></b>milarity-based data <b><u><span class="hl-yellow">m</span></u></b>ining framework that casts human data selection for VLA post-training in <b><u><span class="hl-yellow">dex</span></u></b>terous manipulation as a <b>recommendation problem</b>. For each robot demonstration, SiMDex runs a three-stage recall–ranking–re-ranking cascade over ~32M egocentric human samples: recall and ranking select a task-relevant subset in a morphology-agnostic action space, and re-ranking verifies it on pixels, with no change to VLA architecture or training. Against a strong baseline trained with an equal amount of randomly sampled human data, SiMDex uses only <b>~1.49M mined samples (&lt;5% of the pool)</b> yet improves the overall success rate <b>from 47.7% to 61.7%</b>—showing that <b>selective curation outperforms indiscriminate data&nbsp;mixing</b>.</p>
+    </div>
+  </section>
+
+  <!-- ===== SiMTok · For You feed ===== -->
+  <section class="section" id="simtok">
+    <div class="wrap">
+      <!-- the jump target is the grid, which does not move when the reveal animation runs -->
+      <div class="st-floor" id="simtok-anchor">
+        <div class="st-side st-left reveal">
+          <p class="sec-title">SiMTok</p>
+          <p class="st-sub">A For You feed for robots</p>
+          <p class="st-stamp"><i class="fa-regular fa-calendar"></i>&nbsp; SiMTok visual design first released on October&nbsp;11,&nbsp;2026 by the SiMDex&nbsp;authors&nbsp;· <a href="#citation">Cite&nbsp;SiMDex&nbsp;→</a></p>
+          <p class="st-lead"><b>The viewer is a robot.</b> It posts the moment it wants to learn, and SiMDex answers with the human clips it mined for that moment from ~32M EgoDex samples.</p>
+          <ul class="st-list">
+            <li><span>▶</span><span><b>Scroll</b> through all ten robot sub&#8209;tasks: each robot post is followed by three human clips mined for it, each from a different source episode.</span></li>
+            <li><span>▶</span><span><b>Double-tap</b> a clip or tap <b>♥</b> to&nbsp;mine&nbsp;it into the robot’s training set.</span></li>
+            <li><span>▶</span><span><b>Why?</b> shows the three stages that surfaced the clip.</span></li>
+            <li><span>▶</span><span><b>Compare</b> stacks the robot and the human clip, played in sync.</span></li>
+          </ul>
+          <div class="st-keys">
+            <p>Click the phone, then:</p>
+            <kbd>↑ ↓</kbd><span>previous / next</span>
+            <kbd>L</kbd><span>mine</span>
+            <kbd>W</kbd><span>why this clip</span>
+            <kbd>C</kbd><span>compare</span>
+            <kbd>Space</kbd><span>pause</span>
+          </div>
+        </div>
+
+        <div class="st-phone" id="st-phone" tabindex="0" role="region" aria-label="SiMTok feed. Click it, then use the arrow keys to scroll.">
+          <div class="st-progress" id="st-progress"></div>
+          <div class="st-topbar">
+            <button id="st-tab-robot" type="button">Robot</button>
+            <button id="st-tab-foryou" class="st-on" type="button">For You</button>
+            <button class="st-info" id="st-info" type="button" aria-label="About SiMTok"><i class="fa-solid fa-circle-info"></i></button>
+          </div>
+          <div class="st-feed" id="st-feed"></div>
+          <div class="st-toast" id="st-toast"></div>
+          <div class="st-backdrop" id="st-backdrop"></div>
+          <div class="st-sheet" id="st-sheet"></div>
+        </div>
+
+        <div class="st-side st-right reveal">
+          <div class="st-funnel">
+            <div><span>Human pool (EgoDex)</span><b>~32M samples</b></div>
+            <div><span>Recall keeps, per anchor</span><b>10,000</b></div>
+            <div><span>Ranking keeps, per anchor</span><b>100</b></div>
+            <div><span>Mined subset</span><b>~1.49M (&lt;5%)</b></div>
+          </div>
+          <div class="st-mined-head"><b>Your mined set</b><span id="st-mined-count"><b>0</b> clips</span></div>
+          <div id="st-mined-wrap"><div class="st-mined-empty">Double-tap a human clip to mine it. It lands here, the way a mined sample joins the robot’s training data.</div></div>
+          <p class="st-note">Every clip in this feed is a real sample from the mined subset: the robot anchor first, then three human samples, each from a different source episode.</p>
+          <div class="st-vision">
+            <div class="st-vision-eyebrow"><i class="fa-solid fa-wand-magic-sparkles"></i> Our vision</div>
+            <p class="st-vision-title"><span class="st-line"><span class="hl-yellow">Recommendation algorithms</span></span><span class="st-line">for robots</span></p>
+            <p class="st-vision-text">We want dexterous robots to <b>learn&nbsp;new&nbsp;skills&nbsp;faster</b>, just like scrolling short videos: SiMDex recommends the most relevant dexterous manipulation samples to the robot.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1779,7 +2003,7 @@
     window.addEventListener('scroll', updateNav, { passive: true });
     updateNav();
 
-    const navSectionIds = ['demo','abstract','method','evaluation','experiments','rollout','takeaways'];
+    const navSectionIds = ['demo','abstract','simtok','method','evaluation','experiments','rollout','takeaways'];
     const navLinks = document.querySelectorAll('#nav-links a[data-section]');
 
     // On phones the link row scrolls sideways; keep the active link in view
@@ -1816,10 +2040,356 @@
     });
   </script>
 
+  <script>
+    /* ===== SiMTok: a For You feed for robots ===== */
+    (() => {
+      const phone = document.getElementById('st-phone');
+      if (!phone) return;
+      const feed = document.getElementById('st-feed');
+      const V = 'static/videos/mining/';
+      const P = 'static/images/simtok/';
+      const TASKS = [
+        { key:'drill', name:'Drill', subs:[
+          { key:'grasp',    name:'Grasp',    instr:'pick up the electric drill' },
+          { key:'assembly', name:'Assembly', instr:'pick up the bar-to-cube assembly' },
+          { key:'drill',    name:'Drill',    instr:'unscrew the cube with screw-holes from the bar-to-cube assembly',
+            // the clips mined for the drilling stage show a tube, a saw and a hair dryer; none of them is drilling
+            special:['Squeezing a tube. Not drilling.', 'A saw. Not drilling.', 'A hair dryer. Not drilling.'] },
+        ]},
+        { key:'flick_wheel', name:'Flick Wheel', subs:[
+          { key:'grasp', name:'Grasp', instr:'pick up the wheel-to-cube assembly' },
+          { key:'twist', name:'Twist', instr:'unscrew the bolted wheel from the wheel-to-cube assembly' },
+          { key:'flick', name:'Flick', instr:'flick the wheel-to-cube assembly with index finger' },
+        ]},
+        { key:'pick_place', name:'Pick & Place', subs:[
+          { key:'obj1', name:'Obj.1', instr:'put the plastic screw into the blue basket' },
+          { key:'obj2', name:'Obj.2', instr:'put the bolted double-strip bar into the blue basket' },
+          { key:'obj3', name:'Obj.3', instr:'put the cube with screw-holes into the blue basket' },
+          { key:'obj4', name:'Obj.4', instr:'put the bolted wheel into the blue basket' },
+        ]},
+      ];
+      // Captions describe how SiMDex matches, not the content of a particular clip
+      const CAPTIONS = [
+        'Different hands and scene. Matched on wrist motion.',
+        'Matched on the fingertip configuration over the next 30 steps.',
+        'Matched on motion structure, not on appearance.',
+      ];
+      const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+      const cards = [];
+      const mined = new Map();
+      let current = 0, started = false, visible = false;
+
+      function addCard(html, meta) {
+        const el = document.createElement('section');
+        el.className = 'st-card ' + (meta.cls || '');
+        el.innerHTML = html;
+        el.dataset.index = cards.length;
+        feed.appendChild(el);
+        cards.push(Object.assign({ el }, meta));
+      }
+      const speed = '<span class="st-speed">0.25× slow-mo</span>';
+      const vid = (src, poster) => `<video muted loop playsinline preload="none" data-poster="${poster}" data-src="${src}"></video>`;
+
+      addCard(`
+        <div class="st-plain">
+          <div class="st-logo">SiMTok</div>
+          <h3 style="margin-top:6px;"><span class="st-line">A For You feed,</span><span class="st-line">but the viewer is a robot.</span></h3>
+          <p>The robot posts what it is trying to learn. SiMDex recommends the human clips whose <b>wrist motion and fingertips</b> match it, mined from ~32M EgoDex samples.</p>
+          <p style="opacity:.75;">Swipe&nbsp;up&nbsp;· double&#8209;tap&nbsp;to&nbsp;mine&nbsp;· tap&nbsp;💬&nbsp;to&nbsp;see&nbsp;why.</p>
+          <div class="st-btns"><button type="button" class="st-primary" data-go="1">Start scrolling ↓</button><button type="button" data-act="picker">Pick a robot task</button></div>
+        </div>`, { type:'intro' });
+
+      TASKS.forEach(t => t.subs.forEach(s => {
+        const dir = `${V}${t.key}/${s.key}/`, pfx = `${P}${t.key}_${s.key}_`, label = `${t.name} › ${s.name}`;
+        addCard(`
+          <img class="st-bg" alt="" data-src="${pfx}anchor.jpg">
+          <div class="st-stage"><figure class="st-human">${vid(dir + 'anchor.mp4', pfx + 'anchor.jpg')}<figcaption>ROBOT · ANCHOR</figcaption>${speed}</figure></div>
+          <div class="st-post">
+            <span class="st-chip"><i class="fa-solid fa-robot"></i> Robot is learning</span>
+            <h3>${esc(label)}</h3>
+            <div class="st-quote">“${esc(s.instr)}”</div>
+          </div>
+          <div class="st-cta"><p><span class="st-line">SiMDex searched ~32M human clips for this moment.</span><span class="st-line">Here are 3 it mined, each from a different episode.</span></p><div class="st-swipe"><i class="fa-solid fa-chevron-up"></i></div></div>
+          <i class="fa-solid fa-play st-paused-icon"></i>`, { type:'anchor', cls:'st-post-card', task:t, sub:s });
+        [1, 2, 3].forEach(n => {
+          addCard(`
+            <img class="st-bg" alt="" data-src="${pfx}sample${n}.jpg">
+            <div class="st-split-hint">Same frame indices · watch the wrist and fingertips</div>
+            <div class="st-stage">
+              <figure class="st-anchor">${vid(dir + 'anchor.mp4', pfx + 'anchor.jpg')}<figcaption>ROBOT · ${esc(label.toUpperCase())}</figcaption>${speed}</figure>
+              <figure class="st-human">${vid(dir + `sample${n}.mp4`, pfx + `sample${n}.jpg`)}<figcaption>HUMAN · MINED FOR ${esc(label.toUpperCase())}</figcaption>${speed}</figure>
+            </div>
+            <i class="fa-solid fa-play st-paused-icon"></i>
+            <div class="st-rail">
+              <button type="button" data-act="picker" aria-label="Pick a robot task"><span class="st-avatar"><i class="fa-solid fa-robot"></i></span></button>
+              <button type="button" data-act="like" aria-label="Mine this clip"><i class="fa-solid fa-heart"></i><span>Mine</span></button>
+              <button type="button" data-act="why" aria-label="Why this clip"><i class="fa-solid fa-comment-dots"></i><span>Why?</span></button>
+              <button type="button" data-act="compare" aria-label="Compare robot and human"><i class="fa-solid fa-clone"></i><span>Compare</span></button>
+              <div class="st-disc"><i class="fa-solid fa-hand"></i></div>
+            </div>
+            <div class="st-cap">
+              <div class="st-handle">@egodex <small>· mined for ${esc(label)} · ${n}/3</small></div>
+              <div class="st-text">${esc(s.special ? s.special[n - 1] : CAPTIONS[n - 1])}</div>
+              <div class="st-tags">#wristmotion #fingertips #motionnotlabels</div>
+              <div class="st-music"><i class="fa-solid fa-music"></i><span>original motion · wrist 6D pose + five fingertips per hand · original motion · wrist 6D pose + five fingertips per hand ·&nbsp;</span></div>
+            </div>`, { type:'sample', task:t, sub:s, sample:n, id:`${t.key}/${s.key}/${n}`, poster:`${pfx}sample${n}.jpg` });
+        });
+      }));
+
+      addCard(`
+        <div class="st-plain">
+          <div class="st-logo" style="font-size:1.9rem;">You reached the end</div>
+          <h3 style="font-size:1.45rem;margin-top:6px;" id="st-end-title">You have not mined any clips yet.</h3>
+          <p>You saw three mined samples for each of the ten robot sub-tasks: a small window into the <b>~1.49M</b> samples SiMDex mined, under 5% of the pool.</p>
+          <div class="st-end-grid" id="st-end-grid"></div>
+          <div class="st-btns"><button type="button" class="st-primary" data-go="0">Scroll again</button><a href="#method-anchor">How SiMDex mines →</a></div>
+        </div>`, { type:'end' });
+
+      /* media: posters and backgrounds load within two cards, video sources within one */
+      const vids = c => [...c.el.querySelectorAll('video')];
+      function warm(c) {
+        if (c.warm) return;
+        c.warm = true;
+        c.el.querySelectorAll('[data-poster]').forEach(v => { v.poster = v.dataset.poster; });
+        c.el.querySelectorAll('img[data-src]').forEach(img => { img.src = img.dataset.src; });
+      }
+      function load(c, on) {
+        vids(c).forEach(v => {
+          if (on && !v.getAttribute('src')) v.src = v.dataset.src;
+          if (!on && v.getAttribute('src')) { v.pause(); v.removeAttribute('src'); v.load(); }
+        });
+      }
+      function playCard(i, restart = true) {
+        cards.forEach((c, j) => {
+          if (Math.abs(j - i) <= 2) warm(c);
+          load(c, Math.abs(j - i) <= 1);
+          if (j !== i) { vids(c).forEach(v => v.pause()); c.el.classList.remove('st-paused'); }
+        });
+        document.getElementById('st-progress').style.width = (i / (cards.length - 1) * 100) + '%';
+        if (cards[i].type === 'end') renderEnd();
+        if (!visible || cards[i].el.classList.contains('st-paused')) return;
+        vids(cards[i]).forEach(v => {
+          if (restart) { try { v.currentTime = 0; } catch (e) {} }
+          v.play().catch(() => {});
+        });
+      }
+      const pauseAll = () => cards.forEach(c => vids(c).forEach(v => v.pause()));
+
+      // nothing loads until the phone reaches the viewport; videos play only while it is in view
+      new IntersectionObserver(entries => {
+        const e = entries[entries.length - 1];
+        if (e.isIntersecting && !started) { started = true; playCard(current); }
+        const nowVisible = e.isIntersecting && e.intersectionRatio >= 0.35;
+        if (nowVisible === visible) return;
+        visible = nowVisible;
+        if (visible) playCard(current, false); else pauseAll();
+      }, { threshold: [0, 0.35, 0.7] }).observe(phone);
+
+      const feedIO = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (!e.isIntersecting || e.intersectionRatio < 0.6) return;
+          const i = +e.target.dataset.index;
+          if (i !== current) { current = i; closeSheet(); }
+          if (started) playCard(i);
+        });
+      }, { root: feed, threshold: [0.6] });
+      cards.forEach(c => feedIO.observe(c.el));
+
+      function goTo(i, smooth = true) {
+        i = Math.max(0, Math.min(cards.length - 1, i));
+        // long jumps (picker, mined thumbnails) cut straight to the card, like opening a video
+        const near = Math.abs(i - Math.round(feed.scrollTop / feed.clientHeight)) <= 1;
+        feed.scrollTo({ top: i * feed.clientHeight, behavior: smooth && near ? 'smooth' : 'auto' });
+      }
+
+      /* interactions */
+      const toastEl = document.getElementById('st-toast');
+      let toastT;
+      function toast(msg) {
+        toastEl.textContent = msg;
+        toastEl.classList.add('st-on');
+        clearTimeout(toastT);
+        toastT = setTimeout(() => toastEl.classList.remove('st-on'), 1600);
+      }
+
+      function togglePause(c) {
+        const vs = vids(c);
+        if (!vs.length) return;
+        const paused = !c.el.classList.contains('st-paused');
+        c.el.classList.toggle('st-paused', paused);
+        vs.forEach(v => paused ? v.pause() : v.play().catch(() => {}));
+      }
+
+      function like(c, x, y) {
+        if (!c || c.type !== 'sample') return;
+        const btn = c.el.querySelector('[data-act="like"]');
+        if (x !== undefined) {
+          const b = document.createElement('i');
+          b.className = 'fa-solid fa-heart st-burst';
+          b.style.left = x + 'px';
+          b.style.top = y + 'px';
+          c.el.appendChild(b);
+          b.addEventListener('animationend', () => b.remove());
+        }
+        if (mined.has(c.id)) {
+          if (x !== undefined) return;   // a double-tap never un-mines, as on TikTok
+          mined.delete(c.id);
+          btn.classList.remove('st-liked');
+          btn.querySelector('span').textContent = 'Mine';
+          toast('Removed from your mined set');
+        } else {
+          mined.set(c.id, { poster: c.poster, label: `${c.sub.name} · ${c.sample}/3`, index: +c.el.dataset.index });
+          btn.classList.remove('st-liked'); void btn.offsetWidth; btn.classList.add('st-liked');
+          btn.querySelector('span').textContent = 'Mined';
+          toast('Mined · added to the robot’s training set');
+        }
+        renderMined();
+      }
+
+      function renderMined() {
+        const n = mined.size;
+        document.getElementById('st-mined-count').innerHTML = `<b>${n}</b> clip${n === 1 ? '' : 's'}`;
+        document.getElementById('st-mined-wrap').innerHTML = n
+          ? `<div class="st-mined-grid">${[...mined.values()].map(m => `<button type="button" data-jump="${m.index}"><img src="${m.poster}" alt=""><span>${esc(m.label)}</span></button>`).join('')}</div>`
+          : '<div class="st-mined-empty">Double-tap a human clip to mine it. It lands here, the way a mined sample joins the robot’s training data.</div>';
+      }
+      function renderEnd() {
+        const n = mined.size;
+        document.getElementById('st-end-title').textContent = n ? `You mined ${n} clip${n === 1 ? '' : 's'}.` : 'You have not mined any clips yet.';
+        document.getElementById('st-end-grid').innerHTML = [...mined.values()].map(m => `<img src="${m.poster}" alt="">`).join('');
+      }
+
+      const sheet = document.getElementById('st-sheet'), backdrop = document.getElementById('st-backdrop');
+      function openSheet(html) {
+        sheet.innerHTML = '<div class="st-grab"></div>' + html;
+        sheet.scrollTop = 0;
+        sheet.classList.add('st-on');
+        backdrop.classList.add('st-on');
+      }
+      function closeSheet() { sheet.classList.remove('st-on'); backdrop.classList.remove('st-on'); }
+      backdrop.addEventListener('click', closeSheet);
+
+      function whySheet(c) {
+        if (!c || c.type !== 'sample') return;
+        const label = `${c.task.name} › ${c.sub.name}`;
+        const twist = c.sub.special ? '<div class="st-callout"><b>The right tool in hand, the wrong interaction.</b> For the drilling stage, the mined clips show a tube being squeezed, a saw and a hair dryer; none of them is drilling. Holding a hand-held appliance and holding a drill are nearly identical in wrist pose and fingertip configuration, and the difference lies in contact, which is outside the action space.</div>' : '';
+        openSheet(`
+          <h3>Why SiMDex recommended this</h3>
+          <div class="st-sheet-sub">For the robot moment <b>${esc(label)}</b> · “${esc(c.sub.instr)}”</div>
+          <div class="st-step" style="animation-delay:.02s"><div class="st-num">I</div><div><b>Recall · cast a wide net</b><p>Matched the robot’s instruction and its initial fingertip pose.</p><div class="st-spec">Sentence embedding ℝ³⁸⁴ (cosine) + fingertip pose ℝ¹⁵ per hand (Euclidean), fused by rank · keeps 10,000 candidates per anchor</div></div></div>
+          <div class="st-step" style="animation-delay:.09s"><div class="st-num">II</div><div><b>Ranking · align the actual motion</b><p>Matched how the wrist and fingertips move over the next 30 steps. Its output is the mined subset used for training.</p><div class="st-spec">Wrist trajectory 31×3 · fingertip trajectory 30×15 · translation and rotation waveforms ℝ¹⁰ · one sample per source episode · shortlist of 100 per anchor</div></div></div>
+          <div class="st-step" style="animation-delay:.16s"><div class="st-num">III</div><div><b>Re-ranking · verify with vision</b><p>Checked on pixels with optical flow, a signal that does not depend on retargeting.</p><div class="st-spec">Verification only: it does not change which samples are used for training</div></div></div>
+          ${twist}
+          <div class="st-foot">What anchor and sample share is the wrist motion and fingertip configuration over the horizon; environment, objects and hands can all differ.</div>`);
+      }
+
+      function pickerSheet() {
+        const curSub = cards[current].sub;
+        openSheet(`
+          <h3>What should the robot learn?</h3>
+          <div class="st-sheet-sub">Pick a robot moment. SiMTok jumps to it.</div>
+          ${TASKS.map(t => `<div class="st-pick-group"><h4>${esc(t.name)}</h4><div class="st-pick-row">${t.subs.map(s => {
+            const idx = cards.findIndex(c => c.type === 'anchor' && c.sub === s);
+            return `<button type="button" data-jump="${idx}" class="${s === curSub ? 'st-cur' : ''}"><img src="${P}${t.key}_${s.key}_anchor.jpg" alt=""><span>${esc(s.name)}</span></button>`;
+          }).join('')}</div></div>`).join('')}`);
+      }
+
+      function infoSheet() {
+        openSheet(`
+          <h3>SiMTok</h3>
+          <div class="st-sheet-sub">A For You feed for robots</div>
+          <ul class="st-list">
+            <li><span>▶</span><span>The robot posts the moment it wants to learn: an anchor clip and its instruction.</span></li>
+            <li><span>▶</span><span>SiMDex recommends human clips mined from ~32M EgoDex samples for that moment.</span></li>
+            <li><span>▶</span><span>Double-tap to mine a clip, 💬 to see why it surfaced, Compare to stack robot and human.</span></li>
+          </ul>
+          <div class="st-foot">Recall keeps 10,000 candidates per anchor, Ranking keeps 100, and the mined subset is ~1.49M samples (&lt;5% of the pool).</div>`);
+      }
+
+      function toggleCompare(c) {
+        if (!c || c.type !== 'sample') return;
+        const on = !c.el.classList.contains('st-split');
+        c.el.classList.toggle('st-split', on);
+        c.el.querySelector('[data-act="compare"]').classList.toggle('st-on', on);
+        c.el.classList.remove('st-paused');
+        vids(c).forEach(v => { try { v.currentTime = 0; } catch (e) {} v.play().catch(() => {}); });
+      }
+
+      // tap = pause, double-tap = mine (as on TikTok)
+      let tapT = null, lastTap = 0;
+      feed.addEventListener('click', e => {
+        const btn = e.target.closest('[data-act],[data-go],[data-jump]');
+        const card = cards[+e.target.closest('.st-card')?.dataset.index];
+        if (btn) {
+          if (btn.dataset.go !== undefined) { goTo(+btn.dataset.go); return; }
+          if (btn.dataset.jump !== undefined) { goTo(+btn.dataset.jump); return; }
+          btn.classList.remove('st-jelly'); void btn.offsetWidth; btn.classList.add('st-jelly');
+          const act = btn.dataset.act;
+          if (act === 'like') like(card);
+          else if (act === 'why') whySheet(card);
+          else if (act === 'picker') pickerSheet();
+          else if (act === 'compare') toggleCompare(card);
+          return;
+        }
+        if (!card || (card.type !== 'sample' && card.type !== 'anchor')) return;
+        const now = Date.now();
+        if (now - lastTap < 300) {
+          clearTimeout(tapT);
+          lastTap = 0;
+          const r = card.el.getBoundingClientRect();
+          like(card, e.clientX - r.left, e.clientY - r.top);
+        } else {
+          lastTap = now;
+          tapT = setTimeout(() => togglePause(card), 300);
+        }
+      });
+      sheet.addEventListener('click', e => {
+        const j = e.target.closest('[data-jump]');
+        if (j) { closeSheet(); goTo(+j.dataset.jump); }
+      });
+      document.getElementById('st-mined-wrap').addEventListener('click', e => {
+        const j = e.target.closest('[data-jump]');
+        if (!j) return;
+        const r = phone.getBoundingClientRect();
+        if (r.top < 0 || r.bottom > innerHeight) phone.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        goTo(+j.dataset.jump);
+      });
+      document.getElementById('st-tab-robot').addEventListener('click', pickerSheet);
+      document.getElementById('st-tab-foryou').addEventListener('click', closeSheet);
+      document.getElementById('st-info').addEventListener('click', infoSheet);
+
+      // keys only act while the phone has focus, so they never hijack page scrolling
+      phone.addEventListener('keydown', e => {
+        if ((e.key === ' ' || e.key === 'Enter') && e.target.closest('button, a')) return;
+        const c = cards[current], k = e.key;
+        if (k === 'ArrowDown' || k === 'PageDown') { e.preventDefault(); closeSheet(); goTo(current + 1); }
+        else if (k === 'ArrowUp' || k === 'PageUp') { e.preventDefault(); closeSheet(); goTo(current - 1); }
+        else if (k === ' ') { e.preventDefault(); togglePause(c); }
+        else if (k === 'l' || k === 'L') like(c);
+        else if ((k === 'w' || k === 'W') && c.type === 'sample') { if (sheet.classList.contains('st-on')) closeSheet(); else whySheet(c); }
+        else if (k === 'c' || k === 'C') toggleCompare(c);
+        else if (k === 'Escape') closeSheet();
+      });
+
+      // re-align after a real height change (window resize, rotation)
+      let lastH = feed.clientHeight, resizeT;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeT);
+        resizeT = setTimeout(() => {
+          if (Math.abs(feed.clientHeight - lastH) < 2) return;
+          const i = Math.round(feed.scrollTop / lastH);
+          lastH = feed.clientHeight;
+          goTo(i, false);
+        }, 250);
+      });
+    })();
+  </script>
+
 <div class="exp-tooltip" id="exp-tooltip"></div>
 
 <footer style="text-align:center;padding:36px 20px;color:#9ca3af;font-size:.85rem;border-top:1px solid #e5e7eb;line-height:1.8;">
   SiMDex: Mining Similar Egocentric Videos for Cross-Embodiment Dexterous Manipulation<br>
+  © 2026 The SiMDex authors. All rights reserved.<br>
   <span style="font-size:.92em;">This project page was built with the support of <a href="https://claude.ai" target="_blank" rel="noopener" style="color:#9ca3af;text-decoration:underline;text-underline-offset:3px;display:inline-flex;align-items:center;gap:4px;vertical-align:middle;"><img src="https://cdn.prod.website-files.com/67ce28cfec624e2b733f8a52/681d52619fec35886a7f1a70_favicon.png" alt="" style="width:14px;height:14px;border-radius:3px;opacity:.8;"> Claude AI</a> &mdash; many thanks. Visual inspiration drawn from <a href="https://shirleymaxx.github.io/" target="_blank" rel="noopener" style="color:#9ca3af;text-decoration:underline;text-underline-offset:3px;">Xiaoxuan (Shirley) Ma</a> (<a href="https://www.ri.cmu.edu/" target="_blank" rel="noopener" style="color:#9ca3af;text-decoration:underline;text-underline-offset:3px;">CMU Robotics Institute</a>)'s <a href="https://shirleymaxx.github.io/REST3D/" target="_blank" rel="noopener" style="color:#9ca3af;text-decoration:underline;text-underline-offset:3px;">REST3D</a> page, whose tasteful design we gratefully admire.</span>
 </footer>
 </body>
