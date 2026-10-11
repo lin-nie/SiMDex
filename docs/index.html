@@ -1347,12 +1347,48 @@
     function subtaskSlug(s){ return s.toLowerCase().replace(/\./g,'').replace(/ /g,'_'); }
     function gridCols(n){ return n<=1?1 : n<=3?n : n===4?2 : 3; }
 
+    // Stop downloading clips that are no longer shown (released, replaced or hidden)
+    function unloadVideos(scope){
+      if(!scope) return;
+      scope.querySelectorAll('video').forEach(v=>{
+        v.pause();
+        v.querySelectorAll('source').forEach(s=>s.remove());
+        v.removeAttribute('src');
+        v.load();
+      });
+    }
+
+    // A section's videos load only while it is within one screen of the viewport and play only while
+    // it is on screen; further away they are released so they stop downloading. A video the visitor
+    // paused stays paused while the section stays loaded.
+    function lazyVideos(root, start){
+      if(!root) return;
+      let near=false, visible=false;
+      const sync=()=>root.querySelectorAll('video').forEach(v=>{
+        if(!visible && !v.paused){ v.dataset.autoPaused='1'; v.pause(); }
+        else if(visible && v.dataset.autoPaused){ delete v.dataset.autoPaused; v.play().catch(()=>{}); }
+      });
+      // a clip that starts while the section is still off screen waits until it is visible
+      root.addEventListener('play', e=>{ if(!visible){ e.target.dataset.autoPaused='1'; e.target.pause(); } }, true);
+      new IntersectionObserver(entries=>{
+        const now=entries[entries.length-1].isIntersecting;
+        if(now===near) return;
+        near=now;
+        if(near) start(); else unloadVideos(root);
+      }, { rootMargin:'100% 0px' }).observe(root);
+      new IntersectionObserver(entries=>{
+        visible=entries[entries.length-1].isIntersecting;
+        sync();
+      }).observe(root);
+    }
+
     /* ===== Teleoperation viewer ===== */
     const teleopState = { task:'drill', views: new Set(VIEWS) };
 
     function renderTeleopVideos(){
       const active = VIEWS.filter(v=>teleopState.views.has(v));
       const grid = document.getElementById('teleop-video-grid');
+      unloadVideos(grid);
       grid.style.gridTemplateColumns = `repeat(${gridCols(active.length)},1fr)`;
       grid.dataset.count = active.length;
       if(!active.length){
@@ -1398,7 +1434,7 @@
         })
       );
 
-      renderTeleopVideos();
+      lazyVideos(document.getElementById('teleop-video-grid').closest('.eval-viewer'), renderTeleopVideos);
     }
 
     /* ===== Mining Results viewer ===== */
@@ -1792,6 +1828,7 @@
     function renderRoSingleGrid(){
       const grid=document.getElementById('ro-single-grid');
       if(!grid) return;
+      unloadVideos(grid);
       const active=RO_VIEWS.filter(v=>roSingleViews.has(v));
       grid.style.gridTemplateColumns=`repeat(${gridCols(active.length)},1fr)`;
       grid.dataset.count=active.length;
@@ -1815,6 +1852,7 @@
       if(!vGrd||!vSim) return;
       vGrd.classList.add('fading'); vSim.classList.add('fading');
       setTimeout(()=>{
+        if(roModel!=='both') return;   // switched to a single model during the fade
         vGrd.src=roSrc('grd',roTask,roView); vGrd.load(); vGrd.play().catch(()=>{});
         vSim.src=roSrc('sim',roTask,roView); vSim.load(); vSim.play().catch(()=>{});
         requestAnimationFrame(()=>requestAnimationFrame(()=>{
@@ -1828,9 +1866,11 @@
       const singleWrap=document.getElementById('ro-single-wrap');
       if(!cmpArea||!singleWrap) return;
       if(roModel==='both'){
+        unloadVideos(singleWrap);
         cmpArea.style.display=''; singleWrap.style.display='none';
         updateRoVideos();
       } else {
+        unloadVideos(cmpArea);
         cmpArea.style.display='none'; singleWrap.style.display='block';
         renderRoSingleGrid();
       }
@@ -1872,7 +1912,7 @@
       });
     });
 
-    applyRoModelLayout();
+    lazyVideos(document.getElementById('rollout'), applyRoModelLayout);
 
     /* ===== Navbar ===== */
     const simdexNav = document.getElementById('simdex-nav');
