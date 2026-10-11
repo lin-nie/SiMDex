@@ -289,46 +289,79 @@
   @keyframes exp-glow-pulse { 0%,100%{box-shadow:0 0 0 rgba(24,127,194,0)} 50%{box-shadow:0 0 14px rgba(24,127,194,.45)} }
   .exp-race-fill.glowing { animation:exp-glow-pulse 1.6s ease-in-out 2; }
 
-  /* ablation study */
-  #ablation .sub-title { margin-top:12px; }
-  .abl-tab-bar { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin:20px 0; }
-  .abl-tab { border:1.5px solid #d1d5db; background:#fff; border-radius:20px; padding:7px 18px; font-size:.82rem; font-weight:600; color:#6b7280; cursor:pointer; transition:background .2s, color .2s, border-color .2s, transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .2s; user-select:none; }
-  .abl-tab.active { background:#1B6CA8; color:#fff; border-color:#1B6CA8; box-shadow:0 4px 14px rgba(27,108,168,.28); }
-  .abl-tab:hover:not(.active) { border-color:#1B6CA8; color:#1B6CA8; transform:translateY(-2px); }
-  .abl-outer-panel { background:#fff; border-radius:16px; border:1.5px solid #e5e7eb; padding:24px; }
-  .abl-legend { display:flex; gap:22px; align-items:center; margin-bottom:14px; flex-wrap:wrap; }
-  .abl-legend-item { display:flex; gap:8px; align-items:center; font-size:.8rem; font-weight:600; color:#444; }
-  .abl-legend-swatch { width:22px; height:3px; border-radius:2px; }
-  .abl-legend-swatch.dashed { background:repeating-linear-gradient(90deg,#9ca3af 0 5px,transparent 5px 9px); }
-  .abl-chart-svg { width:100%; overflow:visible; }
-  .abl-dot-grd,.abl-dot-sim { transform-box:fill-box; transform-origin:center; transform:scale(0); opacity:0; cursor:pointer; transition:transform .4s cubic-bezier(.34,1.56,.64,1), opacity .15s; stroke:#fff; stroke-width:2; }
-  .abl-dot-grd { fill:#9ca3af; }
-  .abl-dot-sim { fill:#1B6CA8; }
-  .abl-dot-grd.shown,.abl-dot-sim.shown { transform:scale(1); opacity:1; }
-  .abl-dot-grd:hover { transform:scale(1.55) !important; filter:brightness(1.1); }
-  .abl-dot-sim:hover { transform:scale(1.45) !important; filter:brightness(1.1); }
-  .abl-dlbl { transition:opacity .3s; }
-  .abl-bar-wrap { display:flex; gap:0; }
-  .abl-bar-yticks-col { display:flex; flex-direction:column; justify-content:space-between; align-items:flex-end; width:36px; flex-shrink:0; }
-  .abl-bar-chart-area { flex:1; min-width:0; }
-  .abl-bar-item { display:flex; flex-direction:column; align-items:center; cursor:default; transition:transform .3s cubic-bezier(.34,1.56,.64,1); }
-  .abl-bar-item:hover { transform:translateY(-4px); }
-  .abl-bar-el { position:relative; transition:height .72s cubic-bezier(.34,1.2,.64,1), transform .3s cubic-bezier(.34,1.56,.64,1), filter .25s, box-shadow .3s cubic-bezier(.34,1.56,.64,1); transform-origin:bottom center; }
-  .abl-bar-item:hover .abl-bar-el { transform:scaleX(1.12); filter:brightness(1.12) saturate(1.1); box-shadow:4px 8px 18px rgba(0,0,0,.14); }
-  .abl-bval { font-size:.58rem; font-weight:700; margin-bottom:2px; opacity:0; transition:opacity .3s .65s; line-height:1; }
-  .abl-bval.vis { opacity:1; }
-  .abl-ytick-label { font-size:.6rem; color:#9ca3af; line-height:1; }
-  .abl-sr-table { width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; }
-  .abl-sr-table th, .abl-sr-table td { padding:8px 10px; text-align:right; white-space:nowrap; }
-  .abl-sr-table thead th { font-size:.78rem; font-weight:700; color:#6b7280; border-bottom:1.5px solid #bfdbfe; }
-  .abl-sr-table tbody th { text-align:left; font-size:.82rem; font-weight:600; color:#555; }
-  .abl-sr-table td { font-size:.95rem; font-weight:800; color:#555; }
-  .abl-sr-table tr.sim th, .abl-sr-table tr.sim td { color:#1B6CA8; }
-  .abl-sr-table tr.sim th { font-weight:700; }
-  .abl-sr-table tr.delta th, .abl-sr-table tr.delta td { border-top:1px solid #bfdbfe; }
-  .abl-sr-table td.pos { color:#16a34a; }
-  .abl-sr-table td.neg { color:#dc2626; }
-  .abl-sr-note { font-size:.75rem; color:#6b7280; line-height:1.5; margin-top:12px; }
+  /* ablation study: what if the robot had less data? */
+  .ab-lead { font-size:clamp(0.92rem,0.95vw,1.15rem); color:#374151; line-height:1.6; margin:4px 0 0; max-width:900px; text-wrap:balance; }
+  .ab-lead b { color:#111; }
+  .ab-card { background:#fff; border:1.5px solid #e5e7eb; border-radius:16px; }
+  .ab-dial { padding:22px 24px 18px; margin-top:18px; }
+  .ab-stops { display:grid; grid-template-columns:repeat(4,1fr); position:relative; margin:6px 6px 0; }
+  .ab-stops::before { content:''; position:absolute; left:12.5%; right:12.5%; top:17px; height:4px; border-radius:2px; background:#e5e7eb; }
+  .ab-fill { position:absolute; left:12.5%; top:17px; width:0; height:4px; border-radius:2px; background:#187fc2; transition:width .55s cubic-bezier(.34,1.56,.64,1); }
+  .ab-stop { position:relative; z-index:2; background:none; border:none; padding:0; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:6px; font-family:inherit; color:#111; outline:none; }
+  .ab-knob { width:38px; height:38px; border-radius:50%; background:#fff; border:3px solid #e5e7eb; transition:all .4s cubic-bezier(.34,1.56,.64,1); }
+  .ab-stop:hover:not(.on) .ab-knob { border-color:#187fc2; transform:scale(1.08); }
+  .ab-stop.past .ab-knob { border-color:#187fc2; }
+  .ab-stop.on .ab-knob { border-color:#187fc2; background:#187fc2; transform:scale(1.18); box-shadow:0 6px 18px rgba(24,127,194,.35); }
+  .ab-stop:focus-visible .ab-knob { box-shadow:0 0 0 4px rgba(24,127,194,.3); }
+  .ab-stop b { font-size:1.05rem; font-weight:800; }
+  .ab-stop span:last-child { font-size:.78rem; color:#6b7280; }
+  .ab-data { display:grid; grid-template-columns:150px 1fr; gap:8px 12px; align-items:center; margin-top:22px; font-size:.84rem; }
+  .ab-lbl { color:#374151; font-weight:600; }
+  .ab-track { height:16px; border-radius:8px; background:#f1f3f5; overflow:hidden; }
+  .ab-track i { display:block; width:0; height:100%; border-radius:8px; transition:width .6s cubic-bezier(.34,1.56,.64,1); }
+  .ab-track.robot i { background:linear-gradient(90deg,#9ca3af,#6b7280); }
+  .ab-track.human i { background:linear-gradient(90deg,#7dd3fc,#187fc2); }
+  .ab-val { grid-column:2; font-size:.76rem; color:#6b7280; margin-top:-4px; text-wrap:balance; }
+  .ab-main { display:grid; grid-template-columns:1.35fr 1fr; gap:18px; margin-top:18px; }
+  .ab-results, .ab-trend { padding:20px 22px; min-width:0; }
+  .ab-results h4, .ab-trend h4 { margin:0; font-size:1rem; font-weight:800; color:#111; }
+  .ab-legend { display:flex; gap:16px; font-size:.8rem; color:#374151; margin:6px 0 4px; }
+  .ab-legend i { display:inline-block; width:18px; height:8px; border-radius:4px; margin-right:6px; vertical-align:1px; }
+  .ab-row { display:grid; grid-template-columns:112px 1fr 70px; gap:6px 12px; align-items:center; padding:12px 0; border-bottom:1px solid #e5e7eb; }
+  .ab-row:last-child { border-bottom:none; }
+  .ab-name { font-weight:700; font-size:.92rem; color:#111; }
+  .ab-name small { display:block; font-weight:500; font-size:.72rem; color:#6b7280; }
+  .ab-name, .ab-name small { text-wrap:balance; }
+  .ab-bars { display:flex; flex-direction:column; gap:5px; min-width:0; }
+  .ab-bar { position:relative; height:18px; border-radius:9px; background:#f1f3f5; }
+  .ab-bar i { position:absolute; left:0; top:0; bottom:0; width:0; border-radius:9px; transition:width .7s cubic-bezier(.34,1.56,.64,1); }
+  .ab-bar.g i { background:#b8bec7; }
+  .ab-bar.s i { background:#187fc2; }
+  .ab-bar em { position:absolute; top:50%; transform:translateY(-50%); font-style:normal; font-size:.74rem; font-weight:800; font-variant-numeric:tabular-nums; white-space:nowrap; transition:left .7s cubic-bezier(.34,1.56,.64,1); }
+  .ab-bar.g em { color:#4b5563; }
+  .ab-bar.s em { color:#1B6CA8; }
+  .ab-bar em.in { color:#fff; }
+  .ab-delta { justify-self:end; font-size:.85rem; font-weight:800; border-radius:8px; padding:3px 9px; border:1.5px solid; font-variant-numeric:tabular-nums; }
+  .ab-delta.pos { color:#16a34a; background:#f0fdf4; border-color:#86efac; }
+  .ab-delta.neg { color:#dc2626; background:#fef2f2; border-color:#fca5a5; }
+  .ab-delta.zero { color:#6b7280; background:#f9fafb; border-color:#e5e7eb; }
+  .ab-delta.pop { animation:ab-jelly .45s cubic-bezier(.34,1.56,.64,1); }
+  @keyframes ab-jelly { 0% { transform:scale(1); } 30% { transform:scale(.86); } 100% { transform:scale(1); } }
+  .ab-trend svg { width:100%; height:auto; display:block; margin-top:6px; overflow:visible; }
+  .ab-story { margin-top:12px; padding:14px 16px; border-radius:12px; background:#f0f9ff; border:1.5px solid #bfdbfe; font-size:.9rem; color:#374151; line-height:1.55; min-height:5.2em; }
+  .ab-story div { text-wrap:balance; animation:ab-pop .5s cubic-bezier(.34,1.56,.64,1) both; }
+  .ab-story b { color:#111; }
+  @keyframes ab-pop { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+  .ab-notes { list-style:none; display:flex; flex-direction:column; gap:6px; margin-top:16px; font-size:.86rem; color:#6b7280; line-height:1.5; }
+  .ab-notes li { display:flex; gap:8px; }
+  .ab-notes li > span:first-child { color:#187fc2; font-size:.8em; margin-top:.25em; flex-shrink:0; }
+  .ab-notes li > span:last-child { text-wrap:balance; }
+  @media (max-width:900px) { .ab-main { grid-template-columns:1fr; } }
+  @media (max-width:560px) {
+    .ab-dial { padding:18px 14px 14px; }
+    .ab-knob { width:32px; height:32px; }
+    .ab-stops::before, .ab-fill { top:14px; }
+    /* labels sit above their bars on phones */
+    .ab-data { grid-template-columns:1fr; gap:6px; }
+    .ab-val { grid-column:1; margin:0 0 8px; }
+    /* phones: name on its own line, bars and delta below */
+    .ab-row { grid-template-columns:1fr 62px; grid-template-areas:"name name" "bars delta"; gap:6px 10px; }
+    .ab-name { grid-area:name; }
+    .ab-name small { display:inline; margin-left:6px; }
+    .ab-bars { grid-area:bars; }
+    .ab-delta { grid-area:delta; }
+    .ab-results, .ab-trend { padding:16px 14px; }
+  }
 
   /* ── Policy Rollout ─────────────────────────── */
   .ro-ctrl-row { display:flex; align-items:center; gap:16px; margin:0 0 14px; flex-wrap:wrap; }
@@ -349,11 +382,6 @@
   .ro-video-wrap video { width:100%; height:100%; object-fit:cover; display:block; transition:opacity .28s, transform .35s cubic-bezier(.34,1.56,.64,1); transform:scale(1); }
   .ro-video-wrap video.fading { opacity:0; transform:scale(.97); }
   #ro-single-wrap { display:none; margin-top:16px; }
-
-  /* tooltip */
-  .exp-tooltip { position:fixed; background:#111; color:#fff; font-size:0.75rem; font-weight:600; padding:6px 10px; border-radius:7px; pointer-events:none; white-space:nowrap; z-index:9999; opacity:0; transition:opacity .12s; line-height:1.5; }
-  .exp-tooltip.show { opacity:1; }
-  .exp-tooltip.abl { background:#fff; color:#222; border:1.5px solid #e5e7eb; box-shadow:0 4px 16px rgba(0,0,0,.12); }
 
   /* ── Navbar ────────────────────────────────────── */
   .simdex-nav {
@@ -463,16 +491,6 @@
     .exp-overall-stat { padding:18px 16px; }
     .exp-race-row { flex-wrap:wrap; row-gap:6px; }
     .exp-race-name { width:100%; }
-
-    .abl-outer-panel { padding:16px 14px; }
-    .abl-bar-yticks-col { width:30px; }
-    .abl-bar-plot { gap:2px !important; }
-    .abl-bar-group, .abl-bar-item { min-width:0; }
-    .abl-bar-pair { padding:0 3% !important; gap:2px !important; }
-    .abl-bval { font-size:.5rem; }
-    .abl-sr-table th, .abl-sr-table td { padding:6px 4px; }
-    .abl-sr-table td { font-size:.8rem; }
-    .abl-sr-table tbody th { font-size:.74rem; white-space:normal; }
 
     .ro-compare { grid-template-columns:1fr; row-gap:18px; }
     .ro-divider-col { display:none; }
@@ -1049,19 +1067,34 @@
 
       <!-- ── Ablation Study ── -->
       <p class="sub-title reveal" id="exp-ablation" style="margin-top:36px;">Ablation Study</p>
-      <div id="ablation" style="max-width:840px;margin:16px auto 0;">
-        <div class="abl-tab-bar" id="abl-tabs">
-          <button class="abl-tab active" data-abl="overall">Overall</button>
-          <button class="abl-tab" data-abl="drill">Drill</button>
-          <button class="abl-tab" data-abl="flick">Flick Wheel</button>
-          <button class="abl-tab" data-abl="pick">Pick &amp; Place</button>
+      <div id="ablation">
+        <p class="ab-lead"><b>What if the robot had less data?</b> Turn the robot-data budget from about 3 hours to about 25 hours of teleoperation. The mined human data stays fixed at ~1.49M samples. Watch where SiMDex helps most.</p>
+        <div class="ab-card ab-dial">
+          <div class="ab-stops" id="ab-stops" role="group" aria-label="Robot-data budget"><div class="ab-fill" id="ab-fill"></div></div>
+          <div class="ab-data">
+            <span class="ab-lbl">🤖 Robot data</span><div class="ab-track robot"><i id="ab-robot-bar"></i></div>
+            <span class="ab-val" id="ab-robot-val"></span>
+            <span class="ab-lbl">🖐 Mined human data</span><div class="ab-track human"><i id="ab-human-bar"></i></div>
+            <span class="ab-val">~1.49M samples at every budget, mined once with the 1× anchors</span>
+          </div>
         </div>
-        <div class="abl-outer-panel" id="abl-panel"></div>
-        <div class="exp-overall-stat" id="abl-sr-box" style="margin-top:28px;">
-          <div class="exp-overall-label">Overall SR vs. robot-data budget</div>
-          <table class="abl-sr-table" id="abl-sr-table"></table>
-          <p class="abl-sr-note">One round of five trials per budget; the 1× column is the first of the two rounds in Main Results.</p>
+        <div class="ab-main">
+          <div class="ab-card ab-results">
+            <h4>Success rate at <span id="ab-res-budget">0.5×</span></h4>
+            <div class="ab-legend"><span><i style="background:#b8bec7"></i>GR-Dexter</span><span><i style="background:#187fc2"></i>SiMDex (Ours)</span></div>
+            <div id="ab-rows"></div>
+          </div>
+          <div class="ab-card ab-trend">
+            <h4>Overall SR across budgets</h4>
+            <svg id="ab-trend" role="img" aria-label="Overall success rate across robot-data budgets"></svg>
+            <div class="ab-story" id="ab-story"></div>
+          </div>
         </div>
+        <ul class="ab-notes">
+          <li><span>▶</span><span>All results use one round of five trials per task; the 1× column is the first of the two rounds in Main Results, so it differs from 47.7%&nbsp;→&nbsp;61.7% there.</span></li>
+          <li><span>▶</span><span>With a single round per point, per-task differences at a single budget are indicative only.</span></li>
+          <li><span>▶</span><span>Hours are 30 fps conversions of the sample counts, for intuition only.</span></li>
+        </ul>
       </div>
     </div>
   </section>
@@ -1645,256 +1678,6 @@
       });
     });
 
-    /* ===== Ablation Study ===== */
-    const ABL = {
-      scales:['0.25×','0.5×','1×','2×'],
-      times: ['~3.1h','~6.2h','~12.4h','~24.9h'],
-      grd:{
-        overall:[0.294,0.409,0.453,0.509],
-        drill:  [0.266,0.355,0.645,0.688],
-        flick:  [0.167,0.355,0.167,0.222],
-        pick:   [0.450,0.515,0.548,0.616],
-      },
-      sim:{
-        overall:[0.362,0.582,0.585,0.570],
-        drill:  [0.355,0.489,0.377,0.622],
-        flick:  [0.300,0.489,0.511,0.322],
-        pick:   [0.432,0.767,0.867,0.767],
-      },
-      // Δ (pp) as reported in the paper, not recomputed from the rounded values above
-      delta:{
-        overall:[6.8,17.3,13.2,6.2],
-        drill:  [8.9,13.4,-26.7,-6.6],
-        flick:  [13.3,13.3,34.5,10.0],
-        pick:   [-1.8,25.2,31.9,15.1],
-      },
-      simColors:{drill:'#1B6CA8',flick:'#C08000',pick:'#3D7A57'},
-    };
-
-    let ablVisible=false, ablTask='overall';
-
-    // ── Line chart geometry (Overall) ───────────────────────────────────────
-    // On phones the SVG is drawn at the panel's real width so its text stays readable
-    const ABL_YMIN=0.20,ABL_YMAX=0.66;
-    let ABL_W,ABL_H,ABL_LP,ABL_RP,ABL_TP,ABL_BP,ABL_CW,ABL_CH,ABL_XS,ABL_GY,ABL_SY;
-    const ablY=v=>ABL_TP+ABL_CH-(v-ABL_YMIN)/(ABL_YMAX-ABL_YMIN)*ABL_CH;
-    function setAblGeometry(){
-      const panel=document.getElementById('abl-panel');
-      const narrow=MOBILE_MQ.matches;
-      const pad=parseFloat(getComputedStyle(panel).paddingLeft)+parseFloat(getComputedStyle(panel).paddingRight);
-      ABL_W=narrow?Math.max(260,Math.round(panel.clientWidth-pad)):700;
-      ABL_H=narrow?250:300; ABL_LP=narrow?40:58; ABL_RP=narrow?18:22; ABL_TP=32; ABL_BP=narrow?46:50;
-      ABL_CW=ABL_W-ABL_LP-ABL_RP; ABL_CH=ABL_H-ABL_TP-ABL_BP;
-      ABL_XS=[0,1,2,3].map(i=>ABL_LP+i/3*ABL_CW);
-      ABL_GY=ABL.grd.overall.map(ablY);
-      ABL_SY=ABL.sim.overall.map(ablY);
-    }
-
-    function renderAblLine(){
-      setAblGeometry();
-      const yticks=[0.20,0.30,0.40,0.50,0.60];
-      const grid=yticks.map(v=>`<line stroke="#f0f1f3" stroke-width="1" x1="${ABL_LP}" y1="${ablY(v).toFixed(1)}" x2="${ABL_W-ABL_RP}" y2="${ablY(v).toFixed(1)}"/>`).join('');
-      const yLbls=yticks.map(v=>`<text style="font-size:11px;fill:#9ca3af;font-family:inherit;" text-anchor="end" x="${ABL_LP-5}" y="${(ablY(v)+4).toFixed(1)}">${(v*100).toFixed(0)}%</text>`).join('');
-      const xLbls=ABL.scales.map((s,i)=>`
-        <text style="font-size:11px;fill:#4b5563;font-family:inherit;" text-anchor="middle" x="${ABL_XS[i].toFixed(1)}" y="${(ABL_TP+ABL_CH+16).toFixed(1)}">${s}</text>
-        <text style="font-size:9px;fill:#6b7280;font-family:inherit;" text-anchor="middle" x="${ABL_XS[i].toFixed(1)}" y="${(ABL_TP+ABL_CH+28).toFixed(1)}">${ABL.times[i]}</text>`).join('');
-      const fwdSim=ABL_XS.map((x,i)=>(i?'L':'M')+x.toFixed(1)+','+ABL_SY[i].toFixed(1)).join(' ');
-      const fwdGrd=ABL_XS.map((x,i)=>(i?'L':'M')+x.toFixed(1)+','+ABL_GY[i].toFixed(1)).join(' ');
-      const bwdGrd=[3,2,1,0].map(i=>'L'+ABL_XS[i].toFixed(1)+','+ABL_GY[i].toFixed(1)).join(' ');
-      const dLbls=ABL.scales.map((s,i)=>{
-        const d=ABL.delta.overall[i];
-        const sign=d>=0?'+':'';
-        const col=d>0.5?'#16a34a':d<-0.5?'#dc2626':'#6b7280';
-        const my=((ABL_SY[i]+ABL_GY[i])/2+4).toFixed(1);
-        return `<text class="abl-dlbl" style="font-size:10.5px;font-weight:800;font-family:inherit;fill:${col};opacity:0;" text-anchor="middle" x="${ABL_XS[i].toFixed(1)}" y="${my}">${sign}${d.toFixed(1)}%</text>`;
-      }).join('');
-      const gDots=ABL_XS.map((x,i)=>`<circle class="abl-dot-grd" cx="${x.toFixed(1)}" cy="${ABL_GY[i].toFixed(1)}" r="5" data-idx="${i}"/>`).join('');
-      const sDots=ABL_XS.map((x,i)=>`<circle class="abl-dot-sim" cx="${x.toFixed(1)}" cy="${ABL_SY[i].toFixed(1)}" r="6.5" data-idx="${i}"/>`).join('');
-      document.getElementById('abl-panel').innerHTML=
-        `<div class="abl-legend">
-          <div class="abl-legend-item"><div class="abl-legend-swatch dashed"></div>GR-Dexter</div>
-          <div class="abl-legend-item"><div class="abl-legend-swatch" style="background:#1B6CA8;"></div>SiMDex (Ours)</div>
-        </div>
-        <svg class="abl-chart-svg" viewBox="0 0 ${ABL_W} ${ABL_H}" preserveAspectRatio="xMidYMid meet">
-          <defs><clipPath id="abl-clip"><rect id="abl-crect" x="${ABL_LP-2}" y="0" width="0" height="${ABL_H}"/></clipPath></defs>
-          ${grid}
-          <line stroke="#e5e7eb" stroke-width="1.5" x1="${ABL_LP}" y1="${ABL_TP}" x2="${ABL_LP}" y2="${ABL_TP+ABL_CH}"/>
-          <line stroke="#e5e7eb" stroke-width="1.5" x1="${ABL_LP}" y1="${ABL_TP+ABL_CH}" x2="${ABL_W-ABL_RP}" y2="${ABL_TP+ABL_CH}"/>
-          ${yLbls}${xLbls}
-          <g clip-path="url(#abl-clip)">
-            <path style="fill:rgba(27,108,168,.09);opacity:0;transition:opacity .6s;" id="abl-area" d="${fwdSim} ${bwdGrd} Z"/>
-            <path style="fill:none;stroke:#9ca3af;stroke-width:2;stroke-dasharray:6 4;stroke-linecap:round;" d="${fwdGrd}"/>
-            <path style="fill:none;stroke:#1B6CA8;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round;" d="${fwdSim}"/>
-          </g>
-          ${gDots}${sDots}${dLbls}
-        </svg>`;
-
-      const tt=document.getElementById('exp-tooltip');
-      document.querySelectorAll('.abl-dot-grd,.abl-dot-sim').forEach(dot=>{
-        dot.addEventListener('mouseenter',()=>{
-          if(!tt) return;
-          const i=+dot.dataset.idx;
-          const gv=(ABL.grd.overall[i]*100).toFixed(1), sv=(ABL.sim.overall[i]*100).toFixed(1);
-          const d=ABL.delta.overall[i];
-          const sign=d>=0?'+':'';
-          const dc=d>0.5?'#16a34a':d<-0.5?'#dc2626':'#6b7280';
-          tt.innerHTML=`<b>${ABL.scales[i]}</b>  ${ABL.times[i]}<br>GR&#8209;Dexter: ${gv}%<br><span style="color:#1B6CA8;font-weight:700;">SiMDex: ${sv}%</span><br><span style="color:${dc};">Δ ${sign}${d.toFixed(1)}%</span>`;
-          tt.classList.add('show','abl');
-        });
-        dot.addEventListener('mousemove',e=>{ if(tt){ tt.style.left=(e.clientX+14)+'px'; tt.style.top=(e.clientY-12)+'px'; } });
-        dot.addEventListener('mouseleave',()=>{ if(tt){ tt.classList.remove('show','abl'); } });
-      });
-    }
-
-    function animateAblLine(){
-      const cr=document.getElementById('abl-crect');
-      if(!cr) return;
-      const target=ABL_CW+ABL_RP+6, dur=1300, t0=performance.now();
-      function tick(now){
-        const p=Math.min((now-t0)/dur,1);
-        const e=p<0.5?2*p*p:-1+(4-2*p)*p;
-        const w=target*e;
-        cr.setAttribute('width',w.toFixed(1));
-        ABL_XS.forEach((x,i)=>{
-          if(w>=(x-ABL_LP+2)){
-            ['abl-dot-grd','abl-dot-sim'].forEach(cls=>{
-              const d=document.querySelector(`.${cls}[data-idx="${i}"]`);
-              if(d&&!d.classList.contains('shown')) d.classList.add('shown');
-            });
-          }
-        });
-        if(p<1) requestAnimationFrame(tick);
-        else {
-          const ar=document.getElementById('abl-area');
-          if(ar) ar.style.opacity='1';
-          document.querySelectorAll('.abl-dlbl').forEach((el,i)=>setTimeout(()=>{ el.style.transition='opacity .35s'; el.style.opacity='1'; },i*90+100));
-        }
-      }
-      requestAnimationFrame(tick);
-    }
-
-    // ── Bar chart (per-task) ─────────────────────────────────────────────────
-    const ABL_BAR_H=450, ABL_BAR_H_MOBILE=280;
-    function renderAblBar(taskKey){
-      const sc=ABL.simColors[taskKey]||'#1B6CA8', gc='#9ca3af';
-      const gd=ABL.grd[taskKey], sd=ABL.sim[taskKey];
-      const yticks=[1.0,0.8,0.6,0.4,0.2,0.0];
-      const gridHtml=yticks.map(v=>`<div style="position:absolute;left:0;right:0;top:${((1-v)*100).toFixed(1)}%;height:1px;background:${v===0?'#e5e7eb':'#f3f4f6'};pointer-events:none;z-index:0;"></div>`).join('');
-      const sep=`<div style="width:1px;align-self:stretch;border-left:2px dashed #e5e7eb;margin:0 2px;flex-shrink:0;"></div>`;
-      const barH=MOBILE_MQ.matches?ABL_BAR_H_MOBILE:ABL_BAR_H;
-      const groups=ABL.scales.map((scale,gi)=>{
-        const gv=gd[gi],sv=sd[gi],delta=ABL.delta[taskKey][gi];
-        const sign=delta>=0?'+':'';
-        const dc=delta>0.5?'#16a34a':delta<-0.5?'#dc2626':'#6b7280';
-        const db=delta>0.5?'#f0fdf4':delta<-0.5?'#fef2f2':'#f9fafb';
-        const dbd=delta>0.5?'#86efac':delta<-0.5?'#fca5a5':'#e5e7eb';
-        const gh=Math.round(gv*barH), sh=Math.round(sv*barH);
-        return (gi>0?sep:'')+`
-          <div class="abl-bar-group" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;position:relative;z-index:1;">
-            <div class="abl-group-delta" style="position:absolute;top:-26px;left:50%;transform:translateX(-50%);background:${db};color:${dc};border:1px solid ${dbd};font-size:.65rem;font-weight:800;padding:2px 7px;border-radius:5px;white-space:nowrap;opacity:0;transition:opacity .35s;pointer-events:none;">${sign}${delta.toFixed(1)}%</div>
-            <div class="abl-bar-pair" style="display:flex;gap:3px;align-items:flex-end;width:100%;padding:0 12%;">
-              <div class="abl-bar-item" style="flex:1;">
-                ${gv>0?`<span class="abl-bval" style="color:${gc};">${(gv*100).toFixed(1)}%</span>`:''}
-                <div class="abl-bar-el" data-h="${gh}" style="background:${gc};height:0;width:100%;border-radius:3px 3px 0 0;"></div>
-              </div>
-              <div class="abl-bar-item" style="flex:1;">
-                ${sv>0?`<span class="abl-bval" style="color:${sc};">${(sv*100).toFixed(1)}%</span>`:''}
-                <div class="abl-bar-el" data-h="${sh}" style="background:${sc};height:0;width:100%;border-radius:3px 3px 0 0;"></div>
-              </div>
-            </div>
-          </div>`;
-      }).join('');
-      const scaleLbls=ABL.scales.map((s,i)=>`<div style="flex:1;text-align:center;font-size:.68rem;font-weight:700;color:#374151;line-height:1.5;">${s}<br><span style="font-weight:400;color:#9ca3af;font-size:.58rem;">${ABL.times[i]}</span></div>`).join('');
-      document.getElementById('abl-panel').innerHTML=
-        `<div class="abl-legend">
-          <div class="abl-legend-item"><div class="abl-legend-swatch" style="background:${gc};"></div>GR-Dexter</div>
-          <div class="abl-legend-item"><div class="abl-legend-swatch" style="background:${sc};"></div>SiMDex (Ours)</div>
-        </div>
-        <div class="abl-bar-wrap">
-          <div class="abl-bar-yticks-col" style="padding-top:26px;padding-bottom:42px;">
-            ${yticks.map(v=>`<span class="abl-ytick-label">${(v*100).toFixed(0)}%</span>`).join('')}
-          </div>
-          <div class="abl-bar-chart-area">
-            <div style="height:26px;"></div>
-            <div class="abl-bar-plot" style="display:flex;align-items:flex-end;gap:6px;height:${barH}px;border-bottom:2px solid #e5e7eb;position:relative;overflow:visible;">
-              ${gridHtml}${groups}
-            </div>
-            <div style="display:flex;gap:6px;margin-top:6px;">${scaleLbls}</div>
-          </div>
-        </div>`;
-    }
-
-    function animateAblBars(){
-      document.querySelectorAll('#abl-panel .abl-bar-el').forEach(el=>{ el.style.height=el.dataset.h+'px'; });
-      document.querySelectorAll('#abl-panel .abl-bval').forEach(el=>el.classList.add('vis'));
-      setTimeout(()=>{ document.querySelectorAll('#abl-panel .abl-group-delta').forEach(el=>{ el.style.opacity='1'; }); }, 920);
-    }
-
-    // ── Overall SR table (bottom) ───────────────────────────────────────────
-    function renderAblTable(){
-      const tbl=document.getElementById('abl-sr-table');
-      if(!tbl) return;
-      const pct=v=>(v*100).toFixed(1)+'%';
-      const row=(cls,name,cells)=>`<tr class="${cls}"><th scope="row">${name}</th>${cells}</tr>`;
-      tbl.innerHTML=
-        `<thead><tr><th></th>${ABL.scales.map(s=>`<th scope="col">${s}</th>`).join('')}</tr></thead>
-        <tbody>
-          ${row('grd','GR-Dexter',ABL.grd.overall.map(v=>`<td>${pct(v)}</td>`).join(''))}
-          ${row('sim','SiMDex (Ours)',ABL.sim.overall.map(v=>`<td>${pct(v)}</td>`).join(''))}
-          ${row('delta','Δ',ABL.delta.overall.map(d=>`<td class="${d>0.5?'pos':d<-0.5?'neg':''}">${d>=0?'+':''}${d.toFixed(1)}%</td>`).join(''))}
-        </tbody>`;
-    }
-
-    // ── Init ────────────────────────────────────────────────────────────────
-    renderAblLine();
-    renderAblTable();
-
-    const ablSectionEl=document.getElementById('ablation');
-    if(ablSectionEl){
-      const ablIo=new IntersectionObserver(entries=>{
-        if(entries[0].isIntersecting&&!ablVisible){
-          ablVisible=true;
-          requestAnimationFrame(()=>requestAnimationFrame(ablTask==='overall'?animateAblLine:animateAblBars));
-        }
-      },{threshold:0.1});
-      ablIo.observe(ablSectionEl);
-    }
-
-    // Redraw for the new width when a phone rotates or the window crosses the mobile breakpoint
-    let ablPanelW=document.getElementById('abl-panel').clientWidth, ablResizeT;
-    window.addEventListener('resize',()=>{
-      clearTimeout(ablResizeT);
-      ablResizeT=setTimeout(()=>{
-        const w=document.getElementById('abl-panel').clientWidth;
-        if(w===ablPanelW) return;
-        ablPanelW=w;
-        if(ablTask!=='overall' || (!MOBILE_MQ.matches && ABL_W===700)) return;
-        renderAblLine();
-        if(ablVisible) animateAblLine();
-      },200);
-    });
-    MOBILE_MQ.addEventListener('change',()=>{
-      if(ablTask==='overall') return;
-      renderAblBar(ablTask);
-      if(ablVisible) requestAnimationFrame(()=>requestAnimationFrame(animateAblBars));
-    });
-
-    document.getElementById('abl-tabs').querySelectorAll('.abl-tab').forEach(btn=>{
-      btn.addEventListener('click',()=>{
-        document.querySelectorAll('#abl-tabs .abl-tab').forEach(b=>b.classList.remove('active'));
-        btn.classList.add('active');
-        jellyPop(btn);
-        ablTask=btn.dataset.abl;
-        if(ablTask==='overall'){
-          renderAblLine();
-          requestAnimationFrame(()=>requestAnimationFrame(animateAblLine));
-        } else {
-          renderAblBar(ablTask);
-          requestAnimationFrame(()=>requestAnimationFrame(animateAblBars));
-        }
-      });
-    });
-
     /* ===== Policy Rollout ===== */
     const RO_TASK_LABELS={drill:'Drill',flick:'Flick Wheel',pick:'Pick & Place'};
     const RO_VIEW_LABELS={ego:'Ego',exo1:'Exo 1',exo2:'Exo 2',exo3:'Exo 3'};
@@ -2385,7 +2168,134 @@
     })();
   </script>
 
-<div class="exp-tooltip" id="exp-tooltip"></div>
+  <script>
+    /* ===== Ablation Study: what if the robot had less data? ===== */
+    (() => {
+      const root = document.getElementById('ablation');
+      if (!root) return;
+      const $ = id => document.getElementById(id);
+      const B = [
+        { x:'0.25×', h:'~3.1 h',  n:'≈0.34M samples · 20K steps', hrs:3.1 },
+        { x:'0.5×',  h:'~6.2 h',  n:'≈0.68M samples · 40K steps', hrs:6.2 },
+        { x:'1×',    h:'~12.4 h', n:'≈1.35M samples · 40K steps', hrs:12.4 },
+        { x:'2×',    h:'~24.9 h', n:'≈2.71M samples · 40K steps', hrs:24.9 },
+      ];
+      // Success rate (%) per robot-data budget, and Δ exactly as printed in the paper
+      const R = {
+        overall: { name:'Overall',          sub:'mean of 3 tasks', g:[29.4,40.9,45.3,50.9], s:[36.2,58.2,58.5,57.0], d:[6.8,17.3,13.2,6.2] },
+        drill:   { name:'Drill',            sub:'max 3',           g:[26.6,35.5,64.5,68.8], s:[35.5,48.9,37.7,62.2], d:[8.9,13.4,-26.7,-6.6] },
+        flick:   { name:'Flick Wheel',      sub:'max 3',           g:[16.7,35.5,16.7,22.2], s:[30.0,48.9,51.1,32.2], d:[13.3,13.3,34.5,10.0] },
+        pick:    { name:'Pick &amp; Place', sub:'max 4',           g:[45.0,51.5,54.8,61.6], s:[43.2,76.7,86.7,76.7], d:[-1.8,25.2,31.9,15.1] },
+      };
+      const STORY = [
+        '<b>Even at ~3.1&nbsp;h of robot data</b>, SiMDex still improves the overall success rate by <b>+6.8</b>. This smallest budget trains for 20K steps instead of 40K, for both methods.',
+        '<b>The largest gain, +17.3, appears at 0.5×.</b> From 0.5× to 2× SiMDex stays at <span style="white-space:nowrap">~57–59%</span> while the baseline falls with less data.',
+        '<b>The default budget.</b> This 1× column is the first of the two rounds in Main Results, which is why it differs from 47.7%&nbsp;→&nbsp;61.7% there.',
+        '<b>SiMDex still leads at 2× (+6.2).</b> The 2× budget adds lower-quality early teleoperation data.',
+      ];
+      let k = 1, shown = false;
+      const fmt = v => v.toFixed(1);
+      const sign = v => (v > 0 ? '+' : v < 0 ? '−' : '±') + Math.abs(v).toFixed(1);
+
+      $('ab-rows').innerHTML = Object.entries(R).map(([key, r]) => `
+        <div class="ab-row" data-r="${key}">
+          <div class="ab-name">${r.name}<small>${r.sub}</small></div>
+          <div class="ab-bars"><div class="ab-bar g"><i></i><em></em></div><div class="ab-bar s"><i></i><em></em></div></div>
+          <div class="ab-delta"></div>
+        </div>`).join('');
+      $('ab-stops').insertAdjacentHTML('beforeend', B.map((b, i) =>
+        `<button class="ab-stop" data-k="${i}" type="button" aria-label="Robot-data budget ${b.x}, ${b.h}"><span class="ab-knob"></span><b>${b.x}</b><span>${b.h}</span></button>`).join(''));
+
+      // drawn at the card's real width, so the axis text keeps its size on phones
+      function trend() {
+        const svg = $('ab-trend');
+        const W = Math.max(280, Math.round(svg.getBoundingClientRect().width || 420)), H = 230, L = 40, Rr = 16, T = 16, Bt = 36;
+        svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+        const xs = [0, 1, 2, 3].map(i => L + i * (W - L - Rr) / 3);
+        const y = v => T + (H - T - Bt) * (1 - (v - 20) / (65 - 20));
+        const line = arr => arr.map((v, i) => (i ? 'L' : 'M') + xs[i].toFixed(1) + ',' + y(v).toFixed(1)).join(' ');
+        const g = R.overall.g, s = R.overall.s;
+        let out = '';
+        [20, 30, 40, 50, 60].forEach(v => {
+          out += `<line x1="${L}" x2="${W - Rr}" y1="${y(v)}" y2="${y(v)}" stroke="#f0f1f3"/><text x="${L - 6}" y="${y(v) + 4}" text-anchor="end" font-size="10" fill="#9ca3af">${v}%</text>`;
+        });
+        out += `<rect x="${xs[k] - 16}" y="${T - 6}" width="32" height="${H - T - Bt + 12}" rx="8" fill="rgba(24,127,194,.08)"/>`;
+        out += `<path d="${line(s)} L${xs[3]},${y(g[3])} ${[2, 1, 0].map(i => 'L' + xs[i] + ',' + y(g[i])).join(' ')} Z" fill="rgba(24,127,194,.08)"/>`;
+        out += `<path d="${line(g)}" fill="none" stroke="#9ca3af" stroke-width="2" stroke-dasharray="6 4"/>`;
+        out += `<path d="${line(s)}" fill="none" stroke="#1B6CA8" stroke-width="2.6"/>`;
+        xs.forEach((x, i) => {
+          const on = i === k;
+          out += `<circle cx="${x}" cy="${y(g[i])}" r="${on ? 5.5 : 4}" fill="#9ca3af" stroke="#fff" stroke-width="1.5"/>`;
+          out += `<circle cx="${x}" cy="${y(s[i])}" r="${on ? 7 : 5}" fill="#1B6CA8" stroke="#fff" stroke-width="1.5"/>`;
+          out += `<text x="${x}" y="${H - 16}" text-anchor="middle" font-size="11" font-weight="${on ? 800 : 500}" fill="${on ? '#111' : '#6b7280'}">${B[i].x}</text>`;
+          if (on) out += `<text x="${x}" y="${(y(s[i]) + y(g[i])) / 2 + 4}" text-anchor="${i === 3 ? 'end' : 'start'}" dx="${i === 3 ? -10 : 10}" font-size="11" font-weight="800" fill="#16a34a">${sign(R.overall.d[i])}</text>`;
+        });
+        svg.innerHTML = out;
+      }
+
+      function render() {
+        root.querySelectorAll('.ab-stop').forEach((b, i) => {
+          b.classList.toggle('on', i === k);
+          b.classList.toggle('past', i < k);
+          b.setAttribute('aria-pressed', i === k);
+        });
+        $('ab-fill').style.width = (k / 3 * 75) + '%';
+        $('ab-robot-bar').style.width = (B[k].hrs / 24.9 * 100) + '%';
+        $('ab-human-bar').style.width = '100%';
+        // keep each number with its unit ("~6.2 h", "≈0.68M samples", "40K steps")
+        $('ab-robot-val').textContent = `${B[k].h} of teleoperation · ${B[k].n}`.replace(/ (h|samples|steps)\b/g, '\u00a0$1');
+        $('ab-res-budget').textContent = B[k].x;
+        Object.entries(R).forEach(([key, r]) => {
+          const row = root.querySelector(`.ab-row[data-r="${key}"]`);
+          [['.ab-bar.g', r.g[k]], ['.ab-bar.s', r.s[k]]].forEach(([sel, v]) => {
+            const bar = row.querySelector(sel), em = bar.querySelector('em');
+            bar.querySelector('i').style.width = v + '%';
+            em.textContent = fmt(v) + '%';
+            // a label that would run past the end of its track sits inside the bar, in white
+            const inside = v / 100 * bar.clientWidth + 6 + em.offsetWidth > bar.clientWidth;
+            em.classList.toggle('in', inside);
+            em.style.left = inside ? `calc(${v}% - ${em.offsetWidth + 8}px)` : `calc(${v}% + 6px)`;
+          });
+          const d = r.d[k], del = row.querySelector('.ab-delta');
+          del.className = 'ab-delta ' + (d > 0 ? 'pos' : d < 0 ? 'neg' : 'zero');
+          void del.offsetWidth;
+          del.classList.add('pop');
+          del.textContent = sign(d);
+        });
+        $('ab-story').innerHTML = `<div>${STORY[k]}</div>`;
+        trend();
+      }
+
+      $('ab-stops').addEventListener('click', e => {
+        const b = e.target.closest('.ab-stop');
+        if (!b) return;
+        k = +b.dataset.k;
+        render();
+      });
+      // arrow keys move along the dial only while it has focus
+      $('ab-stops').addEventListener('keydown', e => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        e.preventDefault();
+        k = Math.max(0, Math.min(3, k + (e.key === 'ArrowRight' ? 1 : -1)));
+        render();
+        root.querySelectorAll('.ab-stop')[k].focus();
+      });
+
+      // bars grow from zero the first time the section scrolls into view
+      new IntersectionObserver((entries, io) => {
+        if (!entries.some(e => e.isIntersecting)) return;
+        shown = true;
+        io.disconnect();
+        requestAnimationFrame(() => requestAnimationFrame(render));
+      }, { threshold: 0.15 }).observe(root);
+
+      let resizeT;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeT);
+        resizeT = setTimeout(() => { if (shown) render(); }, 200);
+      });
+    })();
+  </script>
 
 <footer style="text-align:center;padding:36px 20px;color:#9ca3af;font-size:.85rem;border-top:1px solid #e5e7eb;line-height:1.8;">
   SiMDex: Mining Similar Egocentric Videos for Cross-Embodiment Dexterous Manipulation<br>
