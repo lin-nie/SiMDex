@@ -658,6 +658,72 @@
   @media (max-width:720px) {
     .st-phone { width:100%; height:min(72vh, 640px); height:min(72svh, 640px); aspect-ratio:auto; border-radius:26px; box-shadow:0 0 0 6px #111, 0 18px 40px rgba(0,0,0,.22); }
   }
+  /* ── Spot the Match (five-round game with the mined clips) ── */
+  .sm-lead { font-size:clamp(0.92rem,0.95vw,1.15rem); color:#374151; line-height:1.6; max-width:900px; margin:4px 0 14px; text-wrap:balance; }
+  .sm-lead b { color:#111; }
+  .sm-hud { display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin:0 0 14px; }
+  .sm-round { font-weight:800; font-size:1rem; color:#111; }
+  .sm-dots { display:flex; gap:6px; }
+  .sm-dots i { width:10px; height:10px; border-radius:50%; background:#e5e7eb; transition:background .3s, transform .4s cubic-bezier(.34,1.56,.64,1); }
+  .sm-dots i.ok { background:#16a34a; }
+  .sm-dots i.no { background:#f87171; }
+  .sm-dots i.cur { transform:scale(1.35); background:#187fc2; }
+  .sm-score { margin-left:auto; font-weight:800; font-size:1rem; color:#111; }
+  .sm-score b { color:#16a34a; font-variant-numeric:tabular-nums; }
+  .sm-play { display:grid; gap:16px; }
+  .sm-anchor { padding:14px; display:grid; grid-template-columns:1.25fr 1fr; gap:18px; align-items:center; background:#fff; border:1.5px solid #e5e7eb; border-radius:16px; }
+  .sm-chip { display:inline-flex; align-items:center; gap:6px; background:#111; color:#fff; font-size:.74rem; font-weight:800; letter-spacing:.03em; padding:4px 10px; border-radius:999px; }
+  .sm-name { font-size:1.6rem; font-weight:800; letter-spacing:-.01em; line-height:1.15; color:#111; margin-top:10px; }
+  .sm-quote { margin-top:8px; font-style:italic; color:#374151; font-size:clamp(0.92rem,0.95vw,1.15rem); text-wrap:balance; }
+  .sm-ask { margin-top:14px; font-size:clamp(0.92rem,0.95vw,1.15rem); color:#374151; line-height:1.5; text-wrap:balance; }
+  .sm-hint { margin-top:10px; background:none; border:none; padding:0; color:#187fc2; font-weight:700; font-size:.88rem; cursor:pointer; font-family:inherit; }
+  .sm-hint-text { display:none; margin-top:6px; font-size:.86rem; color:#6b7280; line-height:1.5; text-wrap:balance; }
+  .sm-hint-text.on { display:block; animation:sm-pop .4s cubic-bezier(.34,1.56,.64,1) both; }
+  .sm-vbox { position:relative; border-radius:12px; overflow:hidden; background:#111; aspect-ratio:16/7.9; }
+  /* crop the top strip of each clip, which carries a burnt-in "frame / slow speed" overlay */
+  .sm-vbox video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 100%; }
+  .sm-tag { position:absolute; left:8px; top:8px; font-size:.68rem; font-weight:800; color:#fff; background:rgba(0,0,0,.55); padding:3px 8px; border-radius:5px; letter-spacing:.03em; }
+  .sm-choices { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  .sm-choice { background:#fff; border:2.5px solid #e5e7eb; border-radius:16px; padding:10px; text-align:left; cursor:pointer; font:inherit; color:inherit; transition:transform .35s cubic-bezier(.34,1.56,.64,1), border-color .2s, box-shadow .25s, opacity .3s; animation:sm-pop .5s cubic-bezier(.34,1.56,.64,1) both; }
+  .sm-choice:hover:not(:disabled) { transform:translateY(-4px); border-color:#187fc2; box-shadow:0 10px 24px rgba(24,127,194,.18); }
+  .sm-choice:disabled { cursor:default; }
+  .sm-choice-row { display:flex; align-items:center; gap:8px; margin-top:10px; }
+  .sm-key { width:28px; height:28px; border-radius:8px; background:#f5f5f5; display:grid; place-items:center; font-weight:800; color:#6b7280; flex-shrink:0; }
+  .sm-res { font-size:.84rem; font-weight:700; color:#6b7280; line-height:1.3; }
+  .sm-choice.right { border-color:#16a34a; box-shadow:0 0 0 4px rgba(22,163,74,.15); }
+  .sm-choice.right .sm-key { background:#16a34a; color:#fff; }
+  .sm-choice.right .sm-res { color:#16a34a; }
+  .sm-choice.wrong { border-color:#f87171; }
+  .sm-choice.wrong .sm-key { background:#f87171; color:#fff; }
+  .sm-choice.fade { opacity:.55; }
+  .sm-reveal { display:none; gap:14px; align-items:center; padding:16px 18px; background:#fff; border:1.5px solid #e5e7eb; border-radius:16px; }
+  .sm-reveal.on { display:flex; animation:sm-pop .45s cubic-bezier(.34,1.56,.64,1) both; }
+  .sm-icon { font-size:2rem; }
+  .sm-reveal p { font-size:clamp(0.92rem,0.95vw,1.15rem); color:#374151; line-height:1.5; text-wrap:balance; }
+  .sm-reveal p b { color:#111; }
+  .sm-twist { margin-top:8px; background:#fff7ed; border:1px solid #fed7aa; border-radius:10px; padding:10px 12px; font-size:.88rem; color:#7c2d12; line-height:1.5; text-wrap:balance; }
+  .sm-next { margin-left:auto; border:none; background:#187fc2; color:#fff; border-radius:999px; padding:10px 20px; font-weight:800; font-size:.92rem; cursor:pointer; white-space:nowrap; font-family:inherit; box-shadow:0 6px 16px rgba(24,127,194,.3); transition:transform .3s cubic-bezier(.34,1.56,.64,1); }
+  .sm-next:hover { transform:translateY(-2px); }
+  .sm-final { display:none; padding:34px 28px; text-align:center; background:#fff; border:1.5px solid #e5e7eb; border-radius:16px; }
+  .sm-final.on { display:block; animation:sm-pop .5s cubic-bezier(.34,1.56,.64,1) both; }
+  .sm-big { font-size:3.4rem; font-weight:900; letter-spacing:-.03em; color:#111; }
+  .sm-final h4 { margin:4px 0 0; font-size:1.5rem; font-weight:800; color:#111; text-wrap:balance; }
+  .sm-final p { max-width:560px; margin:10px auto 0; font-size:clamp(0.92rem,0.95vw,1.15rem); color:#374151; line-height:1.55; text-wrap:balance; }
+  .sm-btns { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:18px; }
+  .sm-btns a, .sm-btns button { border:1.5px solid #e5e7eb; background:#fff; border-radius:999px; padding:9px 18px; font-weight:700; font-size:.9rem; cursor:pointer; text-decoration:none; color:#111; font-family:inherit; }
+  .sm-btns .sm-primary { background:#187fc2; border-color:#187fc2; color:#fff; }
+  .sm-note { margin-top:14px; font-size:.78rem; color:#6b7280; line-height:1.5; text-wrap:balance; }
+  @keyframes sm-pop { from { opacity:0; transform:translateY(12px) scale(.97); } to { opacity:1; transform:none; } }
+  @media (max-width:860px) {
+    /* phones: the robot clip stays pinned under the navbar while the three choices scroll by */
+    .sm-anchor { grid-template-columns:1fr; gap:10px; padding:10px; position:sticky; top:58px; z-index:10; }
+    .sm-meta { order:2; }
+    .sm-name { font-size:1.15rem; margin-top:0; }
+    .sm-chip, .sm-quote, .sm-ask, .sm-hint, .sm-hint-text { display:none !important; }
+    .sm-choices { grid-template-columns:1fr; }
+    .sm-reveal { flex-wrap:wrap; }
+    .sm-next { margin-left:0; width:100%; }
+  }
 </style>
 </head>
 <body>
@@ -669,7 +735,12 @@
       <div class="nav-links" id="nav-links">
         <a href="#demo-anchor" data-section="demo">Demo</a>
         <a href="#abstract-anchor" data-section="abstract">Abstract</a>
-        <a href="#simtok-anchor" data-section="simtok">SiMTok</a>
+        <div class="nav-item">
+          <a href="#simtok-anchor" data-section="simtok" class="nav-has-sub">SiMTok</a>
+          <div class="nav-dropdown">
+            <a href="#simtok-match">Spot the Match</a>
+          </div>
+        </div>
         <div class="nav-item">
           <a href="#method-anchor" data-section="method" class="nav-has-sub">Method</a>
           <div class="nav-dropdown">
@@ -823,6 +894,35 @@
             <p class="st-vision-title"><span class="st-line"><span class="hl-yellow">Recommendation algorithms</span></span><span class="st-line">for robots</span></p>
             <p class="st-vision-text">We want dexterous robots to <b>learn&nbsp;new&nbsp;skills&nbsp;faster</b>, just like scrolling short videos: SiMDex recommends the most relevant dexterous manipulation samples to the robot.</p>
           </div>
+        </div>
+      </div>
+      <!-- Spot the Match: the jump target is this wrapper, which does not move when the reveal animation runs -->
+      <div id="simtok-match" style="margin-top:56px;">
+        <p class="sub-title reveal" style="margin-top:0;">Spot the Match</p>
+        <div class="sm-game" id="sm-game">
+          <p class="sm-lead"><b>One robot moment, three human clips.</b> SiMDex mined one of them for exactly this moment; the other two were mined for other robot moments. Five rounds: can you see past the objects?</p>
+          <div class="sm-hud">
+            <span class="sm-round" id="sm-round">Round 1 / 5</span>
+            <div class="sm-dots" id="sm-dots"></div>
+            <span class="sm-score">Score <b id="sm-score">0</b></span>
+          </div>
+          <div class="sm-play" id="sm-play">
+            <div class="sm-anchor">
+              <div class="sm-vbox"><video id="sm-anchor-v" muted loop playsinline preload="none"></video><span class="sm-tag">🤖 ROBOT · 0.25× SLOW-MO</span></div>
+              <div class="sm-meta">
+                <span class="sm-chip">🤖 The robot is learning</span>
+                <p class="sm-name" id="sm-anchor-name"></p>
+                <p class="sm-quote" id="sm-anchor-instr"></p>
+                <p class="sm-ask">Which human clip did SiMDex mine for this moment? Pick one.</p>
+                <button class="sm-hint" id="sm-hint-btn" type="button">💡 Need a hint?</button>
+                <p class="sm-hint-text" id="sm-hint-text">Ignore the objects and the room. Follow the wrist: does it rotate, slide, or hold still? Then the fingertips: a pinch, a wrap, two fingers turning? SiMDex compares exactly that over 30 steps.</p>
+              </div>
+            </div>
+            <div class="sm-choices" id="sm-choices"></div>
+            <div class="sm-reveal" id="sm-reveal"></div>
+          </div>
+          <div class="sm-final" id="sm-final"></div>
+          <p class="sm-note">Every clip is a real mined sample. The two decoys in each round were mined for other robot sub-tasks.</p>
         </div>
       </div>
     </div>
@@ -2297,6 +2397,141 @@
     })();
   </script>
 
+  <script>
+    /* ===== Spot the Match: five rounds with the mined clips ===== */
+    (() => {
+      const game = document.getElementById('sm-game');
+      if (!game) return;
+      const $ = id => document.getElementById(id);
+      const V = 'static/videos/mining/', P = 'static/images/simtok/';
+      const ROUNDS = 5;
+      const SUBS = [];
+      [
+        ['drill', 'Drill', [['grasp', 'Grasp', 'pick up the electric drill'], ['assembly', 'Assembly', 'pick up the bar-to-cube assembly'], ['drill', 'Drill', 'unscrew the cube with screw-holes from the bar-to-cube assembly']]],
+        ['flick_wheel', 'Flick Wheel', [['grasp', 'Grasp', 'pick up the wheel-to-cube assembly'], ['twist', 'Twist', 'unscrew the bolted wheel from the wheel-to-cube assembly'], ['flick', 'Flick', 'flick the wheel-to-cube assembly with index finger']]],
+        ['pick_place', 'Pick & Place', [['obj1', 'Obj.1', 'put the plastic screw into the blue basket'], ['obj2', 'Obj.2', 'put the bolted double-strip bar into the blue basket'], ['obj3', 'Obj.3', 'put the cube with screw-holes into the blue basket'], ['obj4', 'Obj.4', 'put the bolted wheel into the blue basket']]],
+      ].forEach(([tk, tn, subs]) => subs.forEach(([sk, sn, instr]) =>
+        SUBS.push({ id:`${tk}/${sk}`, task:tn, label:`${tn} › ${sn}`, instr, dir:`${V}${tk}/${sk}/`, poster:`${P}${tk}_${sk}_` })));
+
+      const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+      const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+      const sample = () => 1 + Math.floor(Math.random() * 3);
+      let rounds = [], r = 0, score = 0, answered = false, results = [], visible = false;
+
+      // five robot moments: always the drilling stage (its plot twist), at least one per task, the rest at random
+      function pickAnchors() {
+        const twist = SUBS.find(s => s.id === 'drill/drill');
+        const oneOf = task => shuffle(SUBS.filter(s => s.task === task && s !== twist))[0];
+        const chosen = [twist, oneOf('Flick Wheel'), oneOf('Pick & Place')];
+        return shuffle([...chosen, ...shuffle(SUBS.filter(s => !chosen.includes(s))).slice(0, ROUNDS - chosen.length)]);
+      }
+
+      const vids = () => [...game.querySelectorAll('video')];
+      const playAll = () => { if (visible) vids().forEach(v => { if (v.getAttribute('src')) v.play().catch(() => {}); }); };
+
+      function newGame() {
+        rounds = pickAnchors().map(anchor => {
+          const right = { sub: anchor, n: sample() };
+          const decoys = shuffle(SUBS.filter(s => s !== anchor)).slice(0, 2).map(s => ({ sub: s, n: sample() }));
+          return { anchor, options: shuffle([right, ...decoys]), right };
+        });
+        r = 0; score = 0; results = [];
+        $('sm-final').classList.remove('on');
+        $('sm-play').style.display = '';
+        showRound();
+      }
+
+      function showRound() {
+        answered = false;
+        const R = rounds[r];
+        $('sm-round').textContent = `Round ${r + 1} / ${rounds.length}`;
+        $('sm-score').textContent = score;
+        $('sm-dots').innerHTML = rounds.map((_, i) => `<i class="${results[i] === true ? 'ok' : results[i] === false ? 'no' : i === r ? 'cur' : ''}"></i>`).join('');
+        $('sm-anchor-name').textContent = R.anchor.label;
+        $('sm-anchor-instr').textContent = `“${R.anchor.instr}”`;
+        const av = $('sm-anchor-v');
+        av.poster = R.anchor.poster + 'anchor.jpg';
+        av.src = R.anchor.dir + 'anchor.mp4';
+        $('sm-hint-text').classList.remove('on');
+        $('sm-choices').innerHTML = R.options.map((o, i) => `
+          <button class="sm-choice" data-i="${i}" type="button" style="animation-delay:${i * 70}ms">
+            <div class="sm-vbox"><video muted loop playsinline poster="${o.sub.poster}sample${o.n}.jpg" src="${o.sub.dir}sample${o.n}.mp4"></video><span class="sm-tag">🖐 HUMAN · ${'ABC'[i]}</span></div>
+            <div class="sm-choice-row"><span class="sm-key">${'ABC'[i]}</span><span class="sm-res">Pick ${'ABC'[i]}</span></div>
+          </button>`).join('');
+        $('sm-reveal').classList.remove('on');
+        $('sm-reveal').innerHTML = '';
+        playAll();
+      }
+
+      function answer(i) {
+        if (answered || !rounds.length) return;
+        answered = true;
+        const R = rounds[r], ok = R.options[i] === R.right, letter = 'ABC'[R.options.indexOf(R.right)];
+        if (ok) score++;
+        results[r] = ok;
+        $('sm-score').textContent = score;
+        $('sm-choices').querySelectorAll('.sm-choice').forEach((b, j) => {
+          const o = R.options[j], isRight = o === R.right;
+          b.disabled = true;
+          b.classList.add(isRight ? 'right' : (j === i ? 'wrong' : 'fade'));
+          b.querySelector('.sm-res').innerHTML = isRight ? '✓ Mined for this moment' : `Mined for ${esc(o.sub.label)}`;
+        });
+        const twist = R.anchor.id === 'drill/drill'
+          ? '<div class="sm-twist"><b>Plot twist:</b> none of the clips mined for this drilling stage shows drilling. They show a tube being squeezed, a saw and a hair dryer. Holding a hand-held appliance and holding a drill are nearly identical in wrist pose and fingertip configuration.</div>' : '';
+        $('sm-reveal').innerHTML = `
+          <div class="sm-icon">${ok ? '🎯' : '🙈'}</div>
+          <div><p>${ok ? '<b>Spot on.</b>' : '<b>Not this one.</b>'} SiMDex mined clip ${letter} for this moment by matching wrist motion and fingertip configuration over a 30-step horizon, not by what the scene looks like.</p>${twist}</div>
+          <button class="sm-next" id="sm-next" type="button">${r === rounds.length - 1 ? 'See my score →' : 'Next round →'}</button>`;
+        $('sm-reveal').classList.add('on');
+        // on phones the verdict sits below the stacked clips; bring it into view
+        if (window.innerWidth <= 860) setTimeout(() => $('sm-reveal').scrollIntoView({ behavior: 'smooth', block: 'end' }), 250);
+      }
+
+      function next() {
+        if (!answered) return;
+        if (r === rounds.length - 1) { finish(); return; }
+        r++;
+        showRound();
+        const hud = $('sm-round').getBoundingClientRect();
+        if (hud.top < 60) window.scrollTo({ top: hud.top + window.scrollY - 80, behavior: 'smooth' });
+      }
+
+      function finish() {
+        $('sm-play').style.display = 'none';
+        vids().forEach(v => v.pause());
+        const [title, msg] = score >= 4 ? ['Motion-matching expert', 'You looked past the objects and followed the hands, the same way SiMDex compares wrist motion and fingertips.']
+          : score >= 3 ? ['Good eye', 'You caught most of them. SiMDex compares how the hands move, not how the scene looks.']
+          : ['Appearance got you', 'That is why SiMDex compares motion, not appearance: a mined clip does not have to look like the robot’s task, it has to move like it.'];
+        $('sm-final').innerHTML = `<div class="sm-big">${score} / ${rounds.length}</div><h4>${title}</h4><p>${msg}</p>
+          <div class="sm-btns"><button class="sm-primary" id="sm-again" type="button">Play again</button><a href="#simtok-anchor">Back to the feed ↑</a></div>`;
+        $('sm-final').classList.add('on');
+        $('sm-dots').innerHTML = rounds.map((_, i) => `<i class="${results[i] ? 'ok' : 'no'}"></i>`).join('');
+        $('sm-round').textContent = 'Final score';
+      }
+
+      $('sm-choices').addEventListener('click', e => { const b = e.target.closest('.sm-choice'); if (b) answer(+b.dataset.i); });
+      $('sm-reveal').addEventListener('click', e => { if (e.target.closest('#sm-next')) next(); });
+      $('sm-final').addEventListener('click', e => { if (e.target.closest('#sm-again')) newGame(); });
+      $('sm-hint-btn').addEventListener('click', () => $('sm-hint-text').classList.toggle('on'));
+      // shortcuts (1–3 or A–C to answer, → for the next round) only while focus is inside the game
+      game.addEventListener('keydown', e => {
+        const k = e.key.toLowerCase();
+        if (['1', '2', '3', 'a', 'b', 'c'].includes(k)) answer('123'.includes(k) ? +k - 1 : 'abc'.indexOf(k));
+        else if (k === 'arrowright') next();
+      });
+
+      // nothing loads until the game comes near the viewport; clips play only while it is in view
+      new IntersectionObserver((entries, io) => {
+        if (!entries.some(e => e.isIntersecting)) return;
+        io.disconnect();
+        newGame();
+      }, { rootMargin: '300px 0px' }).observe(game);
+      new IntersectionObserver(entries => {
+        visible = entries[entries.length - 1].isIntersecting;
+        if (visible) playAll(); else vids().forEach(v => v.pause());
+      }, { threshold: 0.15 }).observe(game);
+    })();
+  </script>
 <footer style="text-align:center;padding:36px 20px;color:#9ca3af;font-size:.85rem;border-top:1px solid #e5e7eb;line-height:1.8;">
   SiMDex: Mining Similar Egocentric Videos for Cross-Embodiment Dexterous Manipulation<br>
   © 2026 The SiMDex authors. All rights reserved.<br>
